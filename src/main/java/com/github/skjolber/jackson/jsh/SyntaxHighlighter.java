@@ -1,7 +1,5 @@
 package com.github.skjolber.jackson.jsh;
 
-import com.fasterxml.jackson.core.JsonStreamContext;
-
 public interface SyntaxHighlighter {
 
 	public static final String ANSI_RESET = "\u001B[0m";
@@ -22,16 +20,26 @@ public interface SyntaxHighlighter {
 	public static final String ANSI_PURPLE_BACKGROUND = "\u001B[45m";
 	public static final String ANSI_CYAN_BACKGROUND = "\u001B[46m";
 	public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
+
+	String forCurlyBrackets();
+
+	String forSquareBrackets();
 	
-	String forField(String name, JsonStreamContext jsonStreamContext);
+	String forColon();
+
+	String forComma();
+
+	String forWhitespace();
 	
-	String forNumber(JsonStreamContext jsonStreamContext);
+	String forFieldName();
+	 
+	String forNumber();
 	
-	String forString(JsonStreamContext jsonStreamContext);
+	String forString();
 	
-	String forBinary(JsonStreamContext jsonStreamContext);
+	String forBinary();
 	
-	String forBoolean(JsonStreamContext jsonStreamContext);
+	String forBoolean();
 	
-	String forNull(JsonStreamContext jsonStreamContext);
+	String forNull();
 }

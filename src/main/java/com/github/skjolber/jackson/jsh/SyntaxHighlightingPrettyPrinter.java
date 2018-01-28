@@ -3,96 +3,124 @@ package com.github.skjolber.jackson.jsh;
 import java.io.IOException;
 
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.PrettyPrinter;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 
-public class SyntaxHighlightingPrettyPrinter implements PrettyPrinter {
+public class SyntaxHighlightingPrettyPrinter extends DefaultPrettyPrinter {
 
-	protected static final String ANSI_RESET = "\u001B[0m";
+	private SyntaxHighlightingJsonGenerator generator;
+	private SyntaxHighlighterObjectIndenter objectIndenter;
+	private SyntaxHighlighterArrayIndenter arrayIndenter;
+
+	private String valueColor;
 	
-	private PrettyPrinter prettyPrinter;
-	private String color;
-	private final String base;
-
-	public SyntaxHighlightingPrettyPrinter(PrettyPrinter prettyPrinter) {
-		this(prettyPrinter, ANSI_RESET);
-	}
-
-	public SyntaxHighlightingPrettyPrinter(PrettyPrinter prettyPrinter, String base) {
-		super();
-		this.prettyPrinter = prettyPrinter;
-		this.base = base;
+	public SyntaxHighlightingPrettyPrinter(SyntaxHighlightingJsonGenerator generator, SyntaxHighlighterObjectIndenter objectIndenter, SyntaxHighlighterArrayIndenter arrayIndenter) {
+		this.generator = generator;
+		_objectIndenter = objectIndenter;
+		_arrayIndenter = arrayIndenter;
+		
+		this.objectIndenter = objectIndenter;
+		this.arrayIndenter = arrayIndenter;
 	}
 
 	public void writeRootValueSeparator(JsonGenerator gen) throws IOException {
-		gen.writeRaw(base);
-		prettyPrinter.writeRootValueSeparator(gen);
+		super.writeRootValueSeparator(gen);
 	}
 
 	public void writeStartObject(JsonGenerator gen) throws IOException {
-		gen.writeRaw(base);
-		prettyPrinter.writeStartObject(gen);
+		gen.writeRaw(generator.forCurlyBrackets());
+		super.writeStartObject(gen);
 	}
 
 	public void writeEndObject(JsonGenerator gen, int nrOfEntries) throws IOException {
-		gen.writeRaw(base);
-		prettyPrinter.writeEndObject(gen, nrOfEntries);
+		String color = generator.forCurlyBrackets();
+		
+		gen.writeRaw(color);
+
+		objectIndenter.setPostColor(color);
+
+		super.writeEndObject(gen, nrOfEntries);
+		
+		objectIndenter.clearPostColor();
+		
+		generator.popSyntaxHighlighter();
 	}
 
 	public void writeObjectEntrySeparator(JsonGenerator gen) throws IOException {
-		gen.writeRaw(base);
-		prettyPrinter.writeObjectEntrySeparator(gen);
-		if(color != null) {
-			gen.writeRaw(color);
+		// new highlighter is already pushed, so look at the previous
+		SyntaxHighlighter highlighter = generator.popPreviousSyntaxHighlighter();
+
+		String comma = highlighter.forComma();
+		if(comma == null) {
+			comma = SyntaxHighlighter.ANSI_RESET;
 		}
+		
+		gen.writeRaw(comma);
+
+		objectIndenter.setPostColor(generator.forFieldName());
+		super.writeObjectEntrySeparator(gen);
 	}
 
 	public void writeObjectFieldValueSeparator(JsonGenerator gen) throws IOException {
-		gen.writeRaw(base);
-		prettyPrinter.writeObjectFieldValueSeparator(gen);
-		if(color != null) {
-			gen.writeRaw(color);
+		if(_spacesInObjectEntries) {
+			gen.writeRaw(generator.forWhitespace());
+			gen.writeRaw(' ');
+			gen.writeRaw(generator.forColon());
+			gen.writeRaw(_separators.getObjectFieldValueSeparator());
+			gen.writeRaw(generator.forWhitespace());
+			gen.writeRaw(' ');
+		} else {
+			gen.writeRaw(generator.forColon());
+			super.writeObjectFieldValueSeparator(gen);
 		}
+
+		if(valueColor != null) {
+			gen.writeRaw(valueColor);
+			valueColor = null;
+		}
+
 	}
 
 	public void writeStartArray(JsonGenerator gen) throws IOException {
-		gen.writeRaw(base);
-		prettyPrinter.writeStartArray(gen);
+		gen.writeRaw(generator.forSquareBrackets());
+		super.writeStartArray(gen);
 	}
 
 	public void writeEndArray(JsonGenerator gen, int nrOfValues) throws IOException {
-		gen.writeRaw(base);
-		prettyPrinter.writeEndArray(gen, nrOfValues);
+		String color = generator.forSquareBrackets();
+		
+		gen.writeRaw(color);
+
+		arrayIndenter.setPostColor(color);
+
+		super.writeEndArray(gen, nrOfValues);
+		
+		arrayIndenter.clearPostColor();
+		
+		generator.popSyntaxHighlighter();		
 	}
 
 	public void writeArrayValueSeparator(JsonGenerator gen) throws IOException {
-		gen.writeRaw(base);
-		prettyPrinter.writeArrayValueSeparator(gen);
-		if(color != null) {
-			gen.writeRaw(color);
-		}		
+		gen.writeRaw(generator.forComma());		
+		
+		if(valueColor != null) {
+			arrayIndenter.setPostColor(valueColor);
+		}
+
+		super.writeArrayValueSeparator(gen);
 	}
 
 	public void beforeArrayValues(JsonGenerator gen) throws IOException {
-		gen.writeRaw(base);
-		prettyPrinter.beforeArrayValues(gen);
-		if(color != null) {
-			gen.writeRaw(color);
-		}		
+		if(valueColor != null) {
+			arrayIndenter.setPostColor(valueColor);
+		}
+		super.beforeArrayValues(gen);
 	}
 
 	public void beforeObjectEntries(JsonGenerator gen) throws IOException {
-		gen.writeRaw(base);
-		prettyPrinter.beforeObjectEntries(gen);
-		if(color != null) {
-			gen.writeRaw(color);
-		}		
+		super.beforeObjectEntries(gen);
 	}
 
-	public void setColor(String color) {
-		this.color = color;
-	}
-	
-	public void clearColor() {
-		this.color = null;
+	public void setValueColor(String valueColor) {
+		this.valueColor = valueColor;
 	}
 }

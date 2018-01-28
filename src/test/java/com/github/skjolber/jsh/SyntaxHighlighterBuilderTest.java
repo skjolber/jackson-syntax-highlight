@@ -6,7 +6,7 @@ import org.junit.Test;
 import com.github.skjolber.jackson.jsh.DefaultSyntaxHighlighter;
 import com.github.skjolber.jackson.jsh.SyntaxHighlighter;
 
-public class DefaultJacksonSyntaxHighlighterTest {
+public class SyntaxHighlighterBuilderTest {
 
 	@Test
 	public void testBuilder() {
@@ -15,7 +15,7 @@ public class DefaultJacksonSyntaxHighlighterTest {
 			.withNumber(DefaultSyntaxHighlighter.ANSI_BLUE)
 			.build();
 		
-		Assert.assertEquals(highlighter.forNumber(null), DefaultSyntaxHighlighter.ANSI_BLUE);
+		Assert.assertEquals(highlighter.forNumber(), DefaultSyntaxHighlighter.ANSI_BLUE);
 	
 	}
 }

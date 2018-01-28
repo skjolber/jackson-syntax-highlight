@@ -1,18 +1,24 @@
 [![Build Status](https://travis-ci.org/skjolber/jackson-syntax-highlight.svg?branch=master)](https://travis-ci.org/skjolber/jackson-syntax-highlight)
 
 # jackson-syntax-highlight
-Syntax highlighting (via ANSI) for JSON output in Java. Enables color output in console.
+Simple utility for syntax highlighting for JSON output in Java. Enables color output in console via ANSI color codes.
 
 Features: 
   * works with the popular Jackson JSON library.
-  * configurable color schemes per datatype
-     * string
-     * number
-     * boolean
-     * null
+  * configurable color schemes
+     * datatype
+       * string
+       * number
+       * boolean
+       * null
      * field name
+     * comma
+     * brackets
+     * colon
+     * whitespace
+       
 
-Primarily intended for use with JSON-logging while doing minimal changes to existing applications. 
+Primarily intended for adding coloring while doing minimal changes to existing applications. 
 
 ## License
 [Apache 2.0]
@@ -55,6 +61,8 @@ SyntaxHighlighter highlighter = DefaultSyntaxHighlighter
 		
 JsonGenerator jsonGenerator = new SyntaxHighlightingJsonGenerator(delegate, highlighter);
 ```
+
+
 # History
 
  - [1.0.0]: Initial version
