@@ -1,10 +1,10 @@
 [![Build Status](https://travis-ci.org/skjolber/jackson-syntax-highlight.svg?branch=master)](https://travis-ci.org/skjolber/jackson-syntax-highlight)
 
 # jackson-syntax-highlight
-Simple utility for generating syntax-highlighted JSON text. Inlines ANSI color-codes visible in ANSI-enabled consoles.
+Simple utility for generating syntax-highlighted [JSON] text. Inlines [ANSI] color-codes visible in ANSI-enabled consoles.
 
 Features: 
-  * works with the popular Jackson JSON library.
+  * works with the popular [Jackson] JSON library.
   * configurable color schemes
      * datatype
        * string
@@ -34,7 +34,7 @@ The project is based on [Maven] and is available at central Maven repository.
 ```
 
 # Usage
-The highlighter wraps a normal `JsonGenerator`. Per default pretty-printing is enabled.
+The highlighter wraps a normal [JsonGenerator]. Per default pretty-printing is enabled.
 
 ```java
 // construct output generator
@@ -61,7 +61,7 @@ SyntaxHighlighter highlighter = DefaultSyntaxHighlighter
 JsonGenerator jsonGenerator = new SyntaxHighlightingJsonGenerator(delegate, highlighter);
 ```
 
-In addition, a [SyntaxHighlighter] can be dynamically looked up [based on object field name](src/main/java/com/github/skjolber/jackson/jsh/SyntaxHighlighterResolver).
+In addition, a [SyntaxHighlighter] can be dynamically looked up [based on object field name](src/main/java/com/github/skjolber/jackson/jsh/SyntaxHighlighterResolver.java).
 
 # History
 
@@ -72,3 +72,7 @@ In addition, a [SyntaxHighlighter] can be dynamically looked up [based on object
 [Maven]:                http://maven.apache.org/
 [1.0.0]:				https://github.com/skjolber/jackson-syntax-highlight/releases/tag/jackson-syntax-highlight-1.0.0
 [SyntaxHighlighter]:	src/main/java/com/github/skjolber/jackson/jsh/SyntaxHighlighter.java
+[Jackson]:				https://github.com/FasterXML/jackson
+[ANSI]:					https://en.wikipedia.org/wiki/ANSI_escape_code
+[JSON]:					https://no.wikipedia.org/wiki/JSON
+[JsonGenerator]:		https://github.com/FasterXML/jackson-core/blob/master/src/main/java/com/fasterxml/jackson/core/JsonGenerator.java
