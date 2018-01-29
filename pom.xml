@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.skjolber.jackson</groupId>
 	<artifactId>jackson-syntax-highlight</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<name>jackson-syntax-highlight</name>
 	<description>ANSI syntax highlighting for Jackson output</description>
 	<url>https://github.com/skjolber/jackson-syntax-highlight</url>
