@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.github.skjolber.jackson.jsh.DefaultSyntaxHighlighter;
+import com.github.skjolber.jackson.jsh.DefaultSyntaxHighlighterResolver;
 import com.github.skjolber.jackson.jsh.Hightlight;
 import com.github.skjolber.jackson.jsh.SyntaxHighlighterResolver;
 
@@ -90,7 +91,7 @@ public class SyntaxHighlighterTest extends AbstractHighlighterTest {
 	}
 
 	private void handle(DefaultSyntaxHighlighter h) throws IOException {
-		super.handle((SyntaxHighlighterResolver)h);
+		super.handle(new DefaultSyntaxHighlighterResolver(h));
 	}
 
 }

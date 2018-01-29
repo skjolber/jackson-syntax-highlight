@@ -1,6 +1,6 @@
 package com.github.skjolber.jackson.jsh;
 
-public class DefaultSyntaxHighlighter implements SyntaxHighlighter{
+public class DefaultSyntaxHighlighter implements SyntaxHighlighter {
 
 	public static Builder newBuilder() {
 		return new Builder();
