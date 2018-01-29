@@ -9,14 +9,14 @@ public class SyntaxHighlighterObjectIndenter extends DefaultIndenter {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private SyntaxHighlighter highligheter;
-	private String postColor;
+	protected SyntaxHighlighter highligheter;
+	protected String valueColor;
 
 	public SyntaxHighlighterObjectIndenter() {
 		super();
 	}
 
-	public void setHighligheter(SyntaxHighlighter highligheter) {
+	public SyntaxHighlighterObjectIndenter(SyntaxHighlighter highligheter) {
 		this.highligheter = highligheter;
 	}
 	
@@ -26,17 +26,23 @@ public class SyntaxHighlighterObjectIndenter extends DefaultIndenter {
 		jg.writeRaw(color);
 		super.writeIndentation(jg, level);
 		
-		if(postColor != null) {
-			jg.writeRaw(postColor);
+		if(valueColor != null) {
+			jg.writeRaw(valueColor);
 		}
 	}
 	
-	public void setPostColor(String postColor) {
-		this.postColor = postColor;
+	/**
+	 * Set the color which is set after the indentation.
+	 * 
+	 * @param color color to set
+	 */
+	
+	public void setValueColor(String color) {
+		this.valueColor = color;
 	}
 
-	public void clearPostColor() {
-		this.postColor = null;
+	public void clearValueColor() {
+		this.valueColor = null;
 	}
 	
 }

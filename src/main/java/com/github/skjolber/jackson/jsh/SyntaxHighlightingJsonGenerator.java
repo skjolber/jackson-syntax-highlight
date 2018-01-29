@@ -12,12 +12,24 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.SerializableString;
 import com.fasterxml.jackson.core.util.JsonGeneratorDelegate;
 
+/**
+ * Syntax highlighting {@linkplain JsonGenerator} wrapper.  
+ * 
+ */
+
 public class SyntaxHighlightingJsonGenerator extends JsonGeneratorDelegate implements SyntaxHighlighter {
 
-	protected final Stack<SyntaxHighlighter> stack = new Stack<>();
+	/*
+	 * Implementation note: The indent and value is triggered in the same
+	 * method call, so the indenter must be rigged so that they write the 
+	 * correct color after the whitespace. 
+	 * 
+	 */
+	
+	protected Stack<SyntaxHighlighter> stack = new Stack<>();
 	protected SyntaxHighlightingPrettyPrinter prettyPrinter;
-	protected SyntaxHighlighterObjectIndenter objectIndenter = new SyntaxHighlighterObjectIndenter();
-	protected SyntaxHighlighterArrayIndenter arrayIndenter = new SyntaxHighlighterArrayIndenter();
+	protected SyntaxHighlighterObjectIndenter objectIndenter = new SyntaxHighlighterObjectIndenter(this);
+	protected SyntaxHighlighterArrayIndenter arrayIndenter = new SyntaxHighlighterArrayIndenter(this);
 	
 	protected SyntaxHighlighterResolver resolver;
 
@@ -25,7 +37,22 @@ public class SyntaxHighlightingJsonGenerator extends JsonGeneratorDelegate imple
 		this(d, new DefaultSyntaxHighlighter());
 	}
 
-	private SyntaxHighlighter getSyntaxHighlighter() {
+	public SyntaxHighlightingJsonGenerator(JsonGenerator d, SyntaxHighlighter syntaxHighlighter) {
+		this(d, new DefaultSyntaxHighlighterResolver(syntaxHighlighter));
+	}
+
+	public SyntaxHighlightingJsonGenerator(JsonGenerator d, SyntaxHighlighterResolver resolver) {
+		super(d, false);
+
+		this.resolver = resolver;
+		this.prettyPrinter = new SyntaxHighlightingPrettyPrinter(this, objectIndenter, arrayIndenter);
+		setPrettyPrinter(prettyPrinter);
+
+		// resolve default instance now
+		pushSyntaxHighlighter(resolver.forFieldName(null, d.getOutputContext()));
+	}
+
+	protected SyntaxHighlighter getSyntaxHighlighter() {
 		if(!stack.isEmpty()) {
 			return stack.peek();
 		}
@@ -38,75 +65,66 @@ public class SyntaxHighlightingJsonGenerator extends JsonGeneratorDelegate imple
 		}
 		stack.push(syntaxHighlighter);
 	}
-	public SyntaxHighlightingJsonGenerator(JsonGenerator d, SyntaxHighlighter syntaxHighlighter) {
-		this(d, new DefaultSyntaxHighlighterResolver(syntaxHighlighter));
-	}
-
-	public SyntaxHighlightingJsonGenerator(JsonGenerator d, SyntaxHighlighterResolver resolver) {
-		super(d, false);
-
-		this.resolver = resolver;
-
-		pushSyntaxHighlighter(resolver.forFieldName(null, d.getOutputContext()));
-
-		objectIndenter.setHighligheter(this);
-		arrayIndenter.setHighligheter(this);
-
-		prettyPrinter = new SyntaxHighlightingPrettyPrinter(this, objectIndenter, arrayIndenter);
-
-		setPrettyPrinter(prettyPrinter);
-	}
 
 	@Override
 	public void writeFieldName(String name) throws IOException {
-		SyntaxHighlighter highlighter = resolver.forFieldName(name, delegate.getOutputContext());
-		pushSyntaxHighlighter(highlighter);
+		pushSyntaxHighlighter(resolver.forFieldName(name, delegate.getOutputContext()));
 
-		String color = highlighter.forFieldName();
-
-		objectIndenter.setPostColor(color);
+		objectIndenter.setValueColor(forFieldName());
 
 		super.writeFieldName(name);
 
-		objectIndenter.clearPostColor();
+		objectIndenter.clearValueColor();
 	}
 
 	@Override
 	public void writeFieldName(SerializableString name) throws IOException {
-		writeFieldName(name.getValue());
+		pushSyntaxHighlighter(resolver.forFieldName(name.getValue(), delegate.getOutputContext()));
+
+		objectIndenter.setValueColor(forFieldName());
+
+		super.writeFieldName(name);
+
+		objectIndenter.clearValueColor();
 	}
 
 	@Override
 	public void writeFieldId(long id) throws IOException {
-		writeFieldName(Long.toString(id));
+		pushSyntaxHighlighter(resolver.forFieldName(Long.toString(id), delegate.getOutputContext()));
+
+		objectIndenter.setValueColor(forFieldName());
+
+		super.writeFieldId(id);
+
+		objectIndenter.clearValueColor();
 	}
 
 	@Override
 	public void writeArray(int[] array, int offset, int length) throws IOException {
-		arrayIndenter.setPostColor(forNumber());
+		arrayIndenter.setValueColor(forNumber());
 		
 		super.writeArray(array, offset, length);
 		
-		arrayIndenter.clearPostColor();
+		arrayIndenter.clearValueColor();
 
 	}
 
 	@Override
 	public void writeArray(long[] array, int offset, int length) throws IOException {
-		arrayIndenter.setPostColor(forNumber());
+		arrayIndenter.setValueColor(forNumber());
 		
 		super.writeArray(array, offset, length);
 		
-		arrayIndenter.clearPostColor();
+		arrayIndenter.clearValueColor();
 	}
 
 	@Override
 	public void writeArray(double[] array, int offset, int length) throws IOException {
-		arrayIndenter.setPostColor(forNumber());
+		arrayIndenter.setValueColor(forNumber());
 		
 		super.writeArray(array, offset, length);
 		
-		arrayIndenter.clearPostColor();
+		arrayIndenter.clearValueColor();
 	}
 
 	@Override
@@ -213,11 +231,11 @@ public class SyntaxHighlightingJsonGenerator extends JsonGeneratorDelegate imple
 		delegate.writeUTF8String(text, offset, length);
 	}
 
-	public void popSyntaxHighlighter() {
+	protected void popSyntaxHighlighter() {
 		stack.pop();
 	}
 	
-	public SyntaxHighlighter popPreviousSyntaxHighlighter() {
+	protected SyntaxHighlighter popPreviousSyntaxHighlighter() {
 		return stack.remove(stack.size() - 1 - 1);
 	}
 

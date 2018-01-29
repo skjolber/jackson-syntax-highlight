@@ -9,30 +9,40 @@ public class SyntaxHighlighterArrayIndenter extends FixedSpaceIndenter {
 
 	private static final long serialVersionUID = 1L;
 
-	private SyntaxHighlighter highligheter;
+	protected SyntaxHighlighter highligheter;
 	
-	private String postColor;
+	protected String valueColor;
+	
+	public SyntaxHighlighterArrayIndenter() {
+		super();
+	}
 
-	public void setHighligheter(SyntaxHighlighter highligheter) {
+	public SyntaxHighlighterArrayIndenter(SyntaxHighlighter highligheter) {
 		this.highligheter = highligheter;
 	}
-	
+
 	@Override
 	public void writeIndentation(JsonGenerator jg, int level) throws IOException {
 		String color = highligheter.forWhitespace();
 		jg.writeRaw(color);
 		super.writeIndentation(jg, level);
 		
-		if(postColor != null) {
-			jg.writeRaw(postColor);
+		if(valueColor != null) {
+			jg.writeRaw(valueColor);
 		}
 	}
 	
-	public void setPostColor(String postColor) {
-		this.postColor = postColor;
+	/**
+	 * Set the color which is set after the indentation.
+	 * 
+	 * @param color color to set
+	 */
+	
+	public void setValueColor(String color) {
+		this.valueColor = color;
 	}
 
-	public void clearPostColor() {
-		this.postColor = null;
+	public void clearValueColor() {
+		this.valueColor = null;
 	}
 }

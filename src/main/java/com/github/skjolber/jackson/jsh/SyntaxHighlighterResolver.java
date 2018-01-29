@@ -2,6 +2,11 @@ package com.github.skjolber.jackson.jsh;
 
 import com.fasterxml.jackson.core.JsonStreamContext;
 
+/**
+ * Resolver for {@linkplain SyntaxHighlighter}.
+ *
+ */
+
 public interface SyntaxHighlighterResolver {
 
 	/**

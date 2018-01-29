@@ -3,15 +3,22 @@ package com.github.skjolber.jsh;
 import java.util.Objects;
 
 import com.fasterxml.jackson.core.JsonStreamContext;
-import com.github.skjolber.jackson.jsh.Hightlight;
 import com.github.skjolber.jackson.jsh.DefaultSyntaxHighlighter;
+import com.github.skjolber.jackson.jsh.Hightlight;
 import com.github.skjolber.jackson.jsh.SyntaxHighlighter;
 import com.github.skjolber.jackson.jsh.SyntaxHighlighterResolver;
+
+/**
+ * 
+ * Resolver which returns two different {@linkplain SyntaxHighlighter}s
+ * based on the context location.
+ */
 
 public class MySyntaxHighlighterResolver implements SyntaxHighlighterResolver {
 
 	private SyntaxHighlighter base = new DefaultSyntaxHighlighter();
-	private SyntaxHighlighter object = DefaultSyntaxHighlighter
+	
+	private SyntaxHighlighter numberField = DefaultSyntaxHighlighter
 				.newBuilder()
 				.withNumber(Hightlight.BACKGROUND_RED)
 				.withString(Hightlight.BACKGROUND_RED)
@@ -28,7 +35,7 @@ public class MySyntaxHighlighterResolver implements SyntaxHighlighterResolver {
 			return base;
 		}
 		if(Objects.equals(fieldName, "number")) {
-			return object;
+			return numberField;
 		}
 
 		return base;

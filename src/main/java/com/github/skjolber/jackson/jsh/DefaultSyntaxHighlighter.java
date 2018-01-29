@@ -1,7 +1,5 @@
 package com.github.skjolber.jackson.jsh;
 
-import com.fasterxml.jackson.core.JsonStreamContext;
-
 public class DefaultSyntaxHighlighter implements SyntaxHighlighter{
 
 	public static Builder newBuilder() {
@@ -9,6 +7,7 @@ public class DefaultSyntaxHighlighter implements SyntaxHighlighter{
 	}
 	
 	public static class Builder {
+		
 		protected String fieldValue;
 		protected String binaryValue;
 		protected String booleanValue;
