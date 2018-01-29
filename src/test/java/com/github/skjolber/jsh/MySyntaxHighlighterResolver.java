@@ -3,6 +3,7 @@ package com.github.skjolber.jsh;
 import java.util.Objects;
 
 import com.fasterxml.jackson.core.JsonStreamContext;
+import com.github.skjolber.jackson.jsh.Hightlight;
 import com.github.skjolber.jackson.jsh.DefaultSyntaxHighlighter;
 import com.github.skjolber.jackson.jsh.SyntaxHighlighter;
 import com.github.skjolber.jackson.jsh.SyntaxHighlighterResolver;
@@ -12,12 +13,13 @@ public class MySyntaxHighlighterResolver implements SyntaxHighlighterResolver {
 	private SyntaxHighlighter base = new DefaultSyntaxHighlighter();
 	private SyntaxHighlighter object = DefaultSyntaxHighlighter
 				.newBuilder()
-				.withNumber(SyntaxHighlighter.ANSI_RED_BACKGROUND)
-				.withString(SyntaxHighlighter.ANSI_RED_BACKGROUND)
-				.withWhitespace(SyntaxHighlighter.ANSI_RED_BACKGROUND)
-				.withColon(SyntaxHighlighter.ANSI_RED_BACKGROUND)
-				.withField(SyntaxHighlighter.ANSI_RED_BACKGROUND)
-				.withCurlyBrackets(SyntaxHighlighter.ANSI_RED_BACKGROUND)
+				.withNumber(Hightlight.BACKGROUND_RED)
+				.withString(Hightlight.BACKGROUND_RED)
+				.withWhitespace(Hightlight.BACKGROUND_RED)
+				.withColon(Hightlight.BACKGROUND_RED)
+				.withComma(Hightlight.BACKGROUND_RED)
+				.withField(Hightlight.BACKGROUND_RED)
+				.withCurlyBrackets(Hightlight.BACKGROUND_RED)
 				.build();
 	
 	@Override
@@ -25,7 +27,7 @@ public class MySyntaxHighlighterResolver implements SyntaxHighlighterResolver {
 		if(context == null) {
 			return base;
 		}
-		if(fieldName.equals("number")) {
+		if(Objects.equals(fieldName, "number")) {
 			return object;
 		}
 

@@ -11,6 +11,7 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.skjolber.jackson.jsh.Hightlight;
 import com.github.skjolber.jackson.jsh.DefaultSyntaxHighlighter;
 import com.github.skjolber.jackson.jsh.SyntaxHighlighter;
 import com.github.skjolber.jackson.jsh.SyntaxHighlightingJsonGenerator;
@@ -19,61 +20,79 @@ public class SyntaxHighlighterTest {
 
 	@Before
 	public void before() {
-		System.out.println(SyntaxHighlighter.ANSI_RESET);
+		System.out.println(Hightlight.SANE);
+		System.out.flush();
 	}
 	
 	@Test
 	public void curlyBrackets() throws IOException {
-		handle(DefaultSyntaxHighlighter.newBuilder().withCurlyBrackets(SyntaxHighlighter.ANSI_RED).build());
+		System.out.println("curlyBrackets");
+		handle(DefaultSyntaxHighlighter.newBuilder().withCurlyBrackets(Hightlight.RED).build());
 	}
 
 	@Test
 	public void squareBrackets() throws IOException {
-		handle(DefaultSyntaxHighlighter.newBuilder().withSquareBrackets(SyntaxHighlighter.ANSI_RED).build());
+		System.out.println("squareBrackets");
+		handle(DefaultSyntaxHighlighter.newBuilder().withSquareBrackets(Hightlight.RED).build());
 	}
 
 	@Test
 	public void comma() throws IOException {
-		handle(DefaultSyntaxHighlighter.newBuilder().withComma(SyntaxHighlighter.ANSI_RED).build());
+		System.out.println("comma");
+		handle(DefaultSyntaxHighlighter.newBuilder().withComma(Hightlight.RED).build());
 	}
 	
 	@Test
 	public void colon() throws IOException {
-		handle(DefaultSyntaxHighlighter.newBuilder().withColon(SyntaxHighlighter.ANSI_RED).build());
+		System.out.println("colon");
+		handle(DefaultSyntaxHighlighter.newBuilder().withColon(Hightlight.RED).build());
 	}
 	
 	@Test
 	public void whitespace() throws IOException {
-		handle(DefaultSyntaxHighlighter.newBuilder().withWhitespace(SyntaxHighlighter.ANSI_RED_BACKGROUND).build());
+		System.out.println("whitespace");
+		handle(DefaultSyntaxHighlighter.newBuilder().withWhitespace(Hightlight.BACKGROUND_RED).build());
 	}
 	
 	@Test
 	public void number() throws IOException {
-		handle(DefaultSyntaxHighlighter.newBuilder().withNumber(SyntaxHighlighter.ANSI_RED_BACKGROUND).build());
+		System.out.println("number");
+		handle(DefaultSyntaxHighlighter.newBuilder().withNumber(Hightlight.RED).build());
 	}	
 	
 	@Test
 	public void string() throws IOException {
-		handle(DefaultSyntaxHighlighter.newBuilder().withString(SyntaxHighlighter.ANSI_RED_BACKGROUND).build());
+		System.out.println("string");
+		handle(DefaultSyntaxHighlighter.newBuilder().withString(Hightlight.RED).build());
 	}		
 	
 	@Test
 	public void bool() throws IOException {
-		handle(DefaultSyntaxHighlighter.newBuilder().withBoolean(SyntaxHighlighter.ANSI_RED_BACKGROUND).build());
+		System.out.println("bool");
+		handle(DefaultSyntaxHighlighter.newBuilder().withBoolean(Hightlight.RED).build());
 	}
 
 	@Test
 	public void binary() throws IOException {
-		handle(DefaultSyntaxHighlighter.newBuilder().withBinary(SyntaxHighlighter.ANSI_RED_BACKGROUND).build());
+		System.out.println("binary");
+		handle(DefaultSyntaxHighlighter.newBuilder().withBinary(Hightlight.RED).build());
 	}
 	
 	@Test
 	public void testNull() throws IOException {
-		handle(DefaultSyntaxHighlighter.newBuilder().withNull(SyntaxHighlighter.ANSI_RED_BACKGROUND).build());
+		System.out.println("null");
+		handle(DefaultSyntaxHighlighter.newBuilder().withNull(Hightlight.RED).build());
+	}
+	
+	@Test
+	public void testBackground() throws IOException {
+		System.out.println("background");
+		handle(DefaultSyntaxHighlighter.newBuilder().withBackground(Hightlight.BACKGROUND_RED).build());
 	}
 
 	@Test
 	public void all() throws IOException {
+		System.out.println("all");
 		handle(new DefaultSyntaxHighlighter());
 	}
 
@@ -110,6 +129,16 @@ public class SyntaxHighlighterTest {
 		jsonGenerator.writeFieldName("binaryValue");
 		jsonGenerator.writeBinary(new byte[] {0x01, 0x02, 0x03});
 
+		jsonGenerator.writeFieldName("intArray");
+		jsonGenerator.writeArray(new int[] {0, 1, 2}, 0, 3);
+
+		jsonGenerator.writeFieldName("doubleArray");
+		jsonGenerator.writeArray(new double[] {0.0, 0.1, 0.2}, 0, 3);
+
+		jsonGenerator.writeFieldName("longArray");
+		jsonGenerator.writeArray(new long[] {0L, 1L, 2L}, 0, 3);
+
+		
 		jsonGenerator.writeEndObject();
 		
 		jsonGenerator.close();

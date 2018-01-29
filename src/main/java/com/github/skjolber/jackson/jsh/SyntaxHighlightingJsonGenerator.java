@@ -47,7 +47,7 @@ public class SyntaxHighlightingJsonGenerator extends JsonGeneratorDelegate imple
 
 		this.resolver = resolver;
 
-		pushSyntaxHighlighter(resolver.forFieldName(null, null));
+		pushSyntaxHighlighter(resolver.forFieldName(null, d.getOutputContext()));
 
 		objectIndenter.setHighligheter(this);
 		arrayIndenter.setHighligheter(this);
@@ -78,22 +78,35 @@ public class SyntaxHighlightingJsonGenerator extends JsonGeneratorDelegate imple
 
 	@Override
 	public void writeFieldId(long id) throws IOException {
-		delegate.writeFieldName(Long.toString(id));
+		writeFieldName(Long.toString(id));
 	}
 
 	@Override
 	public void writeArray(int[] array, int offset, int length) throws IOException {
+		arrayIndenter.setPostColor(forNumber());
+		
 		super.writeArray(array, offset, length);
+		
+		arrayIndenter.clearPostColor();
+
 	}
 
 	@Override
 	public void writeArray(long[] array, int offset, int length) throws IOException {
+		arrayIndenter.setPostColor(forNumber());
+		
 		super.writeArray(array, offset, length);
+		
+		arrayIndenter.clearPostColor();
 	}
 
 	@Override
 	public void writeArray(double[] array, int offset, int length) throws IOException {
+		arrayIndenter.setPostColor(forNumber());
+		
 		super.writeArray(array, offset, length);
+		
+		arrayIndenter.clearPostColor();
 	}
 
 	@Override
@@ -267,7 +280,7 @@ public class SyntaxHighlightingJsonGenerator extends JsonGeneratorDelegate imple
 		if(value != null) {
 			return value;
 		}
-		return SyntaxHighlighter.ANSI_RESET;
+		return Hightlight.SANE;
 	}
 
 }

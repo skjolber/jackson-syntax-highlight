@@ -7,6 +7,8 @@ import com.fasterxml.jackson.core.util.DefaultPrettyPrinter.FixedSpaceIndenter;
 
 public class SyntaxHighlighterArrayIndenter extends FixedSpaceIndenter {
 
+	private static final long serialVersionUID = 1L;
+
 	private SyntaxHighlighter highligheter;
 	
 	private String postColor;
@@ -17,15 +19,7 @@ public class SyntaxHighlighterArrayIndenter extends FixedSpaceIndenter {
 	
 	@Override
 	public void writeIndentation(JsonGenerator jg, int level) throws IOException {
-		String color;
-		if(highligheter != null) {
-			color = highligheter.forWhitespace();
-			if(color == null) {
-				color = SyntaxHighlighter.ANSI_RESET;
-			}
-		} else {
-			color = SyntaxHighlighter.ANSI_RESET;
-		}
+		String color = highligheter.forWhitespace();
 		jg.writeRaw(color);
 		super.writeIndentation(jg, level);
 		

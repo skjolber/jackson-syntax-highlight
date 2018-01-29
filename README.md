@@ -16,9 +16,8 @@ Features:
      * brackets
      * colon
      * whitespace
-       
 
-Primarily intended for adding coloring while doing minimal changes to existing applications. 
+Primarily intended for adding coloring while doing minimal changes to existing applications.
 
 ## License
 [Apache 2.0]
@@ -29,7 +28,7 @@ The project is based on [Maven] and is available at central Maven repository.
 ```xml
 <dependency>
     <groupId>com.github.skjolber.jackson</groupId>
-    <artifactId>jackson-highlight</artifactId>
+    <artifactId>jackson-syntax-highlight</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 </dependency>
 ```
@@ -62,6 +61,7 @@ SyntaxHighlighter highlighter = DefaultSyntaxHighlighter
 JsonGenerator jsonGenerator = new SyntaxHighlightingJsonGenerator(delegate, highlighter);
 ```
 
+In addition, a [SyntaxHighlighter] can be dynamically looked up [based on object field name](src/main/java/com/github/skjolber/jackson/jsh/SyntaxHighlighterResolver).
 
 # History
 
@@ -71,3 +71,4 @@ JsonGenerator jsonGenerator = new SyntaxHighlightingJsonGenerator(delegate, high
 [issue-tracker]:       	https://github.com/skjolber/jackson-syntax-highlight/issues
 [Maven]:                http://maven.apache.org/
 [1.0.0]:				https://github.com/skjolber/jackson-syntax-highlight/releases/tag/jackson-syntax-highlight-1.0.0
+[SyntaxHighlighter]:	src/main/java/com/github/skjolber/jackson/jsh/SyntaxHighlighter.java

@@ -21,58 +21,118 @@ public class DefaultSyntaxHighlighter implements SyntaxHighlighter{
 		protected String whitespace;
 		protected String comma;
 		
-		public Builder withComma(String value) {
-			this.comma = value;
+		// common for all colors, if no background is set
+		protected String backgroundColorValue;
+		
+		private String background(String color) {
+			if(backgroundColorValue == null) {
+				return color;
+			}
+			if(color == null) {
+				return backgroundColorValue;
+			}
+			
+			for(int i = 0; i < color.length(); i++) {
+				if(Hightlight.isBackground(color.substring(i, i+1))) {
+					return color;
+				}
+			}
+			return color + backgroundColorValue;
+		}
+		
+		public Builder withComma(String ... value) {
+			this.comma = toString(value);
 			return this;
 		}
 		
-		public Builder withCurlyBrackets(String value) {
-			this.curlyBrackets = value;
+		public Builder withCurlyBrackets(String ... value) {
+			this.curlyBrackets = toString(value);
 			return this;
 		}
 
-		public Builder withSquareBrackets(String value) {
-			this.squareBrackets = value;
+		public Builder withSquareBrackets(String ... value) {
+			this.squareBrackets = toString(value);
 			return this;
 		}
 
-		public Builder withColon(String value) {
-			this.colon = value;
+		public Builder withColon(String ... value) {
+			this.colon = toString(value);
 			return this;
 		}
 
-		public Builder withWhitespace(String whitespace) {
-			this.whitespace = whitespace;
+		public Builder withWhitespace(String ... value) {
+			this.whitespace = toString(value);
 			return this;
 		}
 
-		public Builder withField(String fieldValue) {
-			this.fieldValue = fieldValue;
+		public Builder withField(String ... value) {
+			this.fieldValue = toString(value);
 			return this;
 		}
-		public Builder withBinary(String binaryValue) {
-			this.binaryValue = binaryValue;
-			return this;
-		}
-		public Builder withBoolean(String booleanValue) {
-			this.booleanValue = booleanValue;
-			return this;
-		}
-		public Builder withNull(String nullValue) {
-			this.nullValue = nullValue;
-			return this;
-		}
-		public Builder withNumber(String numberValue) {
-			this.numberValue = numberValue;
-			return this;
-		}
-		public Builder withString(String stringValue) {
-			this.stringValue = stringValue;
+		public Builder withBinary(String ... values) {
+			this.binaryValue = toString(values);
 			return this;
 		}
 		
+		public Builder withBoolean(String ... values) {
+			this.booleanValue = toString(values);
+			return this;
+		}
+		public Builder withNull(String ... values) {
+			this.nullValue = toString(values);
+			return this;
+		}
+		public Builder withNumber(String ... values) {
+			this.numberValue = toString(values);
+			return this;
+		}
+		public Builder withString(String ... values) {
+			this.stringValue = toString(values);
+			return this;
+		}
+		
+		/**
+		 * Se the default background. This will be added to all 
+		 * colors which do not themself define a background color.
+		 * 
+		 * @param values background colors
+		 * @return builder
+		 */
+
+		public Builder withBackground(String ... values) {
+			this.backgroundColorValue = toString(values);
+			return this;
+		}
+		
+		private String toString(String ... strings) {
+			if(strings == null) {
+				return null;
+			}
+			if(strings.length == 1) {
+				return strings[0];
+			}
+			StringBuffer b = new StringBuffer();
+			for(String string : strings) {
+				b.append(string);
+			}
+			return b.toString();
+		}
+
 		public DefaultSyntaxHighlighter build() {
-			return new DefaultSyntaxHighlighter(fieldValue, binaryValue, booleanValue, nullValue, numberValue, stringValue, curlyBrackets, squareBrackets, colon, whitespace, comma);
+			return new DefaultSyntaxHighlighter(
+					background(fieldValue), 
+					background(binaryValue),
+					background(booleanValue), 
+					background(nullValue), 
+					background(numberValue),
+					background(stringValue), 
+					background(curlyBrackets), 
+					background(squareBrackets),
+					background(colon), 
+					background(whitespace), 
+					background(comma)
+					
+					);
 		}
 		
 	}
@@ -91,22 +151,32 @@ public class DefaultSyntaxHighlighter implements SyntaxHighlighter{
 
 	public DefaultSyntaxHighlighter() {
 		// String fieldValue, String binaryValue, String booleanValue, String nullValue, String numberValue, String stringValue
-		this(null, ANSI_PURPLE, ANSI_GREEN, ANSI_BLACK, ANSI_BLUE, ANSI_RED, null, null, null, null, null);
+		this(null, Hightlight.MAGENTA, Hightlight.GREEN, Hightlight.BLACK, Hightlight.BLUE, Hightlight.RED, null, null, null, null, null);
 	}
 	
 	public DefaultSyntaxHighlighter(String fieldValue, String binaryValue, String booleanValue, String nullValue, String numberValue, String stringValue, String curlyBrackets, String squareBrackets, String colon, String whitespace, String comma) {
 		super();
-		this.fieldName = fieldValue;
-		this.binaryValue = binaryValue;
-		this.booleanValue = booleanValue;
-		this.nullValue = nullValue;
-		this.numberValue = numberValue;
-		this.stringValue = stringValue;
-		this.curlyBrackets = curlyBrackets;
-		this.squareBrackets = squareBrackets;
-		this.colon = colon;
-		this.whitespace = whitespace;
-		this.comma = comma;
+		this.fieldName = reset(fieldValue);
+		this.binaryValue = reset(binaryValue);
+		this.booleanValue = reset(booleanValue);
+		this.nullValue = reset(nullValue);
+		this.numberValue = reset(numberValue);
+		this.stringValue = reset(stringValue);
+		this.curlyBrackets = reset(curlyBrackets);
+		this.squareBrackets = reset(squareBrackets);
+		this.colon = reset(colon);
+		this.whitespace = reset(whitespace);
+		this.comma = reset(comma);
+	}
+
+	protected String reset(String value) {
+		if(value == null) {
+			return Hightlight.SANE;
+		}
+		if(value.startsWith(Hightlight.SANE)) {
+			return value;
+		}
+		return Hightlight.SANE + value;
 	}
 
 	public String forFieldName() {

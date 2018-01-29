@@ -7,6 +7,8 @@ import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 
 public class SyntaxHighlightingPrettyPrinter extends DefaultPrettyPrinter {
 
+	private static final long serialVersionUID = 1L;
+	
 	private SyntaxHighlightingJsonGenerator generator;
 	private SyntaxHighlighterObjectIndenter objectIndenter;
 	private SyntaxHighlighterArrayIndenter arrayIndenter;
@@ -23,6 +25,7 @@ public class SyntaxHighlightingPrettyPrinter extends DefaultPrettyPrinter {
 	}
 
 	public void writeRootValueSeparator(JsonGenerator gen) throws IOException {
+		gen.writeRaw(Hightlight.SANE);
 		super.writeRootValueSeparator(gen);
 	}
 
@@ -49,11 +52,7 @@ public class SyntaxHighlightingPrettyPrinter extends DefaultPrettyPrinter {
 		// new highlighter is already pushed, so look at the previous
 		SyntaxHighlighter highlighter = generator.popPreviousSyntaxHighlighter();
 
-		String comma = highlighter.forComma();
-		if(comma == null) {
-			comma = SyntaxHighlighter.ANSI_RESET;
-		}
-		
+		String comma = SyntaxHighlightingJsonGenerator.getColorOrReset(highlighter.forComma());
 		gen.writeRaw(comma);
 
 		objectIndenter.setPostColor(generator.forFieldName());
@@ -95,8 +94,6 @@ public class SyntaxHighlightingPrettyPrinter extends DefaultPrettyPrinter {
 		super.writeEndArray(gen, nrOfValues);
 		
 		arrayIndenter.clearPostColor();
-		
-		generator.popSyntaxHighlighter();		
 	}
 
 	public void writeArrayValueSeparator(JsonGenerator gen) throws IOException {
