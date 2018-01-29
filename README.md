@@ -54,9 +54,9 @@ If you prefer to configure the colors yourself, supply an instance of `SyntaxHig
 
 ```java
 SyntaxHighlighter highlighter = DefaultSyntaxHighlighter
-			.newBuilder()
-			.withNumber(SyntaxHighlighter.ANSI_BLUE)
-			.build();
+                                    .newBuilder()
+                                    .withNumber(SyntaxHighlighter.ANSI_BLUE)
+                                    .build();
 		
 JsonGenerator jsonGenerator = new SyntaxHighlightingJsonGenerator(delegate, highlighter);
 ```
