@@ -3,20 +3,30 @@ package com.github.skjolber.jsh;
 import java.io.IOException;
 import java.io.StringWriter;
 
+import org.junit.Before;
+
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.skjolber.jackson.jsh.SyntaxHighlighterResolver;
 import com.github.skjolber.jackson.jsh.SyntaxHighlightingJsonGenerator;
+import com.github.skjolber.jackson.jsh.Hightlight;
+import com.github.skjolber.jackson.jsh.JsonStreamContextListener;
+import com.github.skjolber.jackson.jsh.SyntaxHighlighter;
 
 public abstract class AbstractHighlighterTest {
 
-	public void handle(SyntaxHighlighterResolver h) throws IOException {
+	@Before
+	public void before() {
+		System.out.println(Hightlight.SANE);
+		System.out.flush();
+	}
+	
+	public void handle(SyntaxHighlighter h, JsonStreamContextListener listener) throws IOException {
 		StringWriter writer = new StringWriter();
 		
 		JsonGenerator delegate = new JsonFactory().createGenerator(writer);
 
-		SyntaxHighlightingJsonGenerator jsonGenerator = new SyntaxHighlightingJsonGenerator(delegate, h);
+		SyntaxHighlightingJsonGenerator jsonGenerator = new SyntaxHighlightingJsonGenerator(delegate, h, listener);
 		
 		jsonGenerator.writeStartObject(); 
 

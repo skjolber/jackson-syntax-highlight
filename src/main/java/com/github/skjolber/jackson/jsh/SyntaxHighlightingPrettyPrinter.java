@@ -9,19 +9,22 @@ public class SyntaxHighlightingPrettyPrinter extends DefaultPrettyPrinter {
 
 	private static final long serialVersionUID = 1L;
 	
-	private SyntaxHighlightingJsonGenerator generator;
-	private SyntaxHighlighterObjectIndenter objectIndenter;
-	private SyntaxHighlighterArrayIndenter arrayIndenter;
-
-	private String valueColor;
+	protected SyntaxHighlighter syntaxHighlighter;
+	protected SyntaxHighlighterObjectIndenter objectIndenter;
+	protected SyntaxHighlighterArrayIndenter arrayIndenter;
+	protected JsonStreamContextListener listener;
 	
-	public SyntaxHighlightingPrettyPrinter(SyntaxHighlightingJsonGenerator generator, SyntaxHighlighterObjectIndenter objectIndenter, SyntaxHighlighterArrayIndenter arrayIndenter) {
-		this.generator = generator;
+	private String valueColor;
+	private String commaColor;
+	
+	public SyntaxHighlightingPrettyPrinter(SyntaxHighlighter syntaxHighlighter, SyntaxHighlighterObjectIndenter objectIndenter, SyntaxHighlighterArrayIndenter arrayIndenter, JsonStreamContextListener listener) {
+		this.syntaxHighlighter = syntaxHighlighter;
 		_objectIndenter = objectIndenter;
 		_arrayIndenter = arrayIndenter;
 		
 		this.objectIndenter = objectIndenter;
 		this.arrayIndenter = arrayIndenter;
+		this.listener = listener;
 	}
 
 	public void writeRootValueSeparator(JsonGenerator gen) throws IOException {
@@ -30,12 +33,20 @@ public class SyntaxHighlightingPrettyPrinter extends DefaultPrettyPrinter {
 	}
 
 	public void writeStartObject(JsonGenerator gen) throws IOException {
-		gen.writeRaw(generator.forCurlyBrackets());
+		gen.writeRaw(syntaxHighlighter.forCurlyBrackets());
 		super.writeStartObject(gen);
+		
+		if(listener != null) {
+			listener.startObject(gen.getOutputContext());
+		}
 	}
 
 	public void writeEndObject(JsonGenerator gen, int nrOfEntries) throws IOException {
-		String color = generator.forCurlyBrackets();
+		if(listener != null) {
+			listener.endObject(gen.getOutputContext().getParent());
+		}
+		
+		String color = syntaxHighlighter.forCurlyBrackets();
 		
 		gen.writeRaw(color);
 
@@ -45,30 +56,24 @@ public class SyntaxHighlightingPrettyPrinter extends DefaultPrettyPrinter {
 		
 		objectIndenter.clearValueColor();
 		
-		generator.popSyntaxHighlighter();
 	}
 
 	public void writeObjectEntrySeparator(JsonGenerator gen) throws IOException {
-		// new highlighter is already pushed, so look at the previous
-		SyntaxHighlighter highlighter = generator.popPreviousSyntaxHighlighter();
+		gen.writeRaw(commaColor);
 
-		String comma = SyntaxHighlightingJsonGenerator.getColorOrReset(highlighter.forComma());
-		gen.writeRaw(comma);
-
-		objectIndenter.setValueColor(generator.forFieldName());
 		super.writeObjectEntrySeparator(gen);
 	}
 
 	public void writeObjectFieldValueSeparator(JsonGenerator gen) throws IOException {
 		if(_spacesInObjectEntries) {
-			gen.writeRaw(generator.forWhitespace());
+			gen.writeRaw(syntaxHighlighter.forWhitespace());
 			gen.writeRaw(' ');
-			gen.writeRaw(generator.forColon());
+			gen.writeRaw(syntaxHighlighter.forColon());
 			gen.writeRaw(_separators.getObjectFieldValueSeparator());
-			gen.writeRaw(generator.forWhitespace());
+			gen.writeRaw(syntaxHighlighter.forWhitespace());
 			gen.writeRaw(' ');
 		} else {
-			gen.writeRaw(generator.forColon());
+			gen.writeRaw(syntaxHighlighter.forColon());
 			super.writeObjectFieldValueSeparator(gen);
 		}
 
@@ -80,12 +85,20 @@ public class SyntaxHighlightingPrettyPrinter extends DefaultPrettyPrinter {
 	}
 
 	public void writeStartArray(JsonGenerator gen) throws IOException {
-		gen.writeRaw(generator.forSquareBrackets());
+		gen.writeRaw(syntaxHighlighter.forSquareBrackets());
 		super.writeStartArray(gen);
+		
+		if(listener != null) {
+			listener.startArray(gen.getOutputContext());
+		}
 	}
 
 	public void writeEndArray(JsonGenerator gen, int nrOfValues) throws IOException {
-		String color = generator.forSquareBrackets();
+		if(listener != null) {
+			listener.endArray(gen.getOutputContext().getParent());
+		}
+
+		String color = syntaxHighlighter.forSquareBrackets();
 		
 		gen.writeRaw(color);
 
@@ -97,7 +110,7 @@ public class SyntaxHighlightingPrettyPrinter extends DefaultPrettyPrinter {
 	}
 
 	public void writeArrayValueSeparator(JsonGenerator gen) throws IOException {
-		gen.writeRaw(generator.forComma());		
+		gen.writeRaw(syntaxHighlighter.forComma());		
 		
 		if(valueColor != null) {
 			arrayIndenter.setValueColor(valueColor);
@@ -119,5 +132,13 @@ public class SyntaxHighlightingPrettyPrinter extends DefaultPrettyPrinter {
 
 	public void setValueColor(String valueColor) {
 		this.valueColor = valueColor;
+	}
+	
+	public void setCommaColor(String commaColor) {
+		this.commaColor = commaColor;
+	}
+	
+	public void cleanCommaColor() {
+		this.commaColor = null;
 	}
 }

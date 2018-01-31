@@ -16,7 +16,7 @@ public class SyntaxHighlighterBuilderTest {
 			.withNumber(Hightlight.BLUE)
 			.build();
 		
-		Assert.assertEquals(highlighter.forNumber(), Hightlight.SANE + Hightlight.BLUE);
+		Assert.assertEquals(highlighter.forNumber(1), Hightlight.SANE + Hightlight.BLUE);
 	}
 	
 	@Test
@@ -27,6 +27,6 @@ public class SyntaxHighlighterBuilderTest {
 			.withBackground(Hightlight.BACKGROUND_BLACK)
 			.build();
 		
-		Assert.assertEquals(highlighter.forNumber(), Hightlight.SANE + Hightlight.BLUE + Hightlight.BACKGROUND_BLACK);
+		Assert.assertEquals(highlighter.forNumber(1), Hightlight.SANE + Hightlight.BLUE + Hightlight.BACKGROUND_BLACK);
 	}
 }

@@ -1,5 +1,8 @@
 package com.github.skjolber.jackson.jsh;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
 public class DefaultSyntaxHighlighter implements SyntaxHighlighter {
 
 	public static Builder newBuilder() {
@@ -8,7 +11,7 @@ public class DefaultSyntaxHighlighter implements SyntaxHighlighter {
 	
 	public static class Builder {
 		
-		protected String fieldValue;
+		protected String fieldName;
 		protected String binaryValue;
 		protected String booleanValue;
 		protected String nullValue;
@@ -21,14 +24,14 @@ public class DefaultSyntaxHighlighter implements SyntaxHighlighter {
 		protected String comma;
 		
 		// common for all colors, if no background is set
-		protected String backgroundColorValue;
+		protected String background;
 		
 		private String background(String color) {
-			if(backgroundColorValue == null) {
+			if(background == null) {
 				return color;
 			}
 			if(color == null) {
-				return backgroundColorValue;
+				return background;
 			}
 			
 			for(int i = 0; i < color.length(); i++) {
@@ -36,7 +39,7 @@ public class DefaultSyntaxHighlighter implements SyntaxHighlighter {
 					return color;
 				}
 			}
-			return color + backgroundColorValue;
+			return color + background;
 		}
 		
 		public Builder withComma(String ... value) {
@@ -65,7 +68,7 @@ public class DefaultSyntaxHighlighter implements SyntaxHighlighter {
 		}
 
 		public Builder withField(String ... value) {
-			this.fieldValue = toString(value);
+			this.fieldName = toString(value);
 			return this;
 		}
 		public Builder withBinary(String ... values) {
@@ -99,7 +102,7 @@ public class DefaultSyntaxHighlighter implements SyntaxHighlighter {
 		 */
 
 		public Builder withBackground(String ... values) {
-			this.backgroundColorValue = toString(values);
+			this.background = toString(values);
 			return this;
 		}
 		
@@ -119,7 +122,7 @@ public class DefaultSyntaxHighlighter implements SyntaxHighlighter {
 
 		public DefaultSyntaxHighlighter build() {
 			return new DefaultSyntaxHighlighter(
-					background(fieldValue), 
+					background(fieldName), 
 					background(binaryValue),
 					background(booleanValue), 
 					background(nullValue), 
@@ -178,15 +181,23 @@ public class DefaultSyntaxHighlighter implements SyntaxHighlighter {
 		return Hightlight.SANE + value;
 	}
 
-	public String forFieldName() {
+	public String forFieldName(String value) {
 		return fieldName;
 	}
 
-	public String forNumber() {
+	public String forNumber(int value) {
 		return numberValue;
 	}
 
-	public String forString() {
+	public String forNumber(long value) {
+		return numberValue;
+	}
+
+	public String forNumber(double value) {
+		return numberValue;
+	}
+
+	public String forString(String string) {
 		return stringValue;
 	}
 
@@ -194,7 +205,7 @@ public class DefaultSyntaxHighlighter implements SyntaxHighlighter {
 		return binaryValue;
 	}
 
-	public String forBoolean() {
+	public String forBoolean(boolean value) {
 		return booleanValue;
 	}
 
@@ -225,6 +236,21 @@ public class DefaultSyntaxHighlighter implements SyntaxHighlighter {
 	@Override
 	public String forComma() {
 		return comma;
+	}
+
+	@Override
+	public String forNumber(BigInteger v) {
+		return numberValue;
+	}
+
+	@Override
+	public String forNumber(BigDecimal v) {
+		return numberValue;
+	}
+
+	@Override
+	public String forNumber(String encodedValue) {
+		return numberValue;
 	}
 
 }

@@ -6,18 +6,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.github.skjolber.jackson.jsh.DefaultSyntaxHighlighter;
-import com.github.skjolber.jackson.jsh.DefaultSyntaxHighlighterResolver;
 import com.github.skjolber.jackson.jsh.Hightlight;
-import com.github.skjolber.jackson.jsh.SyntaxHighlighterResolver;
+import com.github.skjolber.jackson.jsh.SyntaxHighlighter;
 
 public class SyntaxHighlighterTest extends AbstractHighlighterTest {
 
-	@Before
-	public void before() {
-		System.out.println(Hightlight.SANE);
-		System.out.flush();
-	}
-	
 	@Test
 	public void curlyBrackets() throws IOException {
 		System.out.println("curlyBrackets");
@@ -34,6 +27,12 @@ public class SyntaxHighlighterTest extends AbstractHighlighterTest {
 	public void comma() throws IOException {
 		System.out.println("comma");
 		handle(DefaultSyntaxHighlighter.newBuilder().withComma(Hightlight.RED).build());
+	}
+	
+	@Test
+	public void commaBackground() throws IOException {
+		System.out.println("comma");
+		handle(DefaultSyntaxHighlighter.newBuilder().withComma(Hightlight.BACKGROUND_RED).build());
 	}
 	
 	@Test
@@ -89,9 +88,15 @@ public class SyntaxHighlighterTest extends AbstractHighlighterTest {
 		System.out.println("all");
 		handle(new DefaultSyntaxHighlighter());
 	}
+	
+	@Test
+	public void singleLineBackground() throws IOException {
+		System.out.println("singleLine");
+		handle(new SingleLineSyntaxHighlighter());
+	}
 
-	private void handle(DefaultSyntaxHighlighter h) throws IOException {
-		super.handle(new DefaultSyntaxHighlighterResolver(h));
+	private void handle(SyntaxHighlighter h) throws IOException {
+		super.handle(h, null);
 	}
 
 }

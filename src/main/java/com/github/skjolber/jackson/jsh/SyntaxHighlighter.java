@@ -1,5 +1,15 @@
 package com.github.skjolber.jackson.jsh;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
+/**
+ * All methods must return a value. 
+ * 
+ * Instead of null return {@linkplain Hightlight#SANE}.
+ * 
+ */
+
 public interface SyntaxHighlighter {
 
 	String forCurlyBrackets();
@@ -12,15 +22,20 @@ public interface SyntaxHighlighter {
 
 	String forWhitespace();
 	
-	String forFieldName();
+	String forFieldName(String value);
 	 
-	String forNumber();
+	String forNumber(int value);
+	String forNumber(double value);
+	String forNumber(long value);
+	String forNumber(BigInteger v);
+	String forNumber(BigDecimal v);
+	String forNumber(String encodedValue);
 	
-	String forString();
+	String forString(String string);
 	
 	String forBinary();
 	
-	String forBoolean();
+	String forBoolean(boolean value);
 	
 	String forNull();
 }
