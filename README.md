@@ -17,7 +17,7 @@ Features:
      * colon
      * whitespace
 
-Primarily intended for adding coloring while doing minimal changes to existing applications.
+Primarily intended for adding coloring while doing minimal changes to existing applications. For example, coloring of status codes.
 
 ## License
 [Apache 2.0]
@@ -29,7 +29,7 @@ The project is based on [Maven] and is available at central Maven repository.
 <dependency>
     <groupId>com.github.skjolber.jackson</groupId>
     <artifactId>jackson-syntax-highlight</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -61,7 +61,7 @@ SyntaxHighlighter highlighter = DefaultSyntaxHighlighter
 JsonGenerator jsonGenerator = new SyntaxHighlightingJsonGenerator(delegate, highlighter);
 ```
 
-In addition, a [SyntaxHighlighter] can be dynamically looked up [based on object field name](src/main/java/com/github/skjolber/jackson/jsh/SyntaxHighlighterResolver.java).
+In addition, the JSON structure can be tracked via [JsonStreamContextListener](src/main/java/com/github/skjolber/jackson/jsh/JsonStreamContextListener.java), for stateful coloring of subtrees. 
 
 # History
 

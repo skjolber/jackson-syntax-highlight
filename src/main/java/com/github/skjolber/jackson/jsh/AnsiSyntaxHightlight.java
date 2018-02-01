@@ -1,6 +1,6 @@
 package com.github.skjolber.jackson.jsh;
 
-public final class Hightlight {
+public final class AnsiSyntaxHightlight {
 
 	public static final String	SANE				= "\u001B[0m";
 

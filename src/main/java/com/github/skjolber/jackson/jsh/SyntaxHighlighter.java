@@ -6,7 +6,7 @@ import java.math.BigInteger;
 /**
  * All methods must return a value. 
  * 
- * Instead of null return {@linkplain Hightlight#SANE}.
+ * Instead of null return {@linkplain AnsiSyntaxHightlight#SANE}.
  * 
  */
 

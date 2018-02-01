@@ -27,11 +27,11 @@ public class SyntaxHighlightingJsonGenerator extends JsonGeneratorDelegate {
 	 * correct color after the whitespace. 
 	 * 
 	 */
-	
+
 	protected SyntaxHighlightingPrettyPrinter prettyPrinter;
 	protected SyntaxHighlighterObjectIndenter objectIndenter;
 	protected SyntaxHighlighterArrayIndenter arrayIndenter;
-	
+
 	protected SyntaxHighlighter syntaxHighlighter;
 
 	public SyntaxHighlightingJsonGenerator(JsonGenerator d) {
@@ -46,10 +46,10 @@ public class SyntaxHighlightingJsonGenerator extends JsonGeneratorDelegate {
 		super(d, false);
 
 		this.syntaxHighlighter = syntaxHighlighter;
-		
+
 		this.objectIndenter = new SyntaxHighlighterObjectIndenter(syntaxHighlighter);
 		this.arrayIndenter = new SyntaxHighlighterArrayIndenter(syntaxHighlighter);
-		
+
 		this.prettyPrinter = new SyntaxHighlightingPrettyPrinter(syntaxHighlighter, objectIndenter, arrayIndenter, listener);
 		setPrettyPrinter(prettyPrinter);
 	}
@@ -89,49 +89,49 @@ public class SyntaxHighlightingJsonGenerator extends JsonGeneratorDelegate {
 
 	@Override
 	public void writeArray(int[] array, int offset, int length) throws IOException {
-        if (array == null) {
-            throw new IllegalArgumentException("null array");
-        }
-        _verifyOffsets(array.length, offset, length);
-        writeStartArray();
-        for (int i = offset, end = offset+length; i < end; ++i) {
-    		arrayIndenter.setValueColor(syntaxHighlighter.forNumber(array[i]));
-            super.writeNumber(array[i]);
-        }
-        writeEndArray();		
-		
+		if (array == null) {
+			throw new IllegalArgumentException("null array");
+		}
+		_verifyOffsets(array.length, offset, length);
+		writeStartArray();
+		for (int i = offset, end = offset+length; i < end; ++i) {
+			arrayIndenter.setValueColor(syntaxHighlighter.forNumber(array[i]));
+			super.writeNumber(array[i]);
+		}
+		writeEndArray();		
+
 		arrayIndenter.clearValueColor();
 	}
 
 	@Override
 	public void writeArray(long[] array, int offset, int length) throws IOException {
-        if (array == null) {
-            throw new IllegalArgumentException("null array");
-        }
-        _verifyOffsets(array.length, offset, length);
-        writeStartArray();
-        for (int i = offset, end = offset+length; i < end; ++i) {
-    		arrayIndenter.setValueColor(syntaxHighlighter.forNumber(array[i]));
-            super.writeNumber(array[i]);
-        }
-        writeEndArray();		
-		
+		if (array == null) {
+			throw new IllegalArgumentException("null array");
+		}
+		_verifyOffsets(array.length, offset, length);
+		writeStartArray();
+		for (int i = offset, end = offset+length; i < end; ++i) {
+			arrayIndenter.setValueColor(syntaxHighlighter.forNumber(array[i]));
+			super.writeNumber(array[i]);
+		}
+		writeEndArray();		
+
 		arrayIndenter.clearValueColor();
 	}
 
 	@Override
 	public void writeArray(double[] array, int offset, int length) throws IOException {
-        if (array == null) {
-            throw new IllegalArgumentException("null array");
-        }
-        _verifyOffsets(array.length, offset, length);
-        writeStartArray();
-        for (int i = offset, end = offset+length; i < end; ++i) {
-    		arrayIndenter.setValueColor(syntaxHighlighter.forNumber(array[i]));
-            super.writeNumber(array[i]);
-        }
-        writeEndArray();		
-		
+		if (array == null) {
+			throw new IllegalArgumentException("null array");
+		}
+		_verifyOffsets(array.length, offset, length);
+		writeStartArray();
+		for (int i = offset, end = offset+length; i < end; ++i) {
+			arrayIndenter.setValueColor(syntaxHighlighter.forNumber(array[i]));
+			super.writeNumber(array[i]);
+		}
+		writeEndArray();		
+
 		arrayIndenter.clearValueColor();
 	}
 

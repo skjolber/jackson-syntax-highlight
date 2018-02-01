@@ -35,7 +35,7 @@ public class DefaultSyntaxHighlighter implements SyntaxHighlighter {
 			}
 			
 			for(int i = 0; i < color.length(); i++) {
-				if(Hightlight.isBackground(color.substring(i, i+1))) {
+				if(AnsiSyntaxHightlight.isBackground(color.substring(i, i+1))) {
 					return color;
 				}
 			}
@@ -153,7 +153,7 @@ public class DefaultSyntaxHighlighter implements SyntaxHighlighter {
 
 	public DefaultSyntaxHighlighter() {
 		// String fieldValue, String binaryValue, String booleanValue, String nullValue, String numberValue, String stringValue
-		this(null, Hightlight.MAGENTA, Hightlight.GREEN, Hightlight.BLACK, Hightlight.BLUE, Hightlight.RED, null, null, null, null, null);
+		this(null, AnsiSyntaxHightlight.MAGENTA, AnsiSyntaxHightlight.GREEN, AnsiSyntaxHightlight.BLACK, AnsiSyntaxHightlight.BLUE, AnsiSyntaxHightlight.RED, null, null, null, null, null);
 	}
 	
 	public DefaultSyntaxHighlighter(String fieldValue, String binaryValue, String booleanValue, String nullValue, String numberValue, String stringValue, String curlyBrackets, String squareBrackets, String colon, String whitespace, String comma) {
@@ -173,12 +173,12 @@ public class DefaultSyntaxHighlighter implements SyntaxHighlighter {
 
 	protected String reset(String value) {
 		if(value == null) {
-			return Hightlight.SANE;
+			return AnsiSyntaxHightlight.SANE;
 		}
-		if(value.startsWith(Hightlight.SANE)) {
+		if(value.startsWith(AnsiSyntaxHightlight.SANE)) {
 			return value;
 		}
-		return Hightlight.SANE + value;
+		return AnsiSyntaxHightlight.SANE + value;
 	}
 
 	public String forFieldName(String value) {

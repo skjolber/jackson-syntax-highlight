@@ -2,12 +2,10 @@ package com.github.skjolber.jsh;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Objects;
 
 import com.fasterxml.jackson.core.JsonStreamContext;
+import com.github.skjolber.jackson.jsh.AnsiSyntaxHightlight;
 import com.github.skjolber.jackson.jsh.DefaultSyntaxHighlighter;
-import com.github.skjolber.jackson.jsh.Hightlight;
-import com.github.skjolber.jackson.jsh.JsonStreamContextListener;
 import com.github.skjolber.jackson.jsh.SyntaxHighlighter;
 
 public class SingleLineSyntaxHighlighter implements SyntaxHighlighter {
@@ -16,7 +14,7 @@ public class SingleLineSyntaxHighlighter implements SyntaxHighlighter {
 	
 	private SyntaxHighlighter redBackground = DefaultSyntaxHighlighter
 				.newBuilder()
-				.withBackground(Hightlight.BACKGROUND_RED)
+				.withBackground(AnsiSyntaxHightlight.BACKGROUND_RED)
 				.build();
 	
 	private SyntaxHighlighter delegate = base;

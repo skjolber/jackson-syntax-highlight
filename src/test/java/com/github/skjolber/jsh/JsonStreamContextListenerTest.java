@@ -7,9 +7,9 @@ import org.junit.Test;
 public class JsonStreamContextListenerTest extends AbstractHighlighterTest {
 
 	@Test
-	public void testHighlistSingleLine() throws IOException {
+	public void testHighlistSubtree() throws IOException {
 		
-		MyJsonStreamContextListener l = new MyJsonStreamContextListener();
+		SubtreeJsonStreamContextListener l = new SubtreeJsonStreamContextListener();
 		
 		handle(l, l);
 	}

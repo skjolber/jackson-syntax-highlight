@@ -6,7 +6,7 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.core.JsonStreamContext;
 import com.github.skjolber.jackson.jsh.DefaultSyntaxHighlighter;
-import com.github.skjolber.jackson.jsh.Hightlight;
+import com.github.skjolber.jackson.jsh.AnsiSyntaxHightlight;
 import com.github.skjolber.jackson.jsh.JsonStreamContextListener;
 import com.github.skjolber.jackson.jsh.SyntaxHighlighter;
 
@@ -16,20 +16,20 @@ import com.github.skjolber.jackson.jsh.SyntaxHighlighter;
  * based on the context location.
  */
 
-public class MyJsonStreamContextListener implements JsonStreamContextListener, SyntaxHighlighter {
+public class SubtreeJsonStreamContextListener implements JsonStreamContextListener, SyntaxHighlighter {
 
 	private SyntaxHighlighter base = new DefaultSyntaxHighlighter();
 	
 	private SyntaxHighlighter numberField = DefaultSyntaxHighlighter
 				.newBuilder()
-				.withBackground(Hightlight.BACKGROUND_RED)
+				.withBackground(AnsiSyntaxHightlight.BACKGROUND_RED)
 				.build();
 	
 	private SyntaxHighlighter delegate = base;
 	
 	public SyntaxHighlighter field(JsonStreamContext context) {
-		if(context.inRoot()) {
-			return base;
+		if(context.pathAsPointer().toString().equals("/object")) {
+			return numberField;
 		}
 
 		return base;
@@ -37,24 +37,23 @@ public class MyJsonStreamContextListener implements JsonStreamContextListener, S
 
 	@Override
 	public void startObject(JsonStreamContext outputContext) {
-		System.out.println("startObject " + outputContext.pathAsPointer());
 		this.delegate = field(outputContext);
 	}
 
 	@Override
 	public void endObject(JsonStreamContext outputContext) {
-		System.out.println("endObject " + outputContext.pathAsPointer());
+		// reset
 		this.delegate = base;
 	}
 
 	@Override
 	public void startArray(JsonStreamContext outputContext) {
-		System.out.println("startArray " + outputContext.pathAsPointer());
 		this.delegate = field(outputContext);
 	}
 
 	@Override
 	public void endArray(JsonStreamContext outputContext) {
+		// reset
 		this.delegate = base;
 	}
 	
@@ -85,11 +84,6 @@ public class MyJsonStreamContextListener implements JsonStreamContextListener, S
 
 	@Override
 	public String forFieldName(String value) {
-		if("booleanValue".equals(value)) {
-			this.delegate = numberField;
-		} else {
-			this.delegate = base;
-		}
 		return getSyntaxHighlighter().forFieldName(value);
 	}
 
