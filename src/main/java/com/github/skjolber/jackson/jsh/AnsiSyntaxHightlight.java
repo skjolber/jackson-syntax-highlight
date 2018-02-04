@@ -58,8 +58,10 @@ public final class AnsiSyntaxHightlight {
         sb.append(CLEAR);
         sb.append(';');
         for(String arg : args) {
-            sb.append(arg);
-            sb.append(';');
+        	if(!arg.equals(CLEAR)) {
+	            sb.append(arg);
+	            sb.append(';');
+        	}
         }
         sb.setLength(sb.length() - 1);
         sb.append(ESC_END);
