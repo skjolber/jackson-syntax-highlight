@@ -2,8 +2,8 @@ package com.github.skjolber.jackson.jsh;
 
 public final class AnsiSyntaxHightlight {
 
-    public final static String ESC_START = "\u001B[";
-    public final static String ESC_END = "m";
+    public final static String	ESC_START 			= "\u001B[";
+    public final static String	ESC_END 				= "m";
 
 	public static final String	CLEAR				= "0";
 
@@ -35,9 +35,9 @@ public final class AnsiSyntaxHightlight {
 	public static final String	BACKGROUND_CYAN		= "46";
 	public static final String	BACKGROUND_WHITE	= "47";
 
-	public static final String SEPERATOR = ";";
+	public static final String	SEPERATOR 			= ";";
 
-	public final static String RESET = ESC_START + CLEAR + ESC_END;
+	public final static String	RESET = ESC_START + CLEAR + ESC_END;
 
 	public static String build(String arg) {
         StringBuilder sb = new StringBuilder();

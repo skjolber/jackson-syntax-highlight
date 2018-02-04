@@ -239,4 +239,10 @@ public class SyntaxHighlightingJsonGenerator extends JsonGeneratorDelegate {
 		delegate.writeUTF8String(text, offset, length);
 	}
 
+	@Override
+	public void close() throws IOException {
+		flush();
+		delegate.writeRaw(AnsiSyntaxHightlight.RESET);
+		super.close();
+	}
 }
