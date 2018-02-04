@@ -17,7 +17,7 @@ Features:
      * colon
      * whitespace
 
-Primarily intended for adding coloring while doing minimal changes to existing applications. For example, coloring of status codes.
+Primarily intended for adding coloring while doing minimal changes to existing applications. For example, coloring of status codes during unit testing.
 
 ## License
 [Apache 2.0]

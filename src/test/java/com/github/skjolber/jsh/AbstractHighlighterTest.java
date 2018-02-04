@@ -8,16 +8,16 @@ import org.junit.Before;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.skjolber.jackson.jsh.SyntaxHighlightingJsonGenerator;
 import com.github.skjolber.jackson.jsh.AnsiSyntaxHightlight;
 import com.github.skjolber.jackson.jsh.JsonStreamContextListener;
 import com.github.skjolber.jackson.jsh.SyntaxHighlighter;
+import com.github.skjolber.jackson.jsh.SyntaxHighlightingJsonGenerator;
 
 public abstract class AbstractHighlighterTest {
 
 	@Before
 	public void before() {
-		System.out.println(AnsiSyntaxHightlight.SANE);
+		System.out.println(AnsiSyntaxHightlight.RESET);
 		System.out.flush();
 	}
 	

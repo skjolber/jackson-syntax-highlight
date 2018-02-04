@@ -3,8 +3,9 @@ package com.github.skjolber.jsh;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.github.skjolber.jackson.jsh.DefaultSyntaxHighlighter;
 import com.github.skjolber.jackson.jsh.AnsiSyntaxHightlight;
+import com.github.skjolber.jackson.jsh.DefaultSyntaxHighlighter;
+import com.github.skjolber.jackson.jsh.DefaultSyntaxHighlighter.Builder;
 import com.github.skjolber.jackson.jsh.SyntaxHighlighter;
 
 public class SyntaxHighlighterBuilderTest {
@@ -16,7 +17,7 @@ public class SyntaxHighlighterBuilderTest {
 			.withNumber(AnsiSyntaxHightlight.BLUE)
 			.build();
 		
-		Assert.assertEquals(highlighter.forNumber(1), AnsiSyntaxHightlight.SANE + AnsiSyntaxHightlight.BLUE);
+		Assert.assertEquals(AnsiSyntaxHightlight.ESC_START + AnsiSyntaxHightlight.CLEAR + ";" + AnsiSyntaxHightlight.BLUE + AnsiSyntaxHightlight.ESC_END, highlighter.forNumber(1));
 	}
 	
 	@Test
@@ -27,6 +28,6 @@ public class SyntaxHighlighterBuilderTest {
 			.withBackground(AnsiSyntaxHightlight.BACKGROUND_BLACK)
 			.build();
 		
-		Assert.assertEquals(highlighter.forNumber(1), AnsiSyntaxHightlight.SANE + AnsiSyntaxHightlight.BLUE + AnsiSyntaxHightlight.BACKGROUND_BLACK);
+		Assert.assertEquals(highlighter.forNumber(1), AnsiSyntaxHightlight.ESC_START + AnsiSyntaxHightlight.CLEAR + ";" + AnsiSyntaxHightlight.BLUE + ";" + AnsiSyntaxHightlight.BACKGROUND_BLACK + AnsiSyntaxHightlight.ESC_END);
 	}
 }

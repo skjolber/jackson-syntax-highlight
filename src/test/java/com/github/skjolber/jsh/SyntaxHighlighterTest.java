@@ -2,11 +2,10 @@ package com.github.skjolber.jsh;
 
 import java.io.IOException;
 
-import org.junit.Before;
 import org.junit.Test;
 
-import com.github.skjolber.jackson.jsh.DefaultSyntaxHighlighter;
 import com.github.skjolber.jackson.jsh.AnsiSyntaxHightlight;
+import com.github.skjolber.jackson.jsh.DefaultSyntaxHighlighter;
 import com.github.skjolber.jackson.jsh.SyntaxHighlighter;
 
 public class SyntaxHighlighterTest extends AbstractHighlighterTest {

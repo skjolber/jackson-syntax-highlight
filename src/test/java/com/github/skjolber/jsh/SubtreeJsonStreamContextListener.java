@@ -2,11 +2,10 @@ package com.github.skjolber.jsh;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Objects;
 
 import com.fasterxml.jackson.core.JsonStreamContext;
-import com.github.skjolber.jackson.jsh.DefaultSyntaxHighlighter;
 import com.github.skjolber.jackson.jsh.AnsiSyntaxHightlight;
+import com.github.skjolber.jackson.jsh.DefaultSyntaxHighlighter;
 import com.github.skjolber.jackson.jsh.JsonStreamContextListener;
 import com.github.skjolber.jackson.jsh.SyntaxHighlighter;
 
@@ -59,85 +58,82 @@ public class SubtreeJsonStreamContextListener implements JsonStreamContextListen
 	
 	@Override
 	public String forCurlyBrackets() {
-		return getSyntaxHighlighter().forCurlyBrackets();
+		return delegate.forCurlyBrackets();
 	}
 
 	@Override
 	public String forSquareBrackets() {
-		return getSyntaxHighlighter().forSquareBrackets();
+		return delegate.forSquareBrackets();
 	}
 
 	@Override
 	public String forColon() {
-		return getSyntaxHighlighter().forColon();
+		return delegate.forColon();
 	}
 
 	@Override
 	public String forComma() {
-		return getSyntaxHighlighter().forComma();
+		return delegate.forComma();
 	}
 
 	@Override
 	public String forWhitespace() {
-		return getSyntaxHighlighter().forWhitespace();
+		return delegate.forWhitespace();
 	}
 
 	@Override
 	public String forFieldName(String value) {
-		return getSyntaxHighlighter().forFieldName(value);
+		return delegate.forFieldName(value);
 	}
 
 	@Override
 	public String forNumber(int value) {
-		return getSyntaxHighlighter().forNumber(value);
+		return delegate.forNumber(value);
 	}
 
 	@Override
 	public String forString(String value) {
-		return getSyntaxHighlighter().forString(value);
+		return delegate.forString(value);
 	}
 
 	@Override
 	public String forBinary() {
-		return getSyntaxHighlighter().forBinary();
+		return delegate.forBinary();
 	}
 
 	@Override
 	public String forBoolean(boolean value) {
-		return getSyntaxHighlighter().forBoolean(value);
+		return delegate.forBoolean(value);
 	}
 
 	@Override
 	public String forNull() {
-		return getSyntaxHighlighter().forNull();
+		return delegate.forNull();
 	}
 
 	@Override
 	public String forNumber(double value) {
-		return getSyntaxHighlighter().forNumber(value);
+		return delegate.forNumber(value);
 	}
 
 	@Override
 	public String forNumber(long value) {
-		return getSyntaxHighlighter().forNumber(value);
+		return delegate.forNumber(value);
 	}
 
 	@Override
 	public String forNumber(BigInteger v) {
-		return getSyntaxHighlighter().forNumber(v);
+		return delegate.forNumber(v);
 	}
 
 	@Override
 	public String forNumber(BigDecimal v) {
-		return getSyntaxHighlighter().forNumber(v);
+		return delegate.forNumber(v);
 	}
 
 	@Override
 	public String forNumber(String encodedValue) {
-		return getSyntaxHighlighter().forNumber(encodedValue);
+		return delegate.forNumber(encodedValue);
 	}
 
-	private SyntaxHighlighter getSyntaxHighlighter() {
-		return delegate;
-	}	
 }

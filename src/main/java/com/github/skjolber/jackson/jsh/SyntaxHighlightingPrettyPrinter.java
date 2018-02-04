@@ -28,7 +28,7 @@ public class SyntaxHighlightingPrettyPrinter extends DefaultPrettyPrinter {
 	}
 
 	public void writeRootValueSeparator(JsonGenerator gen) throws IOException {
-		gen.writeRaw(AnsiSyntaxHightlight.SANE);
+		gen.writeRaw(AnsiSyntaxHightlight.RESET);
 		super.writeRootValueSeparator(gen);
 	}
 
@@ -55,7 +55,6 @@ public class SyntaxHighlightingPrettyPrinter extends DefaultPrettyPrinter {
 		super.writeEndObject(gen, nrOfEntries);
 		
 		objectIndenter.clearValueColor();
-		
 	}
 
 	public void writeObjectEntrySeparator(JsonGenerator gen) throws IOException {
@@ -74,14 +73,13 @@ public class SyntaxHighlightingPrettyPrinter extends DefaultPrettyPrinter {
 			gen.writeRaw(' ');
 		} else {
 			gen.writeRaw(syntaxHighlighter.forColon());
-			super.writeObjectFieldValueSeparator(gen);
+            gen.writeRaw(_separators.getObjectFieldValueSeparator());
 		}
 
 		if(valueColor != null) {
 			gen.writeRaw(valueColor);
 			valueColor = null;
 		}
-
 	}
 
 	public void writeStartArray(JsonGenerator gen) throws IOException {
