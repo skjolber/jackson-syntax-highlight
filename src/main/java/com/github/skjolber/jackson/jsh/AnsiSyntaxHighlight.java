@@ -35,6 +35,7 @@ public final class AnsiSyntaxHighlight {
 	public static final String	BACKGROUND_MAGENTA	= "45";
 	public static final String	BACKGROUND_CYAN		= "46";
 	public static final String	BACKGROUND_WHITE	= "47";
+	public static final String	BACKGROUND_DEFAULT 	= "49";
 
 	public static final String	SEPERATOR 			= ";";
 
@@ -78,7 +79,8 @@ public final class AnsiSyntaxHighlight {
 			case BACKGROUND_BLUE:
 			case BACKGROUND_MAGENTA:
 			case BACKGROUND_CYAN:
-			case BACKGROUND_WHITE: {
+			case BACKGROUND_WHITE:
+			case BACKGROUND_DEFAULT: {
 				return true;
 			}
 		}
