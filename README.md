@@ -29,7 +29,7 @@ The project is based on [Maven] and is available at central Maven repository.
 <dependency>
     <groupId>com.github.skjolber.jackson</groupId>
     <artifactId>jackson-syntax-highlight</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
 </dependency>
 ```
 
