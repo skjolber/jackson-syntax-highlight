@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 /**
- * All methods must return a value. Return {@linkplain AnsiSyntaxHightlight#RESET} for default coloring.
+ * All methods must return a value. Return {@linkplain AnsiSyntaxHighlight#RESET} for default coloring.
  * 
  */
 

@@ -28,7 +28,7 @@ public class SyntaxHighlightingPrettyPrinter extends DefaultPrettyPrinter {
 	}
 
 	public void writeRootValueSeparator(JsonGenerator gen) throws IOException {
-		gen.writeRaw(AnsiSyntaxHightlight.RESET);
+		gen.writeRaw(AnsiSyntaxHighlight.RESET);
 		super.writeRootValueSeparator(gen);
 	}
 

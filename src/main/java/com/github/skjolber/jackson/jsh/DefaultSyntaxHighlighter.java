@@ -11,11 +11,11 @@ public class DefaultSyntaxHighlighter implements SyntaxHighlighter {
 	
 	public static Builder newBuilderWithDefaultColors() {
 		return newBuilder()
-			.withBinary(AnsiSyntaxHightlight.MAGENTA) 
-			.withBoolean(AnsiSyntaxHightlight.GREEN) 
-			.withNull(AnsiSyntaxHightlight.BLACK) 
-			.withNumber(AnsiSyntaxHightlight.BLUE)
-			.withString(AnsiSyntaxHightlight.RED);
+			.withBinary(AnsiSyntaxHighlight.MAGENTA) 
+			.withBoolean(AnsiSyntaxHighlight.GREEN) 
+			.withNull(AnsiSyntaxHighlight.BLACK) 
+			.withNumber(AnsiSyntaxHighlight.BLUE)
+			.withString(AnsiSyntaxHighlight.RED);
 	}
 	
 	public static class Builder {
@@ -37,22 +37,22 @@ public class DefaultSyntaxHighlighter implements SyntaxHighlighter {
 		
 		protected String build(String[] colors) {
 			if(background == null) {
-				return AnsiSyntaxHightlight.build(colors);
+				return AnsiSyntaxHighlight.build(colors);
 			}
 			if(colors == null || colors.length == 0) {
-				return AnsiSyntaxHightlight.build(background);
+				return AnsiSyntaxHighlight.build(background);
 			}
 			
 			// check if already background is specified
 			for(String c : colors) {
-				if(AnsiSyntaxHightlight.isBackground(c)) {
-					return AnsiSyntaxHightlight.build(colors);
+				if(AnsiSyntaxHighlight.isBackground(c)) {
+					return AnsiSyntaxHighlight.build(colors);
 				}
 			}
 			String[] colorsWithBackground = new String[colors.length + 1];
 			System.arraycopy(colors, 0, colorsWithBackground, 0, colors.length);
 			colorsWithBackground[colors.length] = background;
-			return AnsiSyntaxHightlight.build(colorsWithBackground);
+			return AnsiSyntaxHighlight.build(colorsWithBackground);
 		}
 		
 		public Builder withComma(String ... value) {

@@ -242,7 +242,7 @@ public class SyntaxHighlightingJsonGenerator extends JsonGeneratorDelegate {
 	@Override
 	public void close() throws IOException {
 		flush();
-		delegate.writeRaw(AnsiSyntaxHightlight.RESET);
+		delegate.writeRaw(AnsiSyntaxHighlight.RESET);
 		super.close();
 	}
 }

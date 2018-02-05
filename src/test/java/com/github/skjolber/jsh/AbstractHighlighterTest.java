@@ -2,6 +2,8 @@ package com.github.skjolber.jsh;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -41,7 +43,37 @@ public abstract class AbstractHighlighterTest {
 
 		jsonGenerator.writeFieldName("nullValue");
 		jsonGenerator.writeNull();
+		
+		jsonGenerator.writeNumberField("bigDecimalField", BigDecimal.ONE);
+		jsonGenerator.writeNumberField("floatField", Float.MAX_VALUE);
+		jsonGenerator.writeNumberField("shortField", Short.MAX_VALUE);
+		jsonGenerator.writeNumberField("longField", 1L);
 
+		jsonGenerator.writeFieldName("bigInteger");
+		jsonGenerator.writeNumber(BigInteger.ONE);
+
+		jsonGenerator.writeFieldName("bigDecimal");
+		jsonGenerator.writeNumber(BigDecimal.ONE);
+
+		jsonGenerator.writeFieldName("float");
+		jsonGenerator.writeNumber(Float.MAX_VALUE);
+
+		jsonGenerator.writeFieldName("short");
+		jsonGenerator.writeNumber(Short.MAX_VALUE);
+
+		jsonGenerator.writeFieldName("long");
+		jsonGenerator.writeNumber(1L);
+
+		jsonGenerator.writeFieldName("double");
+		jsonGenerator.writeNumber(1d);
+
+		jsonGenerator.writeFieldName("encodedNumber");
+		jsonGenerator.writeNumber("1");
+
+		jsonGenerator.writeFieldName("string");
+		jsonGenerator.writeString("string");
+
+		
 		jsonGenerator.writeFieldName("binaryValue");
 		jsonGenerator.writeBinary(new byte[] {0x01, 0x02, 0x03});
 

@@ -3,7 +3,7 @@ package com.github.skjolber.jsh;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.github.skjolber.jackson.jsh.AnsiSyntaxHightlight;
+import com.github.skjolber.jackson.jsh.AnsiSyntaxHighlight;
 import com.github.skjolber.jackson.jsh.DefaultSyntaxHighlighter;
 import com.github.skjolber.jackson.jsh.SyntaxHighlighter;
 
@@ -13,30 +13,30 @@ public class SyntaxHighlighterBuilderTest {
 	public void testBuilderSingleColor() {
 		SyntaxHighlighter highlighter = DefaultSyntaxHighlighter
 			.newBuilder()
-			.withNumber(AnsiSyntaxHightlight.BLUE)
+			.withNumber(AnsiSyntaxHighlight.BLUE)
 			.build();
 		
-		Assert.assertEquals(AnsiSyntaxHightlight.ESC_START + AnsiSyntaxHightlight.CLEAR + AnsiSyntaxHightlight.SEPERATOR + AnsiSyntaxHightlight.BLUE + AnsiSyntaxHightlight.ESC_END, highlighter.forNumber(1));
+		Assert.assertEquals(AnsiSyntaxHighlight.ESC_START + AnsiSyntaxHighlight.CLEAR + AnsiSyntaxHighlight.SEPERATOR + AnsiSyntaxHighlight.BLUE + AnsiSyntaxHighlight.ESC_END, highlighter.forNumber(1));
 	}
 	
 	@Test
 	public void testBuilderForegroundBackground() {
 		SyntaxHighlighter highlighter = DefaultSyntaxHighlighter
 			.newBuilder()
-			.withNumber(AnsiSyntaxHightlight.BLUE)
-			.withBackground(AnsiSyntaxHightlight.BACKGROUND_BLACK)
+			.withNumber(AnsiSyntaxHighlight.BLUE)
+			.withBackground(AnsiSyntaxHighlight.BACKGROUND_BLACK)
 			.build();
 		
-		Assert.assertEquals(highlighter.forNumber(1), AnsiSyntaxHightlight.ESC_START + AnsiSyntaxHightlight.CLEAR + AnsiSyntaxHightlight.SEPERATOR + AnsiSyntaxHightlight.BLUE + AnsiSyntaxHightlight.SEPERATOR + AnsiSyntaxHightlight.BACKGROUND_BLACK + AnsiSyntaxHightlight.ESC_END);
+		Assert.assertEquals(highlighter.forNumber(1), AnsiSyntaxHighlight.ESC_START + AnsiSyntaxHighlight.CLEAR + AnsiSyntaxHighlight.SEPERATOR + AnsiSyntaxHighlight.BLUE + AnsiSyntaxHighlight.SEPERATOR + AnsiSyntaxHighlight.BACKGROUND_BLACK + AnsiSyntaxHighlight.ESC_END);
 	}
 	
 	@Test
 	public void testBuilderBackground() {
 		SyntaxHighlighter highlighter = DefaultSyntaxHighlighter
 			.newBuilder()
-			.withBackground(AnsiSyntaxHightlight.BACKGROUND_BLACK)
+			.withBackground(AnsiSyntaxHighlight.BACKGROUND_BLACK)
 			.build();
 		
-		Assert.assertEquals(AnsiSyntaxHightlight.ESC_START + AnsiSyntaxHightlight.CLEAR + AnsiSyntaxHightlight.SEPERATOR + AnsiSyntaxHightlight.BACKGROUND_BLACK + AnsiSyntaxHightlight.ESC_END, highlighter.forNumber(1));
+		Assert.assertEquals(AnsiSyntaxHighlight.ESC_START + AnsiSyntaxHighlight.CLEAR + AnsiSyntaxHighlight.SEPERATOR + AnsiSyntaxHighlight.BACKGROUND_BLACK + AnsiSyntaxHighlight.ESC_END, highlighter.forNumber(1));
 	}
 }

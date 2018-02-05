@@ -1,6 +1,6 @@
 package com.github.skjolber.jackson.jsh;
 
-public final class AnsiSyntaxHightlight {
+public final class AnsiSyntaxHighlight {
 
     public final static String	ESC_START 			= "\u001B[";
     public final static String	ESC_END 				= "m";
@@ -25,6 +25,7 @@ public final class AnsiSyntaxHightlight {
 	public static final String	MAGENTA				= "35";
 	public static final String	CYAN				= "36";
 	public static final String	WHITE				= "37";
+	public static final String	DEFAULT				= "38";
 
 	public static final String	BACKGROUND_BLACK	= "40";
 	public static final String	BACKGROUND_RED		= "41";
