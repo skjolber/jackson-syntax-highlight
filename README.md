@@ -29,7 +29,7 @@ The project is based on [Maven] and is available at central Maven repository.
 <dependency>
     <groupId>com.github.skjolber.jackson</groupId>
     <artifactId>jackson-syntax-highlight</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
 </dependency>
 ```
 
@@ -65,7 +65,8 @@ In addition, the JSON structure can be tracked via [JsonStreamContextListener](s
 
 # History
 
- - [1.0.2]: More tests, minor fixes.
+ - [1.0.3]: Bump Jackson dependency due to security issue 
+ - 1.0.2: More tests, minor fixes.
  - 1.0.1: Various improvements, works better with [logback-logstash-syntax-highlighting-decorators] for Logback logging.
  - 1.0.0: Initial version
 
