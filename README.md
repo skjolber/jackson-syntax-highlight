@@ -73,7 +73,7 @@ In addition, the JSON structure can be tracked via [JsonStreamContextListener](s
 [Apache 2.0]:          	http://www.apache.org/licenses/LICENSE-2.0.html
 [issue-tracker]:       	https://github.com/skjolber/jackson-syntax-highlight/issues
 [Maven]:                http://maven.apache.org/
-[1.0.2]:				https://github.com/skjolber/jackson-syntax-highlight/releases/tag/jackson-syntax-highlight-1.0.2
+[1.0.3]:				https://github.com/skjolber/jackson-syntax-highlight/releases/tag/jackson-syntax-highlight-1.0.3
 [SyntaxHighlighter]:	src/main/java/com/github/skjolber/jackson/jsh/SyntaxHighlighter.java
 [Jackson]:				https://github.com/FasterXML/jackson
 [ANSI]:					https://en.wikipedia.org/wiki/ANSI_escape_code
