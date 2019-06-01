@@ -29,7 +29,7 @@ The project is based on [Maven] and is available at central Maven repository.
 <dependency>
     <groupId>com.github.skjolber.jackson</groupId>
     <artifactId>jackson-syntax-highlight</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
 </dependency>
 ```
 
@@ -65,7 +65,8 @@ In addition, the JSON structure can be tracked via [JsonStreamContextListener](s
 
 # History
 
- - [1.0.3]: Bump Jackson dependency due to security issue 
+ - [1.0.4]: Bump Jackson dependency due to security issue 
+ - 1.0.3: Bump Jackson dependency due to security issue 
  - 1.0.2: More tests, minor fixes.
  - 1.0.1: Various improvements, works better with [logback-logstash-syntax-highlighting-decorators] for Logback logging.
  - 1.0.0: Initial version
@@ -73,7 +74,7 @@ In addition, the JSON structure can be tracked via [JsonStreamContextListener](s
 [Apache 2.0]:          	http://www.apache.org/licenses/LICENSE-2.0.html
 [issue-tracker]:       	https://github.com/skjolber/jackson-syntax-highlight/issues
 [Maven]:                http://maven.apache.org/
-[1.0.3]:				https://github.com/skjolber/jackson-syntax-highlight/releases/tag/jackson-syntax-highlight-1.0.3
+[1.0.4]:				https://github.com/skjolber/jackson-syntax-highlight/releases/tag/jackson-syntax-highlight-1.0.4
 [SyntaxHighlighter]:	src/main/java/com/github/skjolber/jackson/jsh/SyntaxHighlighter.java
 [Jackson]:				https://github.com/FasterXML/jackson
 [ANSI]:					https://en.wikipedia.org/wiki/ANSI_escape_code
