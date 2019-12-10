@@ -46,10 +46,10 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 
-		<jackson.version>2.10.0</jackson.version>
+		<jackson.version>2.10.1</jackson.version>
 
 		<junit.version>4.12</junit.version>
-		<maven.jacoco.plugin.version>0.8.2</maven.jacoco.plugin.version>
+		<maven.jacoco.plugin.version>0.8.5</maven.jacoco.plugin.version>
 	</properties>
 
 	<dependencies>
