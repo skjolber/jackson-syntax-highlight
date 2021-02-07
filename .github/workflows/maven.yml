@@ -19,13 +19,13 @@ jobs:
       with:
         java-version: 11
     - name: Restore cache
-      uses: skjolber/maven-cache-github-action@v1
+      uses: skjolber/maven-cache-github-action-beta@v1
       with:
         step: restore
     - name: Build with Maven
       run: mvn -B package --file pom.xml
     - name: Save cache
-      uses: skjolber/maven-cache-github-action@v1
+      uses: skjolber/maven-cache-github-action-beta@v1
       with:
         step: save
   build-with-github-cache:
