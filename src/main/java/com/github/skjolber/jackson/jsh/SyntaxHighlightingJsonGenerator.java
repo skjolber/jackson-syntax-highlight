@@ -11,6 +11,10 @@ import com.fasterxml.jackson.core.Base64Variant;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.SerializableString;
 import com.fasterxml.jackson.core.util.JsonGeneratorDelegate;
+import com.github.skjolber.jackson.jsh.indenter.SyntaxHighlighterStyle;
+import com.github.skjolber.jackson.jsh.indenter.SyntaxHighlighterStyleIndenter;
+import com.github.skjolber.jackson.jsh.indenter.SyntaxHighlighterArrayIndenter;
+import com.github.skjolber.jackson.jsh.printer.SyntaxHighlightingPrettyPrinter;
 
 /**
  * Syntax highlighting {@linkplain JsonGenerator} wrapper. 
@@ -28,63 +32,63 @@ public class SyntaxHighlightingJsonGenerator extends JsonGeneratorDelegate {
 	 * 
 	 */
 
-	protected SyntaxHighlightingPrettyPrinter prettyPrinter;
-	protected SyntaxHighlighterObjectIndenter objectIndenter;
+	protected SyntaxHighlightingPrettyPrinter objectPrinter;
+	protected SyntaxHighlighterStyleIndenter styleIndenter;
 	protected SyntaxHighlighterArrayIndenter arrayIndenter;
 
 	protected SyntaxHighlighter syntaxHighlighter;
 
 	public SyntaxHighlightingJsonGenerator(JsonGenerator d) {
-		this(d, new DefaultSyntaxHighlighter(), null);
+		this(d, SyntaxHighlighterStyle.PRETTIFIED, new DefaultSyntaxHighlighter(), null);
 	}
 
 	public SyntaxHighlightingJsonGenerator(JsonGenerator d, SyntaxHighlighter syntaxHighlighter) {
-		this(d, syntaxHighlighter, null);
+		this(d, SyntaxHighlighterStyle.PRETTIFIED, syntaxHighlighter, null);
 	}
 
-	public SyntaxHighlightingJsonGenerator(JsonGenerator d, SyntaxHighlighter syntaxHighlighter, JsonStreamContextListener listener) {
+	public SyntaxHighlightingJsonGenerator(JsonGenerator d, SyntaxHighlighterStyle syntaxHighlighterStyle, SyntaxHighlighter syntaxHighlighter, JsonStreamContextListener listener) {
 		super(d, false);
 
 		this.syntaxHighlighter = syntaxHighlighter;
 
-		this.objectIndenter = new SyntaxHighlighterObjectIndenter(syntaxHighlighter);
+		this.styleIndenter = syntaxHighlighterStyle.getIndenter(syntaxHighlighter);
 		this.arrayIndenter = new SyntaxHighlighterArrayIndenter(syntaxHighlighter);
 
-		this.prettyPrinter = new SyntaxHighlightingPrettyPrinter(syntaxHighlighter, objectIndenter, arrayIndenter, listener);
-		setPrettyPrinter(prettyPrinter);
+		this.objectPrinter = new SyntaxHighlightingPrettyPrinter(syntaxHighlighter, styleIndenter, arrayIndenter, listener);
+		setPrettyPrinter(objectPrinter);
 	}
 
 	@Override
 	public void writeFieldName(String value) throws IOException {
-		prettyPrinter.setCommaColor(syntaxHighlighter.forComma());
-		objectIndenter.setValueColor(syntaxHighlighter.forFieldName(value));
+		objectPrinter.setCommaColor(syntaxHighlighter.forComma());
+		styleIndenter.setValueColor(syntaxHighlighter.forFieldName(value));
 
 		super.writeFieldName(value);
 
-		objectIndenter.clearValueColor();
-		prettyPrinter.cleanCommaColor();
+		styleIndenter.clearValueColor();
+		objectPrinter.cleanCommaColor();
 	}
 
 	@Override
 	public void writeFieldName(SerializableString name) throws IOException {
-		prettyPrinter.setCommaColor(syntaxHighlighter.forComma());
-		objectIndenter.setValueColor(syntaxHighlighter.forFieldName(name.getValue()));
+		objectPrinter.setCommaColor(syntaxHighlighter.forComma());
+		styleIndenter.setValueColor(syntaxHighlighter.forFieldName(name.getValue()));
 
 		super.writeFieldName(name);
 
-		objectIndenter.clearValueColor();
-		prettyPrinter.cleanCommaColor();
+		styleIndenter.clearValueColor();
+		objectPrinter.cleanCommaColor();
 	}
 
 	@Override
 	public void writeFieldId(long id) throws IOException {
-		prettyPrinter.setCommaColor(syntaxHighlighter.forComma());
-		objectIndenter.setValueColor(syntaxHighlighter.forFieldName(Long.toString(id)));
+		objectPrinter.setCommaColor(syntaxHighlighter.forComma());
+		styleIndenter.setValueColor(syntaxHighlighter.forFieldName(Long.toString(id)));
 
 		super.writeFieldId(id);
 
-		objectIndenter.clearValueColor();
-		prettyPrinter.cleanCommaColor();
+		styleIndenter.clearValueColor();
+		objectPrinter.cleanCommaColor();
 	}
 
 	@Override
@@ -137,105 +141,105 @@ public class SyntaxHighlightingJsonGenerator extends JsonGeneratorDelegate {
 
 	@Override
 	public void writeBinary(Base64Variant b64variant, byte[] data, int offset, int len) throws IOException {
-		prettyPrinter.setValueColor(syntaxHighlighter.forBinary());
+		objectPrinter.setValueColor(syntaxHighlighter.forBinary());
 		super.writeBinary(b64variant, data, offset, len);
 	}
 
 	@Override
 	public int writeBinary(Base64Variant b64variant, InputStream data, int dataLength) throws IOException {
-		prettyPrinter.setValueColor(syntaxHighlighter.forBinary());
+		objectPrinter.setValueColor(syntaxHighlighter.forBinary());
 		return super.writeBinary(b64variant, data, dataLength);
 
 	}
 
 	@Override
 	public void writeNumber(short v) throws IOException {
-		prettyPrinter.setValueColor(syntaxHighlighter.forNumber(v));
+		objectPrinter.setValueColor(syntaxHighlighter.forNumber(v));
 		super.writeNumber(v);
 	}
 
 	@Override
 	public void writeNumber(int v) throws IOException {
-		prettyPrinter.setValueColor(syntaxHighlighter.forNumber(v));
+		objectPrinter.setValueColor(syntaxHighlighter.forNumber(v));
 		super.writeNumber(v);
 	}
 
 	@Override
 	public void writeNumber(long v) throws IOException {
-		prettyPrinter.setValueColor(syntaxHighlighter.forNumber(v));
+		objectPrinter.setValueColor(syntaxHighlighter.forNumber(v));
 		super.writeNumber(v);
 	}
 
 	@Override
 	public void writeNumber(BigInteger v) throws IOException {
-		prettyPrinter.setValueColor(syntaxHighlighter.forNumber(v));
+		objectPrinter.setValueColor(syntaxHighlighter.forNumber(v));
 		super.writeNumber(v);
 	}
 
 	@Override
 	public void writeNumber(double v) throws IOException {
-		prettyPrinter.setValueColor(syntaxHighlighter.forNumber(v));
+		objectPrinter.setValueColor(syntaxHighlighter.forNumber(v));
 		super.writeNumber(v);
 	}
 
 	@Override
 	public void writeNumber(float v) throws IOException {
-		prettyPrinter.setValueColor(syntaxHighlighter.forNumber(v));
+		objectPrinter.setValueColor(syntaxHighlighter.forNumber(v));
 		super.writeNumber(v);
 	}
 
 	@Override
 	public void writeNumber(BigDecimal v) throws IOException {
-		prettyPrinter.setValueColor(syntaxHighlighter.forNumber(v));
+		objectPrinter.setValueColor(syntaxHighlighter.forNumber(v));
 		super.writeNumber(v);
 	}
 
 	@Override
 	public void writeNumber(String encodedValue) throws IOException, UnsupportedOperationException {
-		prettyPrinter.setValueColor(syntaxHighlighter.forNumber(encodedValue));
+		objectPrinter.setValueColor(syntaxHighlighter.forNumber(encodedValue));
 		super.writeNumber(encodedValue);
 
 	}
 
 	@Override
 	public void writeBoolean(boolean value) throws IOException {
-		prettyPrinter.setValueColor(syntaxHighlighter.forBoolean(value));
+		objectPrinter.setValueColor(syntaxHighlighter.forBoolean(value));
 		super.writeBoolean(value);
 	}
 
 	@Override
 	public void writeNull() throws IOException {
-		prettyPrinter.setValueColor(syntaxHighlighter.forNull());
+		objectPrinter.setValueColor(syntaxHighlighter.forNull());
 		super.writeNull();
 	}
 
 	@Override
 	public void writeString(String value) throws IOException {
-		prettyPrinter.setValueColor(syntaxHighlighter.forString(value));
+		objectPrinter.setValueColor(syntaxHighlighter.forString(value));
 		super.writeString(value);
 	}
 
 	@Override
 	public void writeString(Reader reader, int len) throws IOException {
-		prettyPrinter.setValueColor(syntaxHighlighter.forString(null));
+		objectPrinter.setValueColor(syntaxHighlighter.forString(null));
 		delegate.writeString(reader, len);
 	}
 
 	@Override
 	public void writeString(char[] text, int offset, int len) throws IOException {
-		prettyPrinter.setValueColor(syntaxHighlighter.forString(new String(text, offset, len)));
+		objectPrinter.setValueColor(syntaxHighlighter.forString(new String(text, offset, len)));
 		delegate.writeString(text, offset, len);
 	}
 
 	@Override
 	public void writeString(SerializableString text) throws IOException {
-		prettyPrinter.setValueColor(syntaxHighlighter.forString(text.getValue()));
+		objectPrinter.setValueColor(syntaxHighlighter.forString(text.getValue()));
 		delegate.writeString(text);
 	}
 
 	@Override
 	public void writeUTF8String(byte[] text, int offset, int length) throws IOException {
-		prettyPrinter.setValueColor(syntaxHighlighter.forString(new String(text, offset, length, StandardCharsets.UTF_8)));
+		objectPrinter.setValueColor(syntaxHighlighter.forString(new String(text, offset, length, StandardCharsets.UTF_8)));
 		delegate.writeUTF8String(text, offset, length);
 	}
 
