@@ -18,6 +18,8 @@ public interface SyntaxHighlighter {
 
 	String forComma();
 
+	String forPretty();
+
 	String forWhitespace();
 	
 	String forFieldName(String value);

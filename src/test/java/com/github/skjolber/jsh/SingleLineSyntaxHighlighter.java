@@ -48,6 +48,11 @@ public class SingleLineSyntaxHighlighter implements SyntaxHighlighter {
 	}
 
 	@Override
+	public String forPretty() {
+		return delegate.forPretty();
+	}
+
+	@Override
 	public String forWhitespace() {
 		return delegate.forWhitespace();
 	}

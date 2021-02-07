@@ -1,20 +1,20 @@
 package com.github.skjolber.jackson.jsh;
 
+import com.fasterxml.jackson.core.Base64Variant;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.SerializableString;
+import com.fasterxml.jackson.core.util.JsonGeneratorDelegate;
+import com.github.skjolber.jackson.jsh.indenter.SyntaxHighlighterArrayIndenter;
+import com.github.skjolber.jackson.jsh.indenter.SyntaxHighlighterStyle;
+import com.github.skjolber.jackson.jsh.indenter.SyntaxHighlighterStyleIndenter;
+import com.github.skjolber.jackson.jsh.printer.SyntaxHighlightingPrettyPrinter;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
-
-import com.fasterxml.jackson.core.Base64Variant;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.SerializableString;
-import com.fasterxml.jackson.core.util.JsonGeneratorDelegate;
-import com.github.skjolber.jackson.jsh.indenter.SyntaxHighlighterStyle;
-import com.github.skjolber.jackson.jsh.indenter.SyntaxHighlighterStyleIndenter;
-import com.github.skjolber.jackson.jsh.indenter.SyntaxHighlighterArrayIndenter;
-import com.github.skjolber.jackson.jsh.printer.SyntaxHighlightingPrettyPrinter;
 
 /**
  * Syntax highlighting {@linkplain JsonGenerator} wrapper. 
@@ -39,19 +39,19 @@ public class SyntaxHighlightingJsonGenerator extends JsonGeneratorDelegate {
 	protected SyntaxHighlighter syntaxHighlighter;
 
 	public SyntaxHighlightingJsonGenerator(JsonGenerator d) {
-		this(d, SyntaxHighlighterStyle.PRETTIFIED, new DefaultSyntaxHighlighter(), null);
+		this(d, new DefaultSyntaxHighlighter(), null);
 	}
 
 	public SyntaxHighlightingJsonGenerator(JsonGenerator d, SyntaxHighlighter syntaxHighlighter) {
-		this(d, SyntaxHighlighterStyle.PRETTIFIED, syntaxHighlighter, null);
+		this(d, syntaxHighlighter, null);
 	}
 
-	public SyntaxHighlightingJsonGenerator(JsonGenerator d, SyntaxHighlighterStyle syntaxHighlighterStyle, SyntaxHighlighter syntaxHighlighter, JsonStreamContextListener listener) {
+	public SyntaxHighlightingJsonGenerator(JsonGenerator d, SyntaxHighlighter syntaxHighlighter, JsonStreamContextListener listener) {
 		super(d, false);
 
 		this.syntaxHighlighter = syntaxHighlighter;
 
-		this.styleIndenter = syntaxHighlighterStyle.getIndenter(syntaxHighlighter);
+		this.styleIndenter = SyntaxHighlighterStyle.getIndenter(syntaxHighlighter);
 		this.arrayIndenter = new SyntaxHighlighterArrayIndenter(syntaxHighlighter);
 
 		this.objectPrinter = new SyntaxHighlightingPrettyPrinter(syntaxHighlighter, styleIndenter, arrayIndenter, listener);

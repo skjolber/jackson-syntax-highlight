@@ -8,18 +8,18 @@ import org.junit.Test;
 public class JsonStreamContextListenerTest extends AbstractHighlighterTest {
 
 	@Test
-	public void testHighlistSubtreePrettified() throws IOException {
+	public void testHighlightSubtreePrettified() throws IOException {
 		
 		SubtreeJsonStreamContextListener l = new SubtreeJsonStreamContextListener();
 
-		handle(l, l, SyntaxHighlighterStyle.PRETTIFIED);
+		handle(l, l);
 	}
 
 	@Test
-	public void testHighlistSubtreeMinified() throws IOException {
+	public void testHighlightSubtreeMinified() throws IOException {
 
-		SubtreeJsonStreamContextListener l = new SubtreeJsonStreamContextListener();
+		SubtreeJsonStreamContextListener l = new SubtreeJsonStreamContextListener(false);
 
-		handle(l, l, SyntaxHighlighterStyle.MINIFIED);
+		handle(l, l);
 	}
 }

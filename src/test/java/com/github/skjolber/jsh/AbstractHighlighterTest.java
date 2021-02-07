@@ -15,12 +15,12 @@ import com.github.skjolber.jackson.jsh.indenter.SyntaxHighlighterStyle;
 
 public abstract class AbstractHighlighterTest {
 
-	public void handle(SyntaxHighlighter h, JsonStreamContextListener listener, SyntaxHighlighterStyle style) throws IOException {
+	public void handle(SyntaxHighlighter h, JsonStreamContextListener listener) throws IOException {
 		StringWriter writer = new StringWriter();
 		
 		JsonGenerator delegate = new JsonFactory().createGenerator(writer);
 
-		SyntaxHighlightingJsonGenerator jsonGenerator = new SyntaxHighlightingJsonGenerator(delegate, style, h, listener);
+		SyntaxHighlightingJsonGenerator jsonGenerator = new SyntaxHighlightingJsonGenerator(delegate, h, listener);
 		
 		jsonGenerator.writeStartObject(); 
 
@@ -99,7 +99,7 @@ public abstract class AbstractHighlighterTest {
 
 		JsonGenerator delegate = new JsonFactory().createGenerator(writer);
 
-		SyntaxHighlightingJsonGenerator jsonGenerator = new SyntaxHighlightingJsonGenerator(delegate, SyntaxHighlighterStyle.MINIFIED, h, listener);
+		SyntaxHighlightingJsonGenerator jsonGenerator = new SyntaxHighlightingJsonGenerator(delegate, h, listener);
 
 		jsonGenerator.writeStartObject();
 

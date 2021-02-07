@@ -1,13 +1,11 @@
 package com.github.skjolber.jsh;
 
-import java.io.IOException;
-
-import com.github.skjolber.jackson.jsh.indenter.SyntaxHighlighterStyle;
-import org.junit.Test;
-
 import com.github.skjolber.jackson.jsh.AnsiSyntaxHighlight;
 import com.github.skjolber.jackson.jsh.DefaultSyntaxHighlighter;
 import com.github.skjolber.jackson.jsh.SyntaxHighlighter;
+import org.junit.Test;
+
+import java.io.IOException;
 
 public class SyntaxHighlighterTest extends AbstractHighlighterTest {
 
@@ -180,11 +178,11 @@ public class SyntaxHighlighterTest extends AbstractHighlighterTest {
 	}
 
 	private void handlePrettified(SyntaxHighlighter h) throws IOException {
-		super.handle(h, null, SyntaxHighlighterStyle.PRETTIFIED);
+		super.handle(h, null);
 	}
 
 	private void handleMinified(SyntaxHighlighter h) throws IOException {
-		super.handle(h, null, SyntaxHighlighterStyle.MINIFIED);
+		super.handle(h, null);
 	}
 
 }

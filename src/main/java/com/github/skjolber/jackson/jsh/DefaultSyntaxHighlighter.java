@@ -6,7 +6,8 @@ import java.math.BigInteger;
 public class DefaultSyntaxHighlighter implements SyntaxHighlighter {
 
 	public static Builder newBuilder() {
-		return new Builder();
+		// Builder prints pretty by default
+		return new Builder().withPretty(true);
 	}
 	
 	public static Builder newBuilderWithDefaultColors() {
@@ -31,6 +32,7 @@ public class DefaultSyntaxHighlighter implements SyntaxHighlighter {
 		protected String[] colon;
 		protected String[] whitespace;
 		protected String[] comma;
+		protected String pretty;
 		
 		// common for all colors, if no background is set
 		protected String background;
@@ -105,7 +107,12 @@ public class DefaultSyntaxHighlighter implements SyntaxHighlighter {
 			this.stringValue = values;
 			return this;
 		}
-		
+		public Builder withPretty(Boolean value) {
+			this.pretty = String.valueOf(value);
+			return this;
+		}
+
+
 		/**
 		 * Se the default background. This will be added to all 
 		 * colors which do not themself define a background color.
@@ -136,12 +143,17 @@ public class DefaultSyntaxHighlighter implements SyntaxHighlighter {
 	protected String colon;
 	protected String whitespace;
 	protected String comma;
+	protected String pretty;
 
 	public DefaultSyntaxHighlighter() {
 		this(newBuilderWithDefaultColors());
 	}
-	
-	public DefaultSyntaxHighlighter(String fieldValue, String binaryValue, String booleanValue, String nullValue, String numberValue, String stringValue, String curlyBrackets, String squareBrackets, String colon, String whitespace, String comma) {
+
+	public DefaultSyntaxHighlighter(boolean isPretty) {
+		this(newBuilderWithDefaultColors().withPretty(isPretty));
+	}
+
+	public DefaultSyntaxHighlighter(String fieldValue, String binaryValue, String booleanValue, String nullValue, String numberValue, String stringValue, String curlyBrackets, String squareBrackets, String colon, String whitespace, String comma, String pretty) {
 		super();
 		this.fieldName = fieldValue;
 		this.binaryValue = binaryValue;
@@ -154,6 +166,7 @@ public class DefaultSyntaxHighlighter implements SyntaxHighlighter {
 		this.colon = colon;
 		this.whitespace = whitespace;
 		this.comma = comma;
+		this.pretty = pretty;
 	}
 
 	public DefaultSyntaxHighlighter(Builder builder) {
@@ -168,7 +181,8 @@ public class DefaultSyntaxHighlighter implements SyntaxHighlighter {
 			builder.build(builder.squareBrackets),
 			builder.build(builder.colon), 
 			builder.build(builder.whitespace), 
-			builder.build(builder.comma)	
+			builder.build(builder.comma),
+			builder.pretty
 		);
 		
 	}
@@ -228,6 +242,11 @@ public class DefaultSyntaxHighlighter implements SyntaxHighlighter {
 	@Override
 	public String forComma() {
 		return comma;
+	}
+
+	@Override
+	public String forPretty() {
+		return pretty;
 	}
 
 	@Override

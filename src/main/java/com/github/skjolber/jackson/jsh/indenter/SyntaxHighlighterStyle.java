@@ -6,14 +6,12 @@ import com.github.skjolber.jackson.jsh.SyntaxHighlighter;
  * @author Olatunji O. Longe
  * @since 07 Feb, 2021, 3:00 a.m.
  */
-public enum SyntaxHighlighterStyle {
+public class SyntaxHighlighterStyle {
 
-    PRETTIFIED, MINIFIED;
-
-    public SyntaxHighlighterStyleIndenter getIndenter(SyntaxHighlighter highlighter) {
-        if (this == SyntaxHighlighterStyle.MINIFIED) {
-            return new SyntaxHighlighterNoopIndenter(highlighter);
+    public static SyntaxHighlighterStyleIndenter getIndenter(SyntaxHighlighter highlighter) {
+        if(Boolean.parseBoolean(highlighter.forPretty())){
+            return new SyntaxHighlighterObjectIndenter(highlighter);
         }
-        return new SyntaxHighlighterObjectIndenter(highlighter);
+        return new SyntaxHighlighterNoopIndenter(highlighter);
     }
 }
