@@ -8,10 +8,9 @@ import java.math.BigInteger;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.skjolber.jackson.jsh.JsonStreamContextListener;
-import com.github.skjolber.jackson.jsh.SyntaxHighlighter;
+import com.github.skjolber.jackson.jsh.highlighter.JsonStreamContextListener;
+import com.github.skjolber.jackson.jsh.highlighter.SyntaxHighlighter;
 import com.github.skjolber.jackson.jsh.SyntaxHighlightingJsonGenerator;
-import com.github.skjolber.jackson.jsh.indenter.SyntaxHighlighterStyle;
 
 public abstract class AbstractHighlighterTest {
 

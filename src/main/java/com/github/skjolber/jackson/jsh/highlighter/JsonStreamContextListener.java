@@ -1,4 +1,4 @@
-package com.github.skjolber.jackson.jsh;
+package com.github.skjolber.jackson.jsh.highlighter;
 
 import com.fasterxml.jackson.core.JsonStreamContext;
 

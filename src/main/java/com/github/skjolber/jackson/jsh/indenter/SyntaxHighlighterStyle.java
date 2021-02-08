@@ -1,6 +1,6 @@
 package com.github.skjolber.jackson.jsh.indenter;
 
-import com.github.skjolber.jackson.jsh.SyntaxHighlighter;
+import com.github.skjolber.jackson.jsh.highlighter.SyntaxHighlighter;
 
 /**
  * @author Olatunji O. Longe

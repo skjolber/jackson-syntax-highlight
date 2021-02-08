@@ -4,7 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.github.skjolber.jackson.jsh.AnsiSyntaxHighlight;
+import com.github.skjolber.jackson.jsh.highlighter.AnsiSyntaxHighlight;
 
 public class AnsiSyntaxHighlightTest {
 

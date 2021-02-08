@@ -2,9 +2,9 @@ package com.github.skjolber.jackson.jsh.printer;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
-import com.github.skjolber.jackson.jsh.AnsiSyntaxHighlight;
-import com.github.skjolber.jackson.jsh.JsonStreamContextListener;
-import com.github.skjolber.jackson.jsh.SyntaxHighlighter;
+import com.github.skjolber.jackson.jsh.highlighter.AnsiSyntaxHighlight;
+import com.github.skjolber.jackson.jsh.highlighter.JsonStreamContextListener;
+import com.github.skjolber.jackson.jsh.highlighter.SyntaxHighlighter;
 import com.github.skjolber.jackson.jsh.indenter.SyntaxHighlighterArrayIndenter;
 import com.github.skjolber.jackson.jsh.indenter.SyntaxHighlighterStyleIndenter;
 
