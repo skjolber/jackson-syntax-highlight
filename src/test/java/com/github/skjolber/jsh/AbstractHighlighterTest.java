@@ -16,16 +16,24 @@ public abstract class AbstractHighlighterTest {
 
 	public void handle(SyntaxHighlighter h, JsonStreamContextListener listener) throws IOException {
 		StringWriter writer = new StringWriter();
-		
 		JsonGenerator delegate = new JsonFactory().createGenerator(writer);
-
-		SyntaxHighlightingJsonGenerator jsonGenerator = new SyntaxHighlightingJsonGenerator(delegate, h, listener);
+		SyntaxHighlightingJsonGenerator jsonGenerator = new SyntaxHighlightingJsonGenerator(delegate, h, listener, false);
+		write(jsonGenerator);
+		System.out.println(writer);
 		
+		writer = new StringWriter();
+		delegate = new JsonFactory().createGenerator(writer);
+		jsonGenerator = new SyntaxHighlightingJsonGenerator(delegate, h, listener, true);
+		write(jsonGenerator);
+		System.out.println(writer);
+	}
+
+	private void write(SyntaxHighlightingJsonGenerator jsonGenerator) throws IOException {
 		jsonGenerator.writeStartObject(); 
 
 		MyObject object = new MyObject();
 		object.setNumber(123);
-		object.setString("string");
+		object.setString("myString");
 
 		jsonGenerator.setCodec(new ObjectMapper());
 		
@@ -71,7 +79,7 @@ public abstract class AbstractHighlighterTest {
 		jsonGenerator.writeNumber("1");
 
 		jsonGenerator.writeFieldName("string");
-		jsonGenerator.writeString("string");
+		jsonGenerator.writeString("myString");
 
 		
 		jsonGenerator.writeFieldName("binaryValue");
@@ -89,8 +97,6 @@ public abstract class AbstractHighlighterTest {
 		jsonGenerator.writeEndObject();
 		
 		jsonGenerator.close();
-
-		System.out.println(writer);
 	}
 
 }

@@ -5,19 +5,25 @@ import java.io.IOException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 
+/**
+ * 
+ * Pretty-printer which technically can produce output with or without indent / linebreaks.
+ *
+ */
+
 public class SyntaxHighlightingPrettyPrinter extends DefaultPrettyPrinter {
 
 	private static final long serialVersionUID = 1L;
 	
 	protected SyntaxHighlighter syntaxHighlighter;
-	protected SyntaxHighlighterObjectIndenter objectIndenter;
-	protected SyntaxHighlighterArrayIndenter arrayIndenter;
+	protected SyntaxHighlighterIndenter objectIndenter;
+	protected SyntaxHighlighterIndenter arrayIndenter;
 	protected JsonStreamContextListener listener;
 	
 	private String valueColor;
 	private String commaColor;
 	
-	public SyntaxHighlightingPrettyPrinter(SyntaxHighlighter syntaxHighlighter, SyntaxHighlighterObjectIndenter objectIndenter, SyntaxHighlighterArrayIndenter arrayIndenter, JsonStreamContextListener listener) {
+	public SyntaxHighlightingPrettyPrinter(SyntaxHighlighter syntaxHighlighter, SyntaxHighlighterIndenter objectIndenter, SyntaxHighlighterIndenter arrayIndenter, JsonStreamContextListener listener) {
 		this.syntaxHighlighter = syntaxHighlighter;
 		_objectIndenter = objectIndenter;
 		_arrayIndenter = arrayIndenter;

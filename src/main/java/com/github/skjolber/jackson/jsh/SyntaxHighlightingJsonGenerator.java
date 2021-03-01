@@ -10,6 +10,8 @@ import java.nio.charset.StandardCharsets;
 import com.fasterxml.jackson.core.Base64Variant;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.SerializableString;
+import com.fasterxml.jackson.core.util.DefaultIndenter;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.core.util.JsonGeneratorDelegate;
 
 /**
@@ -29,26 +31,30 @@ public class SyntaxHighlightingJsonGenerator extends JsonGeneratorDelegate {
 	 */
 
 	protected SyntaxHighlightingPrettyPrinter prettyPrinter;
-	protected SyntaxHighlighterObjectIndenter objectIndenter;
-	protected SyntaxHighlighterArrayIndenter arrayIndenter;
+	protected SyntaxHighlighterIndenter objectIndenter;
+	protected SyntaxHighlighterIndenter arrayIndenter;
 
 	protected SyntaxHighlighter syntaxHighlighter;
 
 	public SyntaxHighlightingJsonGenerator(JsonGenerator d) {
-		this(d, new DefaultSyntaxHighlighter(), null);
+		this(d, true);
 	}
 
-	public SyntaxHighlightingJsonGenerator(JsonGenerator d, SyntaxHighlighter syntaxHighlighter) {
-		this(d, syntaxHighlighter, null);
+	public SyntaxHighlightingJsonGenerator(JsonGenerator d, boolean prettyPrint) {
+		this(d, new DefaultSyntaxHighlighter(), null, prettyPrint);
 	}
 
-	public SyntaxHighlightingJsonGenerator(JsonGenerator d, SyntaxHighlighter syntaxHighlighter, JsonStreamContextListener listener) {
+	public SyntaxHighlightingJsonGenerator(JsonGenerator d, SyntaxHighlighter syntaxHighlighter, boolean prettyPrint) {
+		this(d, syntaxHighlighter, null, prettyPrint);
+	}
+
+	public SyntaxHighlightingJsonGenerator(JsonGenerator d, SyntaxHighlighter syntaxHighlighter, JsonStreamContextListener listener, boolean prettyPrint) {
 		super(d, false);
 
 		this.syntaxHighlighter = syntaxHighlighter;
 
-		this.objectIndenter = new SyntaxHighlighterObjectIndenter(syntaxHighlighter);
-		this.arrayIndenter = new SyntaxHighlighterArrayIndenter(syntaxHighlighter);
+		this.objectIndenter = new SyntaxHighlighterIndenter(syntaxHighlighter, prettyPrint ? new DefaultIndenter() : new DefaultPrettyPrinter.FixedSpaceIndenter());
+		this.arrayIndenter = new SyntaxHighlighterIndenter(syntaxHighlighter, new DefaultPrettyPrinter.FixedSpaceIndenter());
 
 		this.prettyPrinter = new SyntaxHighlightingPrettyPrinter(syntaxHighlighter, objectIndenter, arrayIndenter, listener);
 		setPrettyPrinter(prettyPrinter);
