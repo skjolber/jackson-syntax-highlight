@@ -8,16 +8,7 @@ public class DefaultSyntaxHighlighter implements SyntaxHighlighter {
 	public static Builder newBuilder() {
 		return new Builder();
 	}
-	
-	public static Builder newBuilderWithDefaultColors() {
-		return newBuilder()
-			.withBinary(AnsiSyntaxHighlight.MAGENTA) 
-			.withBoolean(AnsiSyntaxHighlight.GREEN) 
-			.withNull(AnsiSyntaxHighlight.BLACK) 
-			.withNumber(AnsiSyntaxHighlight.BLUE)
-			.withString(AnsiSyntaxHighlight.RED);
-	}
-	
+
 	public static class Builder {
 		
 		protected String[] fieldName;
@@ -138,7 +129,7 @@ public class DefaultSyntaxHighlighter implements SyntaxHighlighter {
 	protected String comma;
 
 	public DefaultSyntaxHighlighter() {
-		this(newBuilderWithDefaultColors());
+		this(newBuilder());
 	}
 	
 	public DefaultSyntaxHighlighter(String fieldValue, String binaryValue, String booleanValue, String nullValue, String numberValue, String stringValue, String curlyBrackets, String squareBrackets, String colon, String whitespace, String comma) {
