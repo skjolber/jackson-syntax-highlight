@@ -30,14 +30,14 @@ The project is based on [Maven] and is available at central Maven repository.
 <dependency>
     <groupId>com.github.skjolber.jackson</groupId>
     <artifactId>jackson-syntax-highlight</artifactId>
-    <version>1.0.6</version>
+    <version>1.0.7</version>
 </dependency>
 ```
 
 or for Gradle
 
 ```groovy
-compile ("com.github.skjolber.jackson:jackson-syntax-highlight:1.0.6")
+compile ("com.github.skjolber.jackson:jackson-syntax-highlight:1.0.7")
 ```
 
 # Usage
@@ -70,8 +70,21 @@ JsonGenerator jsonGenerator = new SyntaxHighlightingJsonGenerator(delegate, high
 
 In addition, the JSON structure can be tracked via [JsonStreamContextListener](src/main/java/com/github/skjolber/jackson/jsh/JsonStreamContextListener.java), for stateful coloring of subtrees. 
 
+## Highlighting an object
+Write a full object using `writeObject`, i.e.
+
+```java
+JsonGenerator jsonGenerator = new SyntaxHighlightingJsonGenerator(delegate, highlighter, prettyprint);
+jsonGenerator.writeObject(obj);
+```
+
+## See also
+
+ * [logback-logstash-syntax-highlighting-decorators]
+
 # History
 
+ - 1.0.7: Do not set default colors.
  - 1.0.6: Add option for single-line output
  - 1.0.3 to 1.0.5: Bump Jackson dependency due to security issue 
  - 1.0.2: More tests, minor fixes.
