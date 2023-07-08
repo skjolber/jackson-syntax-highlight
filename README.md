@@ -1,7 +1,3 @@
-
-[![Build Status](https://travis-ci.org/skjolber/jackson-syntax-highlight.svg?branch=master)](https://travis-ci.org/skjolber/jackson-syntax-highlight)
-
-# jackson-syntax-highlight
 Simple utility for generating syntax-highlighted [JSON] text. Inlines [ANSI] color-codes visible in ANSI-enabled consoles.
 
 Features: 
@@ -23,8 +19,18 @@ Primarily intended for adding coloring while doing minimal changes to existing a
 ## License
 [Apache 2.0]
 
-# Obtain
-The project is based on [Maven] and is available at central Maven repository.
+## Obtain
+The project is built with [Maven] and is available on the central Maven repository. 
+
+<details>
+  <summary>Maven coordinates</summary>
+
+Add the property
+```xml
+<jackson-syntax-highlight.version>1.0.7</jackson-syntax-highlight.version>
+```
+
+then add
 
 ```xml
 <dependency>
@@ -33,12 +39,27 @@ The project is based on [Maven] and is available at central Maven repository.
     <version>1.0.7</version>
 </dependency>
 ```
+</details>
 
-or for Gradle
+or
+
+<details>
+  <summary>Gradle coordinates</summary>
+
+For
 
 ```groovy
-compile ("com.github.skjolber.jackson:jackson-syntax-highlight:1.0.7")
+ext {
+  jacksonSyntaxHighlightVersion = '1.0.7'
+}
 ```
+
+add
+
+```groovy
+api ("com.github.skjolber.jackson:jackson-syntax-highlight:${jacksonSyntaxHighlightVersion}")
+```
+</details>
 
 # Usage
 The highlighter wraps a normal [JsonGenerator]. Per default pretty-printing is enabled.
