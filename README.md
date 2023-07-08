@@ -1,4 +1,5 @@
-Simple utility for generating syntax-highlighted [JSON] text. Inlines [ANSI] color-codes visible in ANSI-enabled consoles.
+# jackson-syntax-highlight
+Simple utility for generating syntax-highlighted [JSON] text using the [Jackson](https://github.com/FasterXML/jackson) library. Inlines [ANSI] color-codes visible in ANSI-enabled consoles.
 
 Features: 
   * works with the popular [Jackson] JSON library.
@@ -14,7 +15,7 @@ Features:
      * colon
      * whitespace
 
-Primarily intended for adding coloring while doing minimal changes to existing applications. For example, coloring of status codes during unit testing.
+The library is primarily intended for adding coloring while doing minimal changes to existing applications. For example, coloring of status codes during unit testing.
 
 ## License
 [Apache 2.0]
@@ -62,7 +63,7 @@ api ("com.github.skjolber.jackson:jackson-syntax-highlight:${jacksonSyntaxHighli
 </details>
 
 # Usage
-The highlighter wraps a normal [JsonGenerator]. Per default pretty-printing is enabled.
+The highlighter wraps a normal [JsonGenerator]. Pretty-printing is enabled by default.
 
 ```java
 // construct output generator
@@ -78,7 +79,7 @@ jsonGenerator.writeNumber(123);
 jsonGenerator.writeEndObject();
 // .. etc
 ```
-If you prefer to configure the colors yourself, supply an instance of `SyntaxHighlighter` using the builder:
+Supply an instance of `SyntaxHighlighter` using the builder:
 
 ```java
 SyntaxHighlighter highlighter = DefaultSyntaxHighlighter
