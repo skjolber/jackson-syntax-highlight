@@ -28,7 +28,7 @@ The project is built with [Maven] and is available on the central Maven reposito
 
 Add the property
 ```xml
-<jackson-syntax-highlight.version>1.0.7</jackson-syntax-highlight.version>
+<jackson-syntax-highlight.version>1.0.8</jackson-syntax-highlight.version>
 ```
 
 then add
@@ -37,7 +37,7 @@ then add
 <dependency>
     <groupId>com.github.skjolber.jackson</groupId>
     <artifactId>jackson-syntax-highlight</artifactId>
-    <version>1.0.7</version>
+    <version>${jackson-syntax-highlight.version}</version>
 </dependency>
 ```
 </details>
@@ -51,7 +51,7 @@ For
 
 ```groovy
 ext {
-  jacksonSyntaxHighlightVersion = '1.0.7'
+  jacksonSyntaxHighlightVersion = '1.0.8'
 }
 ```
 
@@ -106,6 +106,7 @@ jsonGenerator.writeObject(obj);
 
 # History
 
+ - 1.0.8: Add module info. 
  - 1.0.7: Do not set default colors.
  - 1.0.6: Add option for single-line output
  - 1.0.3 to 1.0.5: Bump Jackson dependency due to security issue 
@@ -116,7 +117,6 @@ jsonGenerator.writeObject(obj);
 [Apache 2.0]:          	http://www.apache.org/licenses/LICENSE-2.0.html
 [issue-tracker]:       	https://github.com/skjolber/jackson-syntax-highlight/issues
 [Maven]:                http://maven.apache.org/
-[1.0.5]:				https://github.com/skjolber/jackson-syntax-highlight/releases/tag/jackson-syntax-highlight-1.0.5
 [SyntaxHighlighter]:	src/main/java/com/github/skjolber/jackson/jsh/SyntaxHighlighter.java
 [Jackson]:				https://github.com/FasterXML/jackson
 [ANSI]:					https://en.wikipedia.org/wiki/ANSI_escape_code
