@@ -2,8 +2,8 @@ package com.github.skjolber.jackson.jsh;
 
 public final class AnsiSyntaxHighlight {
 
-    public final static String	ESC_START 			= "\u001B[";
-    public final static String	ESC_END 				= "m";
+	public final static String	ESC_START 			= "\u001B[";
+	public final static String	ESC_END				= "m";
 
 	public static final String	CLEAR				= "0";
 
@@ -18,7 +18,7 @@ public final class AnsiSyntaxHighlight {
 	public static final String	INVISIBLE_TEXT		= "8";
 
 	public static final String	BLACK				= "30";
-	public static final String	RED 				= "31";
+	public static final String	RED				= "31";
 	public static final String	GREEN				= "32";
 	public static final String	YELLOW				= "33";
 	public static final String	BLUE				= "34";
@@ -39,52 +39,52 @@ public final class AnsiSyntaxHighlight {
 
 	public static final String	SEPERATOR 			= ";";
 
-	public final static String	RESET = ESC_START + CLEAR + ESC_END;
+	public final static String RESET = ESC_START + CLEAR + ESC_END;
 
 	public static String build(String arg) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(ESC_START);
-        sb.append(CLEAR);
-        sb.append(';');
-        sb.append(arg);
-        sb.append(ESC_END);
-        return sb.toString();
+		StringBuilder sb = new StringBuilder();
+		sb.append(ESC_START);
+		sb.append(CLEAR);
+		sb.append(';');
+		sb.append(arg);
+		sb.append(ESC_END);
+		return sb.toString();
 	}
 
-	public static String build(String ... args) {
-		if(args == null || args.length == 0) {
+	public static String build(String... args) {
+		if (args == null || args.length == 0) {
 			return RESET;
 		}
-        StringBuilder sb = new StringBuilder();
-        sb.append(ESC_START);
-        sb.append(CLEAR);
-        sb.append(';');
-        for(String arg : args) {
-        	if(!arg.equals(CLEAR)) {
-	            sb.append(arg);
-	            sb.append(';');
-        	}
-        }
-        sb.setLength(sb.length() - 1);
-        sb.append(ESC_END);
-        return sb.toString();
-	}
-	
-	public static boolean isBackground(String code) {
-		switch(code) {
-			case BACKGROUND_BLACK:
-			case BACKGROUND_RED:
-			case BACKGROUND_GREEN:
-			case BACKGROUND_YELLOW:
-			case BACKGROUND_BLUE:
-			case BACKGROUND_MAGENTA:
-			case BACKGROUND_CYAN:
-			case BACKGROUND_WHITE:
-			case BACKGROUND_DEFAULT: {
-				return true;
+		StringBuilder sb = new StringBuilder();
+		sb.append(ESC_START);
+		sb.append(CLEAR);
+		sb.append(';');
+		for (String arg : args) {
+			if (!arg.equals(CLEAR)) {
+				sb.append(arg);
+				sb.append(';');
 			}
+		}
+		sb.setLength(sb.length() - 1);
+		sb.append(ESC_END);
+		return sb.toString();
+	}
+
+	public static boolean isBackground(String code) {
+		switch (code) {
+		case BACKGROUND_BLACK:
+		case BACKGROUND_RED:
+		case BACKGROUND_GREEN:
+		case BACKGROUND_YELLOW:
+		case BACKGROUND_BLUE:
+		case BACKGROUND_MAGENTA:
+		case BACKGROUND_CYAN:
+		case BACKGROUND_WHITE:
+		case BACKGROUND_DEFAULT: {
+			return true;
+		}
 		}
 		return false;
 	}
-	
+
 }

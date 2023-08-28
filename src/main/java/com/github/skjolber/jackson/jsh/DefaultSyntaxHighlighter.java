@@ -10,7 +10,7 @@ public class DefaultSyntaxHighlighter implements SyntaxHighlighter {
 	}
 
 	public static class Builder {
-		
+
 		protected String[] fieldName;
 		protected String[] binaryValue;
 		protected String[] booleanValue;
@@ -22,21 +22,21 @@ public class DefaultSyntaxHighlighter implements SyntaxHighlighter {
 		protected String[] colon;
 		protected String[] whitespace;
 		protected String[] comma;
-		
+
 		// common for all colors, if no background is set
 		protected String background;
-		
+
 		protected String build(String[] colors) {
-			if(background == null) {
+			if (background == null) {
 				return AnsiSyntaxHighlight.build(colors);
 			}
-			if(colors == null || colors.length == 0) {
+			if (colors == null || colors.length == 0) {
 				return AnsiSyntaxHighlight.build(background);
 			}
-			
+
 			// check if already background is specified
-			for(String c : colors) {
-				if(AnsiSyntaxHighlight.isBackground(c)) {
+			for (String c : colors) {
+				if (AnsiSyntaxHighlight.isBackground(c)) {
 					return AnsiSyntaxHighlight.build(colors);
 				}
 			}
@@ -45,61 +45,64 @@ public class DefaultSyntaxHighlighter implements SyntaxHighlighter {
 			colorsWithBackground[colors.length] = background;
 			return AnsiSyntaxHighlight.build(colorsWithBackground);
 		}
-		
-		public Builder withComma(String ... value) {
+
+		public Builder withComma(String... value) {
 			this.comma = value;
 			return this;
 		}
-		
-		public Builder withCurlyBrackets(String ... value) {
+
+		public Builder withCurlyBrackets(String... value) {
 			this.curlyBrackets = value;
 			return this;
 		}
 
-		public Builder withSquareBrackets(String ... value) {
+		public Builder withSquareBrackets(String... value) {
 			this.squareBrackets = value;
 			return this;
 		}
 
-		public Builder withColon(String ... value) {
+		public Builder withColon(String... value) {
 			this.colon = value;
 			return this;
 		}
 
-		public Builder withWhitespace(String ... value) {
+		public Builder withWhitespace(String... value) {
 			this.whitespace = value;
 			return this;
 		}
 
-		public Builder withField(String ... value) {
+		public Builder withField(String... value) {
 			this.fieldName = value;
 			return this;
 		}
-		public Builder withBinary(String ... values) {
+
+		public Builder withBinary(String... values) {
 			this.binaryValue = values;
 			return this;
 		}
-		
-		public Builder withBoolean(String ... values) {
+
+		public Builder withBoolean(String... values) {
 			this.booleanValue = values;
 			return this;
 		}
-		public Builder withNull(String ... values) {
+
+		public Builder withNull(String... values) {
 			this.nullValue = values;
 			return this;
 		}
-		public Builder withNumber(String ... values) {
+
+		public Builder withNumber(String... values) {
 			this.numberValue = values;
 			return this;
 		}
-		public Builder withString(String ... values) {
+
+		public Builder withString(String... values) {
 			this.stringValue = values;
 			return this;
 		}
-		
+
 		/**
-		 * Se the default background. This will be added to all 
-		 * colors which do not themself define a background color.
+		 * Se the default background. This will be added to all colors which do not themself define a background color.
 		 * 
 		 * @param value background color
 		 * @return builder
@@ -113,7 +116,7 @@ public class DefaultSyntaxHighlighter implements SyntaxHighlighter {
 		public DefaultSyntaxHighlighter build() {
 			return new DefaultSyntaxHighlighter(this);
 		}
-		
+
 	}
 
 	protected String fieldName;
@@ -131,8 +134,9 @@ public class DefaultSyntaxHighlighter implements SyntaxHighlighter {
 	public DefaultSyntaxHighlighter() {
 		this(newBuilder());
 	}
-	
-	public DefaultSyntaxHighlighter(String fieldValue, String binaryValue, String booleanValue, String nullValue, String numberValue, String stringValue, String curlyBrackets, String squareBrackets, String colon, String whitespace, String comma) {
+
+	public DefaultSyntaxHighlighter(String fieldValue, String binaryValue, String booleanValue, String nullValue, String numberValue, String stringValue,
+			String curlyBrackets, String squareBrackets, String colon, String whitespace, String comma) {
 		super();
 		this.fieldName = fieldValue;
 		this.binaryValue = binaryValue;
@@ -161,7 +165,6 @@ public class DefaultSyntaxHighlighter implements SyntaxHighlighter {
 			builder.build(builder.whitespace), 
 			builder.build(builder.comma)	
 		);
-		
 	}
 
 	public String forFieldName(String value) {

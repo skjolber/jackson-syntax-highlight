@@ -15,18 +15,17 @@ import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.core.util.JsonGeneratorDelegate;
 
 /**
- * Syntax highlighting {@linkplain JsonGenerator} wrapper. 
+ * Syntax highlighting {@linkplain JsonGenerator} wrapper.
  * 
- *  Always uses the same highlighting colors.
+ * Always uses the same highlighting colors.
  * 
  */
 
 public class SyntaxHighlightingJsonGenerator extends JsonGeneratorDelegate {
 
 	/*
-	 * Implementation note: The indent and value is triggered in the same
-	 * method call, so the indenter must be rigged so that they write the 
-	 * correct color after the whitespace. 
+	 * Implementation note: The indent and value is triggered in the same method call, so the indenter must be rigged so that they write the correct color after
+	 * the whitespace.
 	 * 
 	 */
 
@@ -53,7 +52,8 @@ public class SyntaxHighlightingJsonGenerator extends JsonGeneratorDelegate {
 
 		this.syntaxHighlighter = syntaxHighlighter;
 
-		this.objectIndenter = new SyntaxHighlighterIndenter(syntaxHighlighter, prettyPrint ? new DefaultIndenter() : new DefaultPrettyPrinter.FixedSpaceIndenter());
+		this.objectIndenter = new SyntaxHighlighterIndenter(syntaxHighlighter,
+				prettyPrint ? new DefaultIndenter() : new DefaultPrettyPrinter.FixedSpaceIndenter());
 		this.arrayIndenter = new SyntaxHighlighterIndenter(syntaxHighlighter, new DefaultPrettyPrinter.FixedSpaceIndenter());
 
 		this.prettyPrinter = new SyntaxHighlightingPrettyPrinter(syntaxHighlighter, objectIndenter, arrayIndenter, listener);
@@ -100,11 +100,11 @@ public class SyntaxHighlightingJsonGenerator extends JsonGeneratorDelegate {
 		}
 		_verifyOffsets(array.length, offset, length);
 		writeStartArray();
-		for (int i = offset, end = offset+length; i < end; ++i) {
+		for (int i = offset, end = offset + length; i < end; ++i) {
 			arrayIndenter.setValueColor(syntaxHighlighter.forNumber(array[i]));
 			super.writeNumber(array[i]);
 		}
-		writeEndArray();		
+		writeEndArray();
 
 		arrayIndenter.clearValueColor();
 	}
@@ -116,11 +116,11 @@ public class SyntaxHighlightingJsonGenerator extends JsonGeneratorDelegate {
 		}
 		_verifyOffsets(array.length, offset, length);
 		writeStartArray();
-		for (int i = offset, end = offset+length; i < end; ++i) {
+		for (int i = offset, end = offset + length; i < end; ++i) {
 			arrayIndenter.setValueColor(syntaxHighlighter.forNumber(array[i]));
 			super.writeNumber(array[i]);
 		}
-		writeEndArray();		
+		writeEndArray();
 
 		arrayIndenter.clearValueColor();
 	}
@@ -132,11 +132,11 @@ public class SyntaxHighlightingJsonGenerator extends JsonGeneratorDelegate {
 		}
 		_verifyOffsets(array.length, offset, length);
 		writeStartArray();
-		for (int i = offset, end = offset+length; i < end; ++i) {
+		for (int i = offset, end = offset + length; i < end; ++i) {
 			arrayIndenter.setValueColor(syntaxHighlighter.forNumber(array[i]));
 			super.writeNumber(array[i]);
 		}
-		writeEndArray();		
+		writeEndArray();
 
 		arrayIndenter.clearValueColor();
 	}

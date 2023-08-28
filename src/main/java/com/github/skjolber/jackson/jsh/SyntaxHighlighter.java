@@ -13,27 +13,32 @@ public interface SyntaxHighlighter {
 	String forCurlyBrackets();
 
 	String forSquareBrackets();
-	
+
 	String forColon();
 
 	String forComma();
 
 	String forWhitespace();
-	
+
 	String forFieldName(String value);
-	 
+
 	String forNumber(int value);
+
 	String forNumber(double value);
+
 	String forNumber(long value);
+
 	String forNumber(BigInteger v);
+
 	String forNumber(BigDecimal v);
+
 	String forNumber(String encodedValue);
-	
+
 	String forString(String string);
-	
+
 	String forBinary();
-	
+
 	String forBoolean(boolean value);
-	
+
 	String forNull();
 }
