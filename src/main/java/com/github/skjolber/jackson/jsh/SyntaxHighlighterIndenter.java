@@ -15,24 +15,24 @@ public class SyntaxHighlighterIndenter implements Indenter {
 		this.delegate = delegate;
 		this.highligheter = highligheter;
 	}
-	
+
 	@Override
 	public void writeIndentation(JsonGenerator jg, int level) throws IOException {
 		String color = highligheter.forWhitespace();
 		jg.writeRaw(color);
 		delegate.writeIndentation(jg, level);
-		
-		if(valueColor != null) {
+
+		if (valueColor != null) {
 			jg.writeRaw(valueColor);
 		}
 	}
-	
+
 	/**
 	 * Set the color which is set after the indentation.
 	 * 
 	 * @param color color to set
 	 */
-	
+
 	public void setValueColor(String color) {
 		this.valueColor = color;
 	}
@@ -45,5 +45,5 @@ public class SyntaxHighlighterIndenter implements Indenter {
 	public boolean isInline() {
 		return delegate.isInline();
 	}
-		
+
 }
