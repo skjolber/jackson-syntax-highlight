@@ -152,10 +152,19 @@ public class DefaultSyntaxHighlighter implements SyntaxHighlighter {
 	}
 
 	public DefaultSyntaxHighlighter(Builder builder) {
-		this(builder.build(builder.fieldName), builder.build(builder.binaryValue), builder.build(builder.booleanValue), builder.build(builder.nullValue),
-				builder.build(builder.numberValue), builder.build(builder.stringValue), builder.build(builder.curlyBrackets),
-				builder.build(builder.squareBrackets), builder.build(builder.colon), builder.build(builder.whitespace), builder.build(builder.comma));
-
+		this(
+			builder.build(builder.fieldName), 
+			builder.build(builder.binaryValue),
+			builder.build(builder.booleanValue), 
+			builder.build(builder.nullValue), 
+			builder.build(builder.numberValue),
+			builder.build(builder.stringValue), 
+			builder.build(builder.curlyBrackets), 
+			builder.build(builder.squareBrackets),
+			builder.build(builder.colon), 
+			builder.build(builder.whitespace), 
+			builder.build(builder.comma)	
+		);
 	}
 
 	public String forFieldName(String value) {
