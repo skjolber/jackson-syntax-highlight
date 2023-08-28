@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.skjolber.jackson</groupId>
 	<artifactId>jackson-syntax-highlight</artifactId>
-	<version>1.0.8-SNAPSHOT</version>
+	<version>1.0.8</version>
 	<name>jackson-syntax-highlight</name>
 	<description>ANSI syntax highlighting for Jackson output</description>
 	<url>https://github.com/skjolber/jackson-syntax-highlight</url>
@@ -31,7 +31,7 @@
 		<connection>scm:git:git@github.com:skjolber/jackson-syntax-highlight.git</connection>
 		<developerConnection>scm:git:git@github.com:skjolber/jackson-syntax-highlight.git</developerConnection>
 		<url>git@github.com:skjolber/jackson-syntax-highlight.git</url>
-		<tag>HEAD</tag>
+		<tag>jackson-syntax-highlight-1.0.8</tag>
 	</scm>
 
 	<issueManagement>
