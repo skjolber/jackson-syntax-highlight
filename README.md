@@ -1,6 +1,8 @@
 ![Build Status](https://github.com/skjolber/jackson-syntax-highlight/actions/workflows/maven.yml/badge.svg) 
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.skjolber.jackson/jackson-syntax-highlight.svg)](https://mvnrepository.com/artifact/com.github.skjolber.jackson/jackson-syntax-highlight)
 
+# This project is currently maintained at [Entur](https://github.com/entur/jackson-syntax-highlight).
+
 # jackson-syntax-highlight
 Simple utility for generating syntax-highlighted [JSON] text using the [Jackson](https://github.com/FasterXML/jackson) library. Inlines [ANSI] color-codes visible in ANSI-enabled consoles.
 
