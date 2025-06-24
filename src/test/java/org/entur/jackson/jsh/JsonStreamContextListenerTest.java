@@ -2,7 +2,8 @@ package org.entur.jackson.jsh;
 
 import java.io.IOException;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class JsonStreamContextListenerTest extends AbstractHighlighterTest {
 

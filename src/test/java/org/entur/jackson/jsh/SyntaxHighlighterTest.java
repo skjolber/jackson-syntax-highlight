@@ -1,8 +1,9 @@
 package org.entur.jackson.jsh;
 
-import java.io.IOException;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Test;
+import java.io.IOException;
 
 public class SyntaxHighlighterTest extends AbstractHighlighterTest {
 
