@@ -43,42 +43,94 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
+		<jreleaser-maven-plugin.version>1.18.0</jreleaser-maven-plugin.version>
+		<junit-jupiter.version>5.11.4</junit-jupiter.version>
+		<junit.platform.version>1.11.4</junit.platform.version>
+		<maven-deploy-plugin.version>3.1.4</maven-deploy-plugin.version>
+		<maven-javadoc-plugin.version>3.11.2</maven-javadoc-plugin.version>
+		<maven-source-plugin.version>3.3.1</maven-source-plugin.version>
+		<maven.compiler.plugin.version>3.13.0</maven.compiler.plugin.version>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
 
-		<jackson.version>2.18.0</jackson.version>
-		<junit.version>4.13.2</junit.version>
-		<maven.jacoco.plugin.version>0.8.12</maven.jacoco.plugin.version>
+		<jackson.version>2.19.1</jackson.version>
+		<maven.jacoco.plugin.version>0.8.13</maven.jacoco.plugin.version>
 	</properties>
-
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.fasterxml.jackson</groupId>
+				<artifactId>jackson-bom</artifactId>
+				<version>${jackson.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.junit</groupId>
+				<artifactId>junit-bom</artifactId>
+				<version>${junit-jupiter.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 	<dependencies>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>
-			<version>${jackson.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
-			<version>${jackson.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-params</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.platform</groupId>
+			<artifactId>junit-platform-suite</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
 	<build>
-		<defaultGoal>clean test</defaultGoal>
-
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.jreleaser</groupId>
+					<artifactId>jreleaser-maven-plugin</artifactId>
+					<version>${jreleaser-maven-plugin.version}</version>
+					<inherited>false</inherited>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<version>${maven-deploy-plugin.version}</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.13.0</version>
+				<version>${maven.compiler.plugin.version}</version>
+				<configuration>
+					<source>${maven.compiler.source}</source>
+					<target>${maven.compiler.target}</target>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.jacoco</groupId>
@@ -121,60 +173,65 @@
 				</executions>
 			</plugin>
 			<plugin>
-				<groupId>org.sonatype.plugins</groupId>
-				<artifactId>nexus-staging-maven-plugin</artifactId>
-				<version>1.7.0</version>
-				<extensions>true</extensions>
-				<executions>
-					<execution>
-						<id>default-deploy</id>
-						<phase>deploy</phase>
-						<goals>
-							<goal>deploy</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<serverId>ossrh</serverId>
-					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
-					<autoReleaseAfterClose>false</autoReleaseAfterClose>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<version>3.3.1</version>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<goals>
-							<goal>jar-no-fork</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>3.10.1</version>
+				<version>${maven-javadoc-plugin.version}</version>
+				<configuration>
+					<source>17</source>
+					<detectJavaApiLink>false</detectJavaApiLink>
+				</configuration>
 				<executions>
 					<execution>
 						<id>attach-javadocs</id>
 						<goals>
 							<goal>jar</goal>
 						</goals>
+						<configuration>
+							<attach>true</attach>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-release-plugin</artifactId>
-				<version>3.1.1</version>
+				<groupId>org.jreleaser</groupId>
+				<artifactId>jreleaser-maven-plugin</artifactId>
+				<inherited>false</inherited>
 				<configuration>
-					<autoVersionSubmodules>true</autoVersionSubmodules>
-					<useReleaseProfile>false</useReleaseProfile>
-					<releaseProfiles>release</releaseProfiles>
-					<goals>deploy</goals>
+					<jreleaser>
+						<signing>
+							<active>ALWAYS</active>
+							<armored>true</armored>
+						</signing>
+						<deploy>
+							<maven>
+								<mavenCentral>
+									<sonatype>
+										<active>RELEASE</active>
+										<url>https://central.sonatype.com/api/v1/publisher</url>
+										<stagingRepositories>target/staging-deploy</stagingRepositories>
+									</sonatype>
+								</mavenCentral>
+								<nexus2>
+									<maven-central>
+										<active>SNAPSHOT</active>
+										<url>https://ossrh-staging-api.central.sonatype.com/service/local</url>
+										<snapshotUrl>https://central.sonatype.com/repository/maven-snapshots</snapshotUrl>
+										<applyMavenCentralRules>true</applyMavenCentralRules>
+										<snapshotSupported>true</snapshotSupported>
+										<closeRepository>true</closeRepository>
+										<releaseRepository>true</releaseRepository>
+										<stagingRepositories>target/staging-deploy</stagingRepositories>
+									</maven-central>
+								</nexus2>
+							</maven>
+						</deploy>
+						<release>
+							<github>
+								<skipTag>false</skipTag>
+								<skipRelease>true</skipRelease>
+							</github>
+						</release>
+					</jreleaser>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -203,27 +260,25 @@
 
 	<profiles>
 		<profile>
-			<!-- mvn -P release release:perform -->
-			<id>release</id>
+			<id>publication</id>
 			<properties>
-				<!-- this is useful when the desired key is not the default (first) export 
-					GPG_KEY_NAME=ABCDEF01 -->
-				<gpg.executable>gpg</gpg.executable>
-				<gpg.keyname>${env.GPG_KEY_NAME}</gpg.keyname>
+				<altDeploymentRepository>local::file:./target/staging-deploy</altDeploymentRepository>
 			</properties>
 			<build>
 				<plugins>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-gpg-plugin</artifactId>
-						<version>3.2.7</version>
+						<artifactId>maven-source-plugin</artifactId>
+						<version>${maven-source-plugin.version}</version>
 						<executions>
 							<execution>
-								<id>sign-artifacts</id>
-								<phase>verify</phase>
+								<id>attach-sources</id>
 								<goals>
-									<goal>sign</goal>
+									<goal>jar</goal>
 								</goals>
+								<configuration>
+									<attach>true</attach>
+								</configuration>
 							</execution>
 						</executions>
 					</plugin>
@@ -231,16 +286,5 @@
 			</build>
 		</profile>
 	</profiles>
-
-	<distributionManagement>
-		<snapshotRepository>
-			<id>ossrh</id>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-		</snapshotRepository>
-		<repository>
-			<id>ossrh</id>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-		</repository>
-	</distributionManagement>
 
 </project>

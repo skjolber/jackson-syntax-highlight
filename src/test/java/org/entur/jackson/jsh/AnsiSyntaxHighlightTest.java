@@ -1,8 +1,7 @@
 package org.entur.jackson.jsh;
 
-import static org.junit.Assert.assertTrue;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.entur.jackson.jsh.AnsiSyntaxHighlight;
 

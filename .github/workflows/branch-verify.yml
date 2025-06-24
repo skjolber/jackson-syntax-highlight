@@ -1,0 +1,12 @@
+name: validate-maven-build
+on:
+  pull_request:
+    types:
+      - synchronize
+      - opened
+
+jobs:
+  validate-maven-build:
+    uses: entur/abt-gha-public/.github/workflows/maven-open-source-verify.yml@main
+    with:
+      java-version: 21
