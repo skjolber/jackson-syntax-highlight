@@ -7,12 +7,15 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 
-import com.fasterxml.jackson.core.Base64Variant;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.SerializableString;
-import com.fasterxml.jackson.core.util.DefaultIndenter;
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
-import com.fasterxml.jackson.core.util.JsonGeneratorDelegate;
+import tools.jackson.core.Base64Variant;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.core.ObjectWriteContext;
+import tools.jackson.core.SerializableString;
+import tools.jackson.core.json.JsonGeneratorBase;
+import tools.jackson.core.util.DefaultIndenter;
+import tools.jackson.core.util.DefaultPrettyPrinter;
+import tools.jackson.core.util.JsonGeneratorDelegate;
 
 /**
  * Syntax highlighting {@linkplain JsonGenerator} wrapper.
@@ -24,6 +27,7 @@ import com.fasterxml.jackson.core.util.JsonGeneratorDelegate;
 public class SyntaxHighlightingJsonGenerator extends JsonGeneratorDelegate {
 
 	/*
+	 *
 	 * Implementation note: The indent and value is triggered in the same method call, so the indenter must be rigged so that they write the correct color after
 	 * the whitespace.
 	 * 
@@ -35,66 +39,52 @@ public class SyntaxHighlightingJsonGenerator extends JsonGeneratorDelegate {
 
 	protected SyntaxHighlighter syntaxHighlighter;
 
-	public SyntaxHighlightingJsonGenerator(JsonGenerator d) {
-		this(d, true);
-	}
-
-	public SyntaxHighlightingJsonGenerator(JsonGenerator d, boolean prettyPrint) {
-		this(d, new DefaultSyntaxHighlighter(), null, prettyPrint);
-	}
-
-	public SyntaxHighlightingJsonGenerator(JsonGenerator d, SyntaxHighlighter syntaxHighlighter, boolean prettyPrint) {
-		this(d, syntaxHighlighter, null, prettyPrint);
-	}
-
-	public SyntaxHighlightingJsonGenerator(JsonGenerator d, SyntaxHighlighter syntaxHighlighter, JsonStreamContextListener listener, boolean prettyPrint) {
+	public SyntaxHighlightingJsonGenerator(JsonGenerator d, SyntaxHighlightingPrettyPrinter prettyPrinter, SyntaxHighlighterIndenter objectIndenter, SyntaxHighlighterIndenter arrayIndenter, SyntaxHighlighter syntaxHighlighter) {
 		super(d, false);
-
+		this.prettyPrinter = prettyPrinter;
+		this.objectIndenter = objectIndenter;
+		this.arrayIndenter = arrayIndenter;
 		this.syntaxHighlighter = syntaxHighlighter;
-
-		this.objectIndenter = new SyntaxHighlighterIndenter(syntaxHighlighter,
-				prettyPrint ? new DefaultIndenter() : new DefaultPrettyPrinter.FixedSpaceIndenter());
-		this.arrayIndenter = new SyntaxHighlighterIndenter(syntaxHighlighter, new DefaultPrettyPrinter.FixedSpaceIndenter());
-
-		this.prettyPrinter = new SyntaxHighlightingPrettyPrinter(syntaxHighlighter, objectIndenter, arrayIndenter, listener);
-		setPrettyPrinter(prettyPrinter);
 	}
 
 	@Override
-	public void writeFieldName(String value) throws IOException {
+	public JsonGenerator writeName(String value) throws JacksonException {
 		prettyPrinter.setCommaColor(syntaxHighlighter.forComma());
 		objectIndenter.setValueColor(syntaxHighlighter.forFieldName(value));
 
-		super.writeFieldName(value);
+		super.writeName(value);
 
 		objectIndenter.clearValueColor();
 		prettyPrinter.cleanCommaColor();
+		return this;
 	}
 
 	@Override
-	public void writeFieldName(SerializableString name) throws IOException {
+	public JsonGenerator writeName(SerializableString name) throws JacksonException {
 		prettyPrinter.setCommaColor(syntaxHighlighter.forComma());
 		objectIndenter.setValueColor(syntaxHighlighter.forFieldName(name.getValue()));
 
-		super.writeFieldName(name);
+		super.writeName(name);
 
 		objectIndenter.clearValueColor();
 		prettyPrinter.cleanCommaColor();
+		return this;
 	}
 
 	@Override
-	public void writeFieldId(long id) throws IOException {
+	public JsonGenerator writePropertyId(long id) throws JacksonException {
 		prettyPrinter.setCommaColor(syntaxHighlighter.forComma());
 		objectIndenter.setValueColor(syntaxHighlighter.forFieldName(Long.toString(id)));
 
-		super.writeFieldId(id);
+		super.writePropertyId(id);
 
 		objectIndenter.clearValueColor();
 		prettyPrinter.cleanCommaColor();
+		return this;
 	}
 
 	@Override
-	public void writeArray(int[] array, int offset, int length) throws IOException {
+	public JsonGenerator writeArray(int[] array, int offset, int length) throws JacksonException {
 		if (array == null) {
 			throw new IllegalArgumentException("null array");
 		}
@@ -107,10 +97,11 @@ public class SyntaxHighlightingJsonGenerator extends JsonGeneratorDelegate {
 		writeEndArray();
 
 		arrayIndenter.clearValueColor();
+		return this;
 	}
 
 	@Override
-	public void writeArray(long[] array, int offset, int length) throws IOException {
+	public JsonGenerator writeArray(long[] array, int offset, int length) throws JacksonException {
 		if (array == null) {
 			throw new IllegalArgumentException("null array");
 		}
@@ -123,10 +114,11 @@ public class SyntaxHighlightingJsonGenerator extends JsonGeneratorDelegate {
 		writeEndArray();
 
 		arrayIndenter.clearValueColor();
+		return this;
 	}
 
 	@Override
-	public void writeArray(double[] array, int offset, int length) throws IOException {
+	public JsonGenerator writeArray(double[] array, int offset, int length) throws JacksonException {
 		if (array == null) {
 			throw new IllegalArgumentException("null array");
 		}
@@ -139,114 +131,129 @@ public class SyntaxHighlightingJsonGenerator extends JsonGeneratorDelegate {
 		writeEndArray();
 
 		arrayIndenter.clearValueColor();
+		return this;
 	}
 
 	@Override
-	public void writeBinary(Base64Variant b64variant, byte[] data, int offset, int len) throws IOException {
+	public JsonGenerator writeBinary(Base64Variant b64variant, byte[] data, int offset, int len) throws JacksonException {
 		prettyPrinter.setValueColor(syntaxHighlighter.forBinary());
 		super.writeBinary(b64variant, data, offset, len);
+		return this;
 	}
 
 	@Override
-	public int writeBinary(Base64Variant b64variant, InputStream data, int dataLength) throws IOException {
+	public int writeBinary(Base64Variant b64variant, InputStream data, int dataLength) throws JacksonException {
 		prettyPrinter.setValueColor(syntaxHighlighter.forBinary());
 		return super.writeBinary(b64variant, data, dataLength);
-
 	}
 
 	@Override
-	public void writeNumber(short v) throws IOException {
+	public JsonGenerator writeNumber(short v) throws JacksonException {
 		prettyPrinter.setValueColor(syntaxHighlighter.forNumber(v));
 		super.writeNumber(v);
+		return this;
 	}
 
 	@Override
-	public void writeNumber(int v) throws IOException {
+	public JsonGenerator writeNumber(int v) throws JacksonException {
 		prettyPrinter.setValueColor(syntaxHighlighter.forNumber(v));
 		super.writeNumber(v);
+		return this;
 	}
 
 	@Override
-	public void writeNumber(long v) throws IOException {
+	public JsonGenerator writeNumber(long v) throws JacksonException {
 		prettyPrinter.setValueColor(syntaxHighlighter.forNumber(v));
 		super.writeNumber(v);
+		return this;
 	}
 
 	@Override
-	public void writeNumber(BigInteger v) throws IOException {
+	public JsonGenerator writeNumber(BigInteger v) throws JacksonException {
 		prettyPrinter.setValueColor(syntaxHighlighter.forNumber(v));
 		super.writeNumber(v);
+		return this;
 	}
 
 	@Override
-	public void writeNumber(double v) throws IOException {
+	public JsonGenerator writeNumber(double v) throws JacksonException {
 		prettyPrinter.setValueColor(syntaxHighlighter.forNumber(v));
 		super.writeNumber(v);
+		return this;
 	}
 
 	@Override
-	public void writeNumber(float v) throws IOException {
+	public JsonGenerator writeNumber(float v) throws JacksonException {
 		prettyPrinter.setValueColor(syntaxHighlighter.forNumber(v));
 		super.writeNumber(v);
+		return this;
 	}
 
 	@Override
-	public void writeNumber(BigDecimal v) throws IOException {
+	public JsonGenerator writeNumber(BigDecimal v) throws JacksonException {
 		prettyPrinter.setValueColor(syntaxHighlighter.forNumber(v));
 		super.writeNumber(v);
+		return this;
 	}
 
 	@Override
-	public void writeNumber(String encodedValue) throws IOException, UnsupportedOperationException {
+	public JsonGenerator writeNumber(String encodedValue) throws JacksonException, UnsupportedOperationException {
 		prettyPrinter.setValueColor(syntaxHighlighter.forNumber(encodedValue));
 		super.writeNumber(encodedValue);
-
+		return this;
 	}
 
 	@Override
-	public void writeBoolean(boolean value) throws IOException {
+	public JsonGenerator writeBoolean(boolean value) throws JacksonException {
 		prettyPrinter.setValueColor(syntaxHighlighter.forBoolean(value));
 		super.writeBoolean(value);
+		return this;
 	}
 
 	@Override
-	public void writeNull() throws IOException {
+	public JsonGenerator writeNull() throws JacksonException {
 		prettyPrinter.setValueColor(syntaxHighlighter.forNull());
 		super.writeNull();
+		return this;
 	}
 
 	@Override
-	public void writeString(String value) throws IOException {
+	public JsonGenerator writeString(String value) throws JacksonException {
 		prettyPrinter.setValueColor(syntaxHighlighter.forString(value));
 		super.writeString(value);
+		return this;
 	}
 
 	@Override
-	public void writeString(Reader reader, int len) throws IOException {
+	public JsonGenerator writeString(Reader reader, int len) throws JacksonException {
 		prettyPrinter.setValueColor(syntaxHighlighter.forString(null));
 		delegate.writeString(reader, len);
+		return this;
 	}
 
 	@Override
-	public void writeString(char[] text, int offset, int len) throws IOException {
+	public JsonGenerator writeString(char[] text, int offset, int len) throws JacksonException {
 		prettyPrinter.setValueColor(syntaxHighlighter.forString(new String(text, offset, len)));
 		delegate.writeString(text, offset, len);
+		return this;
 	}
 
 	@Override
-	public void writeString(SerializableString text) throws IOException {
+	public JsonGenerator writeString(SerializableString text) throws JacksonException {
 		prettyPrinter.setValueColor(syntaxHighlighter.forString(text.getValue()));
 		delegate.writeString(text);
+		return this;
 	}
 
 	@Override
-	public void writeUTF8String(byte[] text, int offset, int length) throws IOException {
+	public JsonGenerator writeUTF8String(byte[] text, int offset, int length) throws JacksonException {
 		prettyPrinter.setValueColor(syntaxHighlighter.forString(new String(text, offset, length, StandardCharsets.UTF_8)));
 		delegate.writeUTF8String(text, offset, length);
+		return this;
 	}
 
 	@Override
-	public void close() throws IOException {
+	public void close() throws JacksonException {
 		flush();
 		delegate.writeRaw(AnsiSyntaxHighlight.RESET);
 		super.close();
