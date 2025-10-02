@@ -3,11 +3,11 @@ package org.entur.jackson.jsh;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-import com.fasterxml.jackson.core.JsonStreamContext;
 import org.entur.jackson.jsh.AnsiSyntaxHighlight;
 import org.entur.jackson.jsh.DefaultSyntaxHighlighter;
 import org.entur.jackson.jsh.JsonStreamContextListener;
 import org.entur.jackson.jsh.SyntaxHighlighter;
+import tools.jackson.core.TokenStreamContext;
 
 /**
  * 
@@ -26,7 +26,7 @@ public class SubtreeJsonStreamContextListener implements JsonStreamContextListen
 	
 	private SyntaxHighlighter delegate = base;
 	
-	public SyntaxHighlighter field(JsonStreamContext context) {
+	public SyntaxHighlighter field(TokenStreamContext context) {
 		if(context.pathAsPointer().toString().equals("/object")) {
 			return numberField;
 		}
@@ -35,23 +35,23 @@ public class SubtreeJsonStreamContextListener implements JsonStreamContextListen
 	}
 
 	@Override
-	public void startObject(JsonStreamContext outputContext) {
+	public void startObject(TokenStreamContext outputContext) {
 		this.delegate = field(outputContext);
 	}
 
 	@Override
-	public void endObject(JsonStreamContext outputContext) {
+	public void endObject(TokenStreamContext outputContext) {
 		// reset
 		this.delegate = base;
 	}
 
 	@Override
-	public void startArray(JsonStreamContext outputContext) {
+	public void startArray(TokenStreamContext outputContext) {
 		this.delegate = field(outputContext);
 	}
 
 	@Override
-	public void endArray(JsonStreamContext outputContext) {
+	public void endArray(TokenStreamContext outputContext) {
 		// reset
 		this.delegate = base;
 	}

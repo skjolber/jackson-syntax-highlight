@@ -1,23 +1,23 @@
 package org.entur.jackson.jsh;
 
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.core.util.DefaultPrettyPrinter;
+
 import java.io.IOException;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter.Indenter;
+public class SyntaxHighlighterIndenter implements DefaultPrettyPrinter.Indenter {
 
-public class SyntaxHighlighterIndenter implements Indenter {
-
-	private final Indenter delegate;
+	private final DefaultPrettyPrinter.Indenter delegate;
 	protected SyntaxHighlighter highligheter;
 	protected String valueColor;
 
-	public SyntaxHighlighterIndenter(SyntaxHighlighter highligheter, Indenter delegate) {
+	public SyntaxHighlighterIndenter(SyntaxHighlighter highligheter, DefaultPrettyPrinter.Indenter delegate) {
 		this.delegate = delegate;
 		this.highligheter = highligheter;
 	}
 
 	@Override
-	public void writeIndentation(JsonGenerator jg, int level) throws IOException {
+	public void writeIndentation(JsonGenerator jg, int level)  {
 		String color = highligheter.forWhitespace();
 		jg.writeRaw(color);
 		delegate.writeIndentation(jg, level);

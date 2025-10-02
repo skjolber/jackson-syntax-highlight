@@ -3,10 +3,10 @@ package org.entur.jackson.jsh;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-import com.fasterxml.jackson.core.JsonStreamContext;
 import org.entur.jackson.jsh.AnsiSyntaxHighlight;
 import org.entur.jackson.jsh.DefaultSyntaxHighlighter;
 import org.entur.jackson.jsh.SyntaxHighlighter;
+import tools.jackson.core.TokenStreamContext;
 
 public class SingleLineSyntaxHighlighter implements SyntaxHighlighter {
 
@@ -19,11 +19,7 @@ public class SingleLineSyntaxHighlighter implements SyntaxHighlighter {
 	
 	private SyntaxHighlighter delegate = base;
 	
-	public SyntaxHighlighter field(JsonStreamContext context) {
-		if(context.inRoot()) {
-			return base;
-		}
-
+	public SyntaxHighlighter field(TokenStreamContext context) {
 		return base;
 	}
 

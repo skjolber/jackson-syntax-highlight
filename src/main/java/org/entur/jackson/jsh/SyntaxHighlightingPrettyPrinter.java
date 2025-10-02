@@ -2,8 +2,9 @@ package org.entur.jackson.jsh;
 
 import java.io.IOException;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.core.util.DefaultPrettyPrinter;
 
 /**
  * 
@@ -34,23 +35,23 @@ public class SyntaxHighlightingPrettyPrinter extends DefaultPrettyPrinter {
 		this.listener = listener;
 	}
 
-	public void writeRootValueSeparator(JsonGenerator gen) throws IOException {
+	public void writeRootValueSeparator(JsonGenerator gen) {
 		gen.writeRaw(AnsiSyntaxHighlight.RESET);
 		super.writeRootValueSeparator(gen);
 	}
 
-	public void writeStartObject(JsonGenerator gen) throws IOException {
+	public void writeStartObject(JsonGenerator gen) {
 		gen.writeRaw(syntaxHighlighter.forCurlyBrackets());
 		super.writeStartObject(gen);
 
 		if (listener != null) {
-			listener.startObject(gen.getOutputContext());
+			listener.startObject(gen.streamWriteContext());
 		}
 	}
 
-	public void writeEndObject(JsonGenerator gen, int nrOfEntries) throws IOException {
+	public void writeEndObject(JsonGenerator gen, int nrOfEntries) {
 		if (listener != null) {
-			listener.endObject(gen.getOutputContext().getParent());
+			listener.endObject(gen.streamWriteContext().getParent());
 		}
 
 		String color = syntaxHighlighter.forCurlyBrackets();
@@ -64,23 +65,23 @@ public class SyntaxHighlightingPrettyPrinter extends DefaultPrettyPrinter {
 		objectIndenter.clearValueColor();
 	}
 
-	public void writeObjectEntrySeparator(JsonGenerator gen) throws IOException {
+	public void writeObjectEntrySeparator(JsonGenerator gen) {
 		gen.writeRaw(commaColor);
 
 		super.writeObjectEntrySeparator(gen);
 	}
 
-	public void writeObjectFieldValueSeparator(JsonGenerator gen) throws IOException {
-		if (_spacesInObjectEntries) {
+	public void writeObjectNameValueSeparator(JsonGenerator gen) throws JacksonException {
+		if (_objectNameValueSeparator != null) {
 			gen.writeRaw(syntaxHighlighter.forWhitespace());
 			gen.writeRaw(' ');
 			gen.writeRaw(syntaxHighlighter.forColon());
-			gen.writeRaw(_separators.getObjectFieldValueSeparator());
+			gen.writeRaw(_objectNameValueSeparator);
 			gen.writeRaw(syntaxHighlighter.forWhitespace());
 			gen.writeRaw(' ');
 		} else {
 			gen.writeRaw(syntaxHighlighter.forColon());
-			gen.writeRaw(_separators.getObjectFieldValueSeparator());
+			gen.writeRaw(_objectNameValueSeparator);
 		}
 
 		if (valueColor != null) {
@@ -89,18 +90,18 @@ public class SyntaxHighlightingPrettyPrinter extends DefaultPrettyPrinter {
 		}
 	}
 
-	public void writeStartArray(JsonGenerator gen) throws IOException {
+	public void writeStartArray(JsonGenerator gen) {
 		gen.writeRaw(syntaxHighlighter.forSquareBrackets());
 		super.writeStartArray(gen);
 
 		if (listener != null) {
-			listener.startArray(gen.getOutputContext());
+			listener.startArray(gen.streamWriteContext());
 		}
 	}
 
-	public void writeEndArray(JsonGenerator gen, int nrOfValues) throws IOException {
+	public void writeEndArray(JsonGenerator gen, int nrOfValues) {
 		if (listener != null) {
-			listener.endArray(gen.getOutputContext().getParent());
+			listener.endArray(gen.streamWriteContext().getParent());
 		}
 
 		String color = syntaxHighlighter.forSquareBrackets();
@@ -114,7 +115,7 @@ public class SyntaxHighlightingPrettyPrinter extends DefaultPrettyPrinter {
 		arrayIndenter.clearValueColor();
 	}
 
-	public void writeArrayValueSeparator(JsonGenerator gen) throws IOException {
+	public void writeArrayValueSeparator(JsonGenerator gen) {
 		gen.writeRaw(syntaxHighlighter.forComma());
 
 		if (valueColor != null) {
@@ -124,14 +125,14 @@ public class SyntaxHighlightingPrettyPrinter extends DefaultPrettyPrinter {
 		super.writeArrayValueSeparator(gen);
 	}
 
-	public void beforeArrayValues(JsonGenerator gen) throws IOException {
+	public void beforeArrayValues(JsonGenerator gen) {
 		if (valueColor != null) {
 			arrayIndenter.setValueColor(valueColor);
 		}
 		super.beforeArrayValues(gen);
 	}
 
-	public void beforeObjectEntries(JsonGenerator gen) throws IOException {
+	public void beforeObjectEntries(JsonGenerator gen) {
 		super.beforeObjectEntries(gen);
 	}
 
