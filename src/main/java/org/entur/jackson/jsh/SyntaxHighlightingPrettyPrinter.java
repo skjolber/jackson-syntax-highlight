@@ -5,6 +5,7 @@ import java.io.IOException;
 import tools.jackson.core.JacksonException;
 import tools.jackson.core.JsonGenerator;
 import tools.jackson.core.util.DefaultPrettyPrinter;
+import tools.jackson.core.util.Instantiatable;
 
 /**
  * 
@@ -146,5 +147,17 @@ public class SyntaxHighlightingPrettyPrinter extends DefaultPrettyPrinter {
 
 	public void cleanCommaColor() {
 		this.commaColor = null;
+	}
+
+	public SyntaxHighlighter getSyntaxHighlighter() {
+		return syntaxHighlighter;
+	}
+
+	public SyntaxHighlighterIndenter getArrayIndenter() {
+		return arrayIndenter;
+	}
+
+	public SyntaxHighlighterIndenter getObjectIndenter() {
+		return objectIndenter;
 	}
 }

@@ -1,38 +1,50 @@
 package org.entur.jackson.jsh;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import tools.jackson.core.JsonGenerator;
+import tools.jackson.core.ObjectWriteContext;
+import tools.jackson.core.PrettyPrinter;
+import tools.jackson.core.TokenStreamFactory;
+import tools.jackson.core.json.JsonFactory;
+import tools.jackson.core.json.JsonFactoryBuilder;
+import tools.jackson.core.json.JsonWriteFeature;
 import tools.jackson.core.util.DefaultIndenter;
 import tools.jackson.core.util.DefaultPrettyPrinter;
+import tools.jackson.core.util.JsonGeneratorDecorator;
+import tools.jackson.databind.ObjectWriter;
+import tools.jackson.databind.cfg.GeneratorSettings;
 import tools.jackson.databind.json.JsonMapper;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class AbstractHighlighterTest {
 
+	private ObjectWriteContext objectWriteContext(PrettyPrinter pp) {
+		return new ObjectWriteContext.Base() {
+			@Override
+			public PrettyPrinter getPrettyPrinter() { return pp; }
+		};
+	}
+
 	public void handle(SyntaxHighlighter syntaxHighlighter, JsonStreamContextListener listener) throws IOException {
 
-		boolean prettyPrint = true;
+		InstantiatablePrettyPrinter instantiatablePrettyPrinter = new InstantiatablePrettyPrinter(syntaxHighlighter);
 
-		SyntaxHighlighterIndenter objectIndenter = new SyntaxHighlighterIndenter(syntaxHighlighter,
-				prettyPrint ? new DefaultIndenter() : new DefaultPrettyPrinter.FixedSpaceIndenter());
-		SyntaxHighlighterIndenter arrayIndenter = new SyntaxHighlighterIndenter(syntaxHighlighter, new DefaultPrettyPrinter.FixedSpaceIndenter());
+		JsonFactory jsonFactory = JsonFactory.builder().build();
+		SyntaxHighlightingPrettyPrinter prettyPrinter = (SyntaxHighlightingPrettyPrinter) instantiatablePrettyPrinter.createInstance();
+		ObjectWriteContext objectWriteContext = objectWriteContext(prettyPrinter);
 
-		SyntaxHighlightingPrettyPrinter prettyPrinter = new SyntaxHighlightingPrettyPrinter(syntaxHighlighter, objectIndenter, arrayIndenter, listener);
-
-		JsonMapper mapper = JsonMapper.builderWithJackson2Defaults().defaultPrettyPrinter(prettyPrinter).build();
 		StringWriter writer = new StringWriter();
-		JsonGenerator delegate = mapper.createGenerator(writer);
+		JsonGenerator delegate = jsonFactory.createGenerator(objectWriteContext, writer);
 
-		SyntaxHighlightingJsonGenerator jsonGenerator = new SyntaxHighlightingJsonGenerator(delegate, prettyPrinter, objectIndenter, arrayIndenter, syntaxHighlighter);
-		write(jsonGenerator);
-		System.out.println(writer);
-		
-		writer = new StringWriter();
-		delegate = mapper.createGenerator(writer);
-		jsonGenerator = new SyntaxHighlightingJsonGenerator(delegate, prettyPrinter, objectIndenter, arrayIndenter, syntaxHighlighter);
+		SyntaxHighlightingJsonGenerator jsonGenerator = new SyntaxHighlightingJsonGenerator(delegate, prettyPrinter, prettyPrinter.getObjectIndenter(), prettyPrinter.getArrayIndenter(), prettyPrinter.getSyntaxHighlighter());
 		write(jsonGenerator);
 		System.out.println(writer);
 	}
