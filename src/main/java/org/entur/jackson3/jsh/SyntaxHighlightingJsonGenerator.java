@@ -1,6 +1,5 @@
-package org.entur.jackson.jsh;
+package org.entur.jackson3.jsh;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.math.BigDecimal;
@@ -10,11 +9,8 @@ import java.nio.charset.StandardCharsets;
 import tools.jackson.core.Base64Variant;
 import tools.jackson.core.JacksonException;
 import tools.jackson.core.JsonGenerator;
-import tools.jackson.core.ObjectWriteContext;
+import tools.jackson.core.PrettyPrinter;
 import tools.jackson.core.SerializableString;
-import tools.jackson.core.json.JsonGeneratorBase;
-import tools.jackson.core.util.DefaultIndenter;
-import tools.jackson.core.util.DefaultPrettyPrinter;
 import tools.jackson.core.util.JsonGeneratorDelegate;
 
 /**
@@ -25,6 +21,22 @@ import tools.jackson.core.util.JsonGeneratorDelegate;
  */
 
 public class SyntaxHighlightingJsonGenerator extends JsonGeneratorDelegate {
+
+	public static SyntaxHighlightingJsonGenerator create(JsonGenerator jsonGenerator) {
+		return create(jsonGenerator, null);
+	}
+
+	public static SyntaxHighlightingJsonGenerator create(JsonGenerator jsonGenerator, TokenStreamContextListener listener) {
+		PrettyPrinter candidate = jsonGenerator.getPrettyPrinter();
+		if(!(candidate instanceof SyntaxHighlightingPrettyPrinter)) {
+			throw new IllegalStateException("Expected pretty-printer of type " + SyntaxHighlightingPrettyPrinter.class.getName());
+		}
+		SyntaxHighlightingPrettyPrinter prettyPrinter = (SyntaxHighlightingPrettyPrinter)candidate;
+
+		prettyPrinter.setTokenStreamContextListener(listener);
+
+		return new SyntaxHighlightingJsonGenerator(jsonGenerator, prettyPrinter, prettyPrinter.getObjectIndenter(), prettyPrinter.getArrayIndenter(), prettyPrinter.getSyntaxHighlighter());
+	}
 
 	/*
 	 *
@@ -227,28 +239,35 @@ public class SyntaxHighlightingJsonGenerator extends JsonGeneratorDelegate {
 	@Override
 	public JsonGenerator writeString(Reader reader, int len) throws JacksonException {
 		prettyPrinter.setValueColor(syntaxHighlighter.forString(null));
-		delegate.writeString(reader, len);
+		super.writeString(reader, len);
 		return this;
 	}
 
 	@Override
 	public JsonGenerator writeString(char[] text, int offset, int len) throws JacksonException {
 		prettyPrinter.setValueColor(syntaxHighlighter.forString(new String(text, offset, len)));
-		delegate.writeString(text, offset, len);
+		super.writeString(text, offset, len);
 		return this;
 	}
 
 	@Override
 	public JsonGenerator writeString(SerializableString text) throws JacksonException {
 		prettyPrinter.setValueColor(syntaxHighlighter.forString(text.getValue()));
-		delegate.writeString(text);
+		super.writeString(text);
+		return this;
+	}
+
+	@Override
+	public JsonGenerator writeRawUTF8String(byte[] bytes, int offset, int length) throws JacksonException {
+		prettyPrinter.setValueColor(syntaxHighlighter.forString(new String(bytes, offset, length)));
+		super.writeRawUTF8String(bytes,offset, length);
 		return this;
 	}
 
 	@Override
 	public JsonGenerator writeUTF8String(byte[] text, int offset, int length) throws JacksonException {
 		prettyPrinter.setValueColor(syntaxHighlighter.forString(new String(text, offset, length, StandardCharsets.UTF_8)));
-		delegate.writeUTF8String(text, offset, length);
+		super.writeUTF8String(text, offset, length);
 		return this;
 	}
 

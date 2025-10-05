@@ -1,9 +1,7 @@
-package org.entur.jackson.jsh;
+package org.entur.jackson3.jsh;
 
 import tools.jackson.core.JsonGenerator;
 import tools.jackson.core.util.DefaultPrettyPrinter;
-
-import java.io.IOException;
 
 public class SyntaxHighlighterIndenter implements DefaultPrettyPrinter.Indenter {
 

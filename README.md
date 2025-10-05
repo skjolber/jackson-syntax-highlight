@@ -20,6 +20,8 @@ Features:
 
 The library is primarily intended for adding coloring while doing minimal changes to existing applications. For example, coloring of status codes during unit testing.
 
+For Jackson `2.x` support, see the `jackson2.x` branch. Note that the `jackson2.x` branch is on another coordinate and package, so both version can be used in the same app.
+
 ## License
 [Apache 2.0]
 
@@ -31,14 +33,14 @@ The project is built with [Maven] and is available on the central Maven reposito
 
 Add the property
 ```xml
-<jackson-syntax-highlight.version>1.1.x</jackson-syntax-highlight.version>
+<jackson-syntax-highlight.version>3.0.x</jackson-syntax-highlight.version>
 ```
 
 then add
 
 ```xml
 <dependency>
-    <groupId>org.entur.jackson</groupId>
+    <groupId>org.entur.jackson3</groupId>
     <artifactId>jackson-syntax-highlight</artifactId>
     <version>${jackson-syntax-highlight.version}</version>
 </dependency>
@@ -54,53 +56,57 @@ For
 
 ```groovy
 ext {
-  jacksonSyntaxHighlightVersion = '1.1.x'
+  jacksonSyntaxHighlightVersion = '3.0.x'
 }
 ```
 
 add
 
 ```groovy
-api ("org.entur.jackson:jackson-syntax-highlight:${jacksonSyntaxHighlightVersion}")
+api ("org.entur.jackson3:jackson-syntax-highlight:${jacksonSyntaxHighlightVersion}")
 ```
 </details>
 
 # Usage
-The highlighter wraps a normal [JsonGenerator]. Pretty-printing is enabled by default.
+The highlighter requires two changes to a regular setup.
 
 ```java
-// construct output generator
-JsonGenerator delegate = new JsonFactory().createGenerator(writer);
+SyntaxHighlighter syntaxHighlighter = DefaultSyntaxHighlighter.newBuilder()
+        .withNumber(AnsiSyntaxHighlight.RED)
+        .withString(AnsiSyntaxHighlight.BLUE)
+        .build();
 
-// wrap with syntax highlighter
-JsonGenerator jsonGenerator = new SyntaxHighlightingJsonGenerator(delegate);
+// construct output generator
+JsonMapper mapper = JsonMapper.builderWithJackson2Defaults()
+        .defaultPrettyPrinter(new SyntaxHighlightingPrettyPrinter(syntaxHighlighter))
+        .build();
+ObjectWriter objectWriter = mapper.writerWithDefaultPrettyPrinter();
+
+// create stream and create generator
+gWriter writer = new StringWriter();
+JsonGenerator delegate = objectWriter.createGenerator(writer);
+SyntaxHighlightingJsonGenerator jsonGenerator = SyntaxHighlightingJsonGenerator.create(delegate);
 
 // write JSON output
 jsonGenerator.writeStartObject(); // start root object
 jsonGenerator.writeFieldName("name");
 jsonGenerator.writeNumber(123);
+
+// your code here
+
 jsonGenerator.writeEndObject();
-// .. etc
-```
-Supply an instance of `SyntaxHighlighter` using the builder:
+jsonGenerator.close();
 
-```java
-SyntaxHighlighter highlighter = DefaultSyntaxHighlighter
-                                    .newBuilder()
-                                    .withNumber(AnsiSyntaxHighlight.BLUE)
-                                    .build();
-		
-JsonGenerator jsonGenerator = new SyntaxHighlightingJsonGenerator(delegate, highlighter);
+// print writer contents.
 ```
 
-In addition, the JSON structure can be tracked via [JsonStreamContextListener](src/main/java/org/entur/jackson/jsh/JsonStreamContextListener.java), for stateful coloring of subtrees. 
+In addition, the JSON structure can be tracked via [JsonStreamContextListener](src/main/java/org/entur/jackson3/jsh/JsonStreamContextListener.java), for stateful coloring of subtrees. 
 
 ## Highlighting an object
 Write a full object using `writeObject`, i.e.
 
 ```java
-JsonGenerator jsonGenerator = new SyntaxHighlightingJsonGenerator(delegate, highlighter, prettyprint);
-jsonGenerator.writeObject(obj);
+jsonGenerator.writePOJO(obj);
 ```
 
 ## See also
@@ -109,12 +115,13 @@ jsonGenerator.writeObject(obj);
 
 # History
 
+ - 3.x: Support for Jackson 3.
  - 1.1.0: Forked from [jackson-syntax-highlight](https://github.com/skjolber/jackson-syntax-highlight) due to too few maintainers.
 
 [Apache 2.0]:          	http://www.apache.org/licenses/LICENSE-2.0.html
 [issue-tracker]:       	https://github.com/entur/jackson-syntax-highlight/issues
 [Maven]:                http://maven.apache.org/
-[SyntaxHighlighter]:	src/main/java/org/entur/jackson/jsh/SyntaxHighlighter.java
+[SyntaxHighlighter]:	src/main/java/org/entur/jackson3/jsh/SyntaxHighlighter.java
 [Jackson]:				https://github.com/FasterXML/jackson
 [ANSI]:					https://en.wikipedia.org/wiki/ANSI_escape_code
 [JSON]:					https://no.wikipedia.org/wiki/JSON

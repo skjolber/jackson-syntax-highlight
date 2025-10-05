@@ -1,9 +1,10 @@
-package org.entur.jackson.jsh;
+package org.entur.jackson3.jsh;
 
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
-import org.entur.jackson.jsh.AnsiSyntaxHighlight;
+import org.entur.jackson3.jsh.AnsiSyntaxHighlight;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AnsiSyntaxHighlightTest {
 

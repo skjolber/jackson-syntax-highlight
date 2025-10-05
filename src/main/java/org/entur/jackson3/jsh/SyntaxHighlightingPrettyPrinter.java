@@ -1,15 +1,13 @@
-package org.entur.jackson.jsh;
-
-import java.io.IOException;
+package org.entur.jackson3.jsh;
 
 import tools.jackson.core.JacksonException;
 import tools.jackson.core.JsonGenerator;
+import tools.jackson.core.util.DefaultIndenter;
 import tools.jackson.core.util.DefaultPrettyPrinter;
-import tools.jackson.core.util.Instantiatable;
 
 /**
  * 
- * Pretty-printer which technically can produce output with or without indent / line-breaks.
+ * Pretty-printer. Must be used together with {@linkplain SyntaxHighlightingJsonGenerator}.
  *
  */
 
@@ -20,20 +18,31 @@ public class SyntaxHighlightingPrettyPrinter extends DefaultPrettyPrinter {
 	protected SyntaxHighlighter syntaxHighlighter;
 	protected SyntaxHighlighterIndenter objectIndenter;
 	protected SyntaxHighlighterIndenter arrayIndenter;
-	protected JsonStreamContextListener listener;
+	protected TokenStreamContextListener listener;
 
 	private String valueColor;
 	private String commaColor;
 
-	public SyntaxHighlightingPrettyPrinter(SyntaxHighlighter syntaxHighlighter, SyntaxHighlighterIndenter objectIndenter,
-			SyntaxHighlighterIndenter arrayIndenter, JsonStreamContextListener listener) {
+	public SyntaxHighlightingPrettyPrinter(SyntaxHighlighter syntaxHighlighter) {
+		this(syntaxHighlighter, new SyntaxHighlighterIndenter(syntaxHighlighter, new DefaultIndenter()), new SyntaxHighlighterIndenter(syntaxHighlighter, new DefaultPrettyPrinter.FixedSpaceIndenter()));
+	}
+
+    public SyntaxHighlightingPrettyPrinter(SyntaxHighlighter syntaxHighlighter, SyntaxHighlighterIndenter objectIndenter,
+			SyntaxHighlighterIndenter arrayIndenter) {
 		this.syntaxHighlighter = syntaxHighlighter;
 		_objectIndenter = objectIndenter;
 		_arrayIndenter = arrayIndenter;
 
 		this.objectIndenter = objectIndenter;
 		this.arrayIndenter = arrayIndenter;
+	}
+
+	public void setTokenStreamContextListener(TokenStreamContextListener listener) {
 		this.listener = listener;
+	}
+
+	public DefaultPrettyPrinter createInstance() {
+		return new SyntaxHighlightingPrettyPrinter(syntaxHighlighter);
 	}
 
 	public void writeRootValueSeparator(JsonGenerator gen) {
@@ -75,11 +84,9 @@ public class SyntaxHighlightingPrettyPrinter extends DefaultPrettyPrinter {
 	public void writeObjectNameValueSeparator(JsonGenerator gen) throws JacksonException {
 		if (_objectNameValueSeparator != null) {
 			gen.writeRaw(syntaxHighlighter.forWhitespace());
-			gen.writeRaw(' ');
 			gen.writeRaw(syntaxHighlighter.forColon());
 			gen.writeRaw(_objectNameValueSeparator);
 			gen.writeRaw(syntaxHighlighter.forWhitespace());
-			gen.writeRaw(' ');
 		} else {
 			gen.writeRaw(syntaxHighlighter.forColon());
 			gen.writeRaw(_objectNameValueSeparator);

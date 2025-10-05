@@ -1,4 +1,4 @@
-package org.entur.jackson.jsh;
+package org.entur.jackson3.jsh;
 
 public final class AnsiSyntaxHighlight {
 
@@ -18,7 +18,7 @@ public final class AnsiSyntaxHighlight {
 	public static final String	INVISIBLE_TEXT		= "8";
 
 	public static final String	BLACK				= "30";
-	public static final String	RED				= "31";
+	public static final String	RED					= "31";
 	public static final String	GREEN				= "32";
 	public static final String	YELLOW				= "33";
 	public static final String	BLUE				= "34";

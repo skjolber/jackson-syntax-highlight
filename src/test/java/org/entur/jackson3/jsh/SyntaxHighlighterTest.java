@@ -1,4 +1,4 @@
-package org.entur.jackson.jsh;
+package org.entur.jackson3.jsh;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -82,7 +82,18 @@ public class SyntaxHighlighterTest extends AbstractHighlighterTest {
 	@Test
 	public void all() throws IOException {
 		System.out.println("all");
-		handle(new DefaultSyntaxHighlighter());
+		handle(DefaultSyntaxHighlighter.newBuilder()
+				.withBackground(AnsiSyntaxHighlight.BACKGROUND_YELLOW)
+				.withNull(AnsiSyntaxHighlight.RED)
+				.withBinary(AnsiSyntaxHighlight.BLUE)
+				.withBoolean(AnsiSyntaxHighlight.WHITE)
+				.withString(AnsiSyntaxHighlight.GREEN)
+				.withNumber(AnsiSyntaxHighlight.BACKGROUND_CYAN)
+				.withWhitespace(AnsiSyntaxHighlight.BACKGROUND_MAGENTA)
+				.withComma(AnsiSyntaxHighlight.WHITE)
+				.withSquareBrackets(AnsiSyntaxHighlight.WHITE)
+				.withCurlyBrackets(AnsiSyntaxHighlight.WHITE)
+				.build());
 	}
 	
 	@Test

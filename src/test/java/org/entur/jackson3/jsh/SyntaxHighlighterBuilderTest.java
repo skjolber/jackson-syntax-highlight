@@ -1,12 +1,11 @@
-package org.entur.jackson.jsh;
+package org.entur.jackson3.jsh;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.entur.jackson.jsh.AnsiSyntaxHighlight;
-import org.entur.jackson.jsh.DefaultSyntaxHighlighter;
-import org.entur.jackson.jsh.SyntaxHighlighter;
+import org.entur.jackson3.jsh.AnsiSyntaxHighlight;
+import org.entur.jackson3.jsh.DefaultSyntaxHighlighter;
+import org.entur.jackson3.jsh.SyntaxHighlighter;
 
 public class SyntaxHighlighterBuilderTest {
 

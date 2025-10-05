@@ -1,9 +1,8 @@
-package org.entur.jackson.jsh;
+package org.entur.jackson3.jsh;
 
 import tools.jackson.core.TokenStreamContext;
-import tools.jackson.core.json.JsonWriteContext;
 
-public interface JsonStreamContextListener {
+public interface TokenStreamContextListener {
 
 	void startObject(TokenStreamContext outputContext);
 
