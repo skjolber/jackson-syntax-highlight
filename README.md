@@ -20,7 +20,7 @@ Features:
 
 The library is primarily intended for adding coloring while doing minimal changes to existing applications. For example, coloring of status codes during unit testing.
 
-For Jackson `2.x` support, see the `jackson2.x` branch. Note that the `jackson2.x` branch is on another coordinate and package, so both versions can be used in parallel.
+For Jackson `2.x` support, see the `jackson2.x` branch. Note that the `jackson2.x` branch is on another artifact (and Java package), so both versions can be used in parallel.
 
 ## License
 [Apache 2.0]
@@ -33,15 +33,15 @@ The project is built with [Maven] and is available on the central Maven reposito
 
 Add the property
 ```xml
-<jackson-syntax-highlight.version>3.0.x</jackson-syntax-highlight.version>
+<jackson-syntax-highlight.version>2.0.x</jackson-syntax-highlight.version>
 ```
 
 then add
 
 ```xml
 <dependency>
-    <groupId>org.entur.jackson3</groupId>
-    <artifactId>jackson-syntax-highlight</artifactId>
+    <groupId>org.entur.jackson</groupId>
+    <artifactId>jackson3-syntax-highlight</artifactId>
     <version>${jackson-syntax-highlight.version}</version>
 </dependency>
 ```
@@ -56,14 +56,14 @@ For
 
 ```groovy
 ext {
-  jacksonSyntaxHighlightVersion = '3.0.x'
+  jacksonSyntaxHighlightVersion = '2.0.x'
 }
 ```
 
 add
 
 ```groovy
-api ("org.entur.jackson3:jackson-syntax-highlight:${jacksonSyntaxHighlightVersion}")
+api ("org.entur.jackson:jackson3-syntax-highlight:${jacksonSyntaxHighlightVersion}")
 ```
 </details>
 
@@ -115,8 +115,8 @@ jsonGenerator.writePOJO(obj);
 
 # History
 
- - 3.x: Support for Jackson 3.
- - 1.1.0: Forked from [jackson-syntax-highlight](https://github.com/skjolber/jackson-syntax-highlight) due to too few maintainers.
+ - 2.x: Support for Jackson 2.
+ - 1.1.0: Forked from [jackson-syntax-highlight](https://github.com/skjolber/jackson-syntax-highlight) due to too few maintainers. Support for Jackson 2.x.
 
 [Apache 2.0]:          	http://www.apache.org/licenses/LICENSE-2.0.html
 [issue-tracker]:       	https://github.com/entur/jackson-syntax-highlight/issues
