@@ -1,5 +1,5 @@
-module org.entur.jackson.jsh {
-	exports org.entur.jackson.jsh;
+module org.entur.jackson3.jsh {
+	exports org.entur.jackson3.jsh;
 	
-	requires com.fasterxml.jackson.core;
+	requires tools.jackson.core;
 }

@@ -1,4 +1,4 @@
-package org.entur.jackson.jsh;
+package org.entur.jackson3.jsh;
 
 /**
  * Test object for object serialization via jackson databind.

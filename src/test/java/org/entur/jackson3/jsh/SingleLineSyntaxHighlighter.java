@@ -1,61 +1,25 @@
-package org.entur.jackson.jsh;
+package org.entur.jackson3.jsh;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-import com.fasterxml.jackson.core.JsonStreamContext;
-import org.entur.jackson.jsh.AnsiSyntaxHighlight;
-import org.entur.jackson.jsh.DefaultSyntaxHighlighter;
-import org.entur.jackson.jsh.JsonStreamContextListener;
-import org.entur.jackson.jsh.SyntaxHighlighter;
+import tools.jackson.core.TokenStreamContext;
 
-/**
- * 
- * Resolver which returns two different {@linkplain SyntaxHighlighter}s
- * based on the context location.
- */
-
-public class SubtreeJsonStreamContextListener implements JsonStreamContextListener, SyntaxHighlighter {
+public class SingleLineSyntaxHighlighter implements SyntaxHighlighter {
 
 	private SyntaxHighlighter base = new DefaultSyntaxHighlighter();
 	
-	private SyntaxHighlighter numberField = DefaultSyntaxHighlighter
+	private SyntaxHighlighter redBackground = DefaultSyntaxHighlighter
 				.newBuilder()
 				.withBackground(AnsiSyntaxHighlight.BACKGROUND_RED)
 				.build();
 	
 	private SyntaxHighlighter delegate = base;
 	
-	public SyntaxHighlighter field(JsonStreamContext context) {
-		if(context.pathAsPointer().toString().equals("/object")) {
-			return numberField;
-		}
-
+	public SyntaxHighlighter field(TokenStreamContext context) {
 		return base;
 	}
 
-	@Override
-	public void startObject(JsonStreamContext outputContext) {
-		this.delegate = field(outputContext);
-	}
-
-	@Override
-	public void endObject(JsonStreamContext outputContext) {
-		// reset
-		this.delegate = base;
-	}
-
-	@Override
-	public void startArray(JsonStreamContext outputContext) {
-		this.delegate = field(outputContext);
-	}
-
-	@Override
-	public void endArray(JsonStreamContext outputContext) {
-		// reset
-		this.delegate = base;
-	}
-	
 	@Override
 	public String forCurlyBrackets() {
 		return delegate.forCurlyBrackets();
@@ -83,6 +47,11 @@ public class SubtreeJsonStreamContextListener implements JsonStreamContextListen
 
 	@Override
 	public String forFieldName(String value) {
+		if("booleanValue".equals(value)) {
+			this.delegate = redBackground;
+		} else {
+			this.delegate = base;
+		}
 		return delegate.forFieldName(value);
 	}
 

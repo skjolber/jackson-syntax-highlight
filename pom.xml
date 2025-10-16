@@ -1,8 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.entur.jackson</groupId>
+	<groupId>org.entur.jackson3</groupId>
 	<artifactId>jackson-syntax-highlight</artifactId>
-	<version>1.1.1-SNAPSHOT</version>
+	<version>3.0.0-SNAPSHOT</version>
 	<name>jackson-syntax-highlight</name>
 	<description>ANSI syntax highlighting for Jackson output</description>
 	<url>https://github.com/entur/jackson-syntax-highlight</url>
@@ -53,18 +53,20 @@
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>
 
-		<jackson.version>2.19.1</jackson.version>
+		<jackson.version>3.0.0</jackson.version>
 		<maven.jacoco.plugin.version>0.8.13</maven.jacoco.plugin.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
+			<!--
 			<dependency>
-				<groupId>com.fasterxml.jackson</groupId>
+				<groupId>tools.jackson.core</groupId>
 				<artifactId>jackson-bom</artifactId>
 				<version>${jackson.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			-->
 			<dependency>
 				<groupId>org.junit</groupId>
 				<artifactId>junit-bom</artifactId>
@@ -76,12 +78,14 @@
 	</dependencyManagement>
 	<dependencies>
 		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
+			<groupId>tools.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>
+			<version>${jackson.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
+			<groupId>tools.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
+			<version>${jackson.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
