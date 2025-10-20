@@ -1,5 +1,5 @@
-module org.entur.jackson3.jsh {
-	exports org.entur.jackson3.jsh;
+module org.entur.jackson.tools.jsh {
+	exports org.entur.jackson.tools.jsh;
 	
 	requires tools.jackson.core;
 }

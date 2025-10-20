@@ -1,10 +1,8 @@
-name: Build feature
+name: Build
 on:
-  pull_request:
-    types:
-      - synchronize
-      - opened
-
+  push:
+    branches:
+      - master
 jobs:
   validate-maven-build:
     uses: entur/abt-gha-public/.github/workflows/maven-open-source-verify.yml@main

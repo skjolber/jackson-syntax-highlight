@@ -1,4 +1,4 @@
-package org.entur.jackson3.jsh;
+package org.entur.jackson.tools.jsh;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;

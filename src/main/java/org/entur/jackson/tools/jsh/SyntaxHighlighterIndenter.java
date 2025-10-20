@@ -1,4 +1,4 @@
-package org.entur.jackson3.jsh;
+package org.entur.jackson.tools.jsh;
 
 import tools.jackson.core.JsonGenerator;
 import tools.jackson.core.util.DefaultPrettyPrinter;

@@ -1,21 +1,15 @@
-package org.entur.jackson3.jsh;
+package org.entur.jackson.tools.jsh;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import tools.jackson.core.TokenStreamContext;
 
-/**
- * 
- * Resolver which returns two different {@linkplain SyntaxHighlighter}s
- * based on the context location.
- */
-
-public class SubtreeTokenStreamContextListener implements TokenStreamContextListener, SyntaxHighlighter {
+public class SingleLineSyntaxHighlighter implements SyntaxHighlighter {
 
 	private SyntaxHighlighter base = new DefaultSyntaxHighlighter();
 	
-	private SyntaxHighlighter numberField = DefaultSyntaxHighlighter
+	private SyntaxHighlighter redBackground = DefaultSyntaxHighlighter
 				.newBuilder()
 				.withBackground(AnsiSyntaxHighlight.BACKGROUND_RED)
 				.build();
@@ -23,35 +17,9 @@ public class SubtreeTokenStreamContextListener implements TokenStreamContextList
 	private SyntaxHighlighter delegate = base;
 	
 	public SyntaxHighlighter field(TokenStreamContext context) {
-		if(context.pathAsPointer().toString().equals("/object")) {
-			return numberField;
-		}
-
 		return base;
 	}
 
-	@Override
-	public void startObject(TokenStreamContext outputContext) {
-		this.delegate = field(outputContext);
-	}
-
-	@Override
-	public void endObject(TokenStreamContext outputContext) {
-		// reset
-		this.delegate = base;
-	}
-
-	@Override
-	public void startArray(TokenStreamContext outputContext) {
-		this.delegate = field(outputContext);
-	}
-
-	@Override
-	public void endArray(TokenStreamContext outputContext) {
-		// reset
-		this.delegate = base;
-	}
-	
 	@Override
 	public String forCurlyBrackets() {
 		return delegate.forCurlyBrackets();
@@ -79,6 +47,11 @@ public class SubtreeTokenStreamContextListener implements TokenStreamContextList
 
 	@Override
 	public String forFieldName(String value) {
+		if("booleanValue".equals(value)) {
+			this.delegate = redBackground;
+		} else {
+			this.delegate = base;
+		}
 		return delegate.forFieldName(value);
 	}
 
